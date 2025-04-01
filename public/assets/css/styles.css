@@ -1,0 +1,158 @@
+@import "tailwindcss";
+:root{
+    --big-fz : 52px;
+    --med-fz : 32px;
+    --small-fz : 16px;
+
+    --body-fc : #7F877F;
+    --black : #191C19;
+    --bone-white : #FAF5ED;
+    --brown : #534538;
+    --dark-brown : #36302c;
+    --orange : #FF9D00;
+    --grey : #ADB3AB;
+}
+
+body{
+    background-color: var(--bone-white);
+    font-family: 'Neue Montreal';
+    src: url('NeueMontreal-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+    font-size: 16px;
+    color: var(--body-fc);
+    line-height: 130%;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+h1{
+    font-family: 'Reckless Neue';
+    src: url('RecklessNeue-Book.ttf');
+    font-weight: 300;
+    font-style: normal;
+    font-size: 52px;
+    letter-spacing: -2px;
+    line-height: 110%;
+}
+
+h2{
+    font-family: 'Reckless Neue';
+    src: url('RecklessNeue-Regular.eot');
+    font-weight: 300;
+    font-style: normal;
+    font-size: 32px;
+}
+
+h3{
+    font-family: 'Reckless Neue';
+    src: url('RecklessNeue-Regular.eot');
+    font-weight: 300;
+    font-style: normal;
+    font-size: 28px;
+}
+
+h4{
+    font-size: 20px;
+    font-weight: 300;
+}
+
+p{
+    letter-spacing: -2%;
+    /* color: var(--body-fc); */
+}
+
+nav{
+    width: 95vw;
+    display: flex;
+    padding: 20px 24px;
+    margin: 35px 40px 0px 40px;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 66px;
+    background: white;
+}
+
+.nav-item p{
+    color: var(--grey);
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-item p:hover{
+    color: var(--black);
+    
+}
+
+.nav-list .active{
+    position: relative;
+}
+
+.nav-list .active::before{
+    content: '';
+    background-color: var(--orange);
+    width: 5px;
+    height: 5px;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 40%;
+}
+
+ul{
+    list-style: none;
+    margin: 0;
+    display: flex;
+}
+
+footer{
+    background-color: var(--brown);
+    color: var(--bone-white);
+    height: 724px;
+    padding: 64px 40px 24px 40px;
+    gap: 10px;
+    /* position: absolute;
+    bottom: 0; */
+}
+
+.container {
+    margin: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sub-heading{
+    padding-left: 10px;
+    position: relative;
+}
+
+.sub-heading::before{
+    content: '';
+    background-color: var(--orange);
+    width: 5px;
+    height: 5px;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 40%;
+}
+
+.home_hero{
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 62.44%, rgba(0, 0, 0, 0.50) 100%), url("../images/Hero_bg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.finalcta{
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, #534538 100%), url("../images/final_cta_bg.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.footer_menu_list{
+    color: var(--grey);
+}

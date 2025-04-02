@@ -29,14 +29,14 @@ class AuthController extends Controller
             $admin = Admin::where('email', $credentials['email'])->first();
             if ($admin && Hash::check($credentials['password'], $admin->password)) {
                 Auth::guard('admin')->login($admin);
-                return redirect()->route('dashboard')->with('success', 'Login sebagai Admin berhasil');
+                return redirect()->route('admin.dashboard')->with('success', 'Login sebagai Admin berhasil');
             }
 
             // Cek login sebagai Pelanggan
             $pelanggan = Pelanggan::where('email', $credentials['email'])->first();
             if ($pelanggan && Hash::check($credentials['password'], $pelanggan->password)) {
                 Auth::guard('pelanggan')->login($pelanggan);
-                return redirect()->route('dashboard')->with('success', 'Login sebagai Pelanggan berhasil');
+                return redirect()->route('penjual.dashboard')->with('success', 'Login sebagai Pelanggan berhasil');
             }
 
             return back()->withErrors(['email' => 'Email atau password salah']);

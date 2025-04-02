@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class AuthCheck
+class RedirectIfAuthenticated
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,10 @@ class AuthCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::guard('admin')->user() && !Auth::guard('pelanggan')->user()) {
-            return redirect()->route("login");
+        if (Auth::guard('admin')->user() && Auth::guard('pelanggan')->user()) {
+            return back()->with("error", "Anda sudah login");
         }
+
         return $next($request);
     }
 }

@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminController as AdminAdminController;
 // Penjual Controller
 use App\Http\Controllers\Penjual\DashboardController as PenjualDashboardController;
 use App\Http\Controllers\Admin\PenjualController as AdminPenjualController;
+use App\Http\Controllers\Admin\PelangganController as AdminPelangganController;
 
 // Pelanggan Controller
 use App\Http\Controllers\Pelanggan\DashboardController as PelangganDashboardController;
@@ -54,6 +55,14 @@ Route::middleware('authCheck')->group(function () {
     Route::post('/admin-dashboard/penjual/store', [AdminPenjualController::class, 'store'])->name('admin.penjual.store');
     Route::put('/admin-dashboard/penjual/update', [AdminPenjualController::class, 'update'])->name('admin.penjual.update');
     Route::delete('/admin-dashboard/penjual/delete', [AdminPenjualController::class, 'destroy'])->name('admin.penjual.destroy');
+
+    // Admin Pelanggan Controller
+    Route::get('/admin-dashboard/pelanggan', [AdminPelangganController::class, 'index'])->name('admin.pelanggan.index');
+    Route::get('/admin-dashboard/pelanggan/create', [AdminPelangganController::class, 'create'])->name('admin.pelanggan.create');
+    Route::get('/admin-dashboard/pelanggan/edit/{id}', [AdminPelangganController::class, 'edit'])->name('admin.pelanggan.edit');
+    Route::post('/admin-dashboard/pelanggan/store', [AdminPelangganController::class, 'store'])->name('admin.pelanggan.store');
+    Route::put('/admin-dashboard/pelanggan/update', [AdminPelangganController::class, 'update'])->name('admin.pelanggan.update');
+    Route::delete('/admin-dashboard/pelanggan/delete', [AdminPelangganController::class, 'destroy'])->name('admin.pelanggan.destroy');
 
     // Penjual Dashboard Controller
     Route::get('/penjual-dashboard', [PenjualDashboardController::class, 'index'])->name('penjual.dashboard');

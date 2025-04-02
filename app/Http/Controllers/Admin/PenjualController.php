@@ -18,7 +18,7 @@ class PenjualController extends Controller
     public function index()
     {
         $viewData = [
-            "title" => "Penjual Dashboard",
+            "title" => "Data Penjual",
             "datas" => Admin::where('role', 'penjual')->paginate(10),
         ];
 
@@ -31,7 +31,7 @@ class PenjualController extends Controller
     public function create()
     {
         $viewData = [
-            "title" => "Create Penjual",
+            "title" => "Tambah Penjual",
         ];
 
         return view('admin.penjual.create', $viewData);

@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 // Models
-use App\Models\Admin;
+use App\Models\Pelanggan;
 
-class AdminController extends Controller
+class PelangganController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +17,11 @@ class AdminController extends Controller
     public function index()
     {
         $viewData = [
-            "title" => "Data Admin",
-            "datas" => Admin::where('role', 'admin')->paginate(10),
+            "title" => "Data Pelanggan",
+            "datas" => Pelanggan::paginate(10),
         ];
 
-        return view("admin.admin.index", $viewData);
+        return view("admin.pelanggan.index", $viewData);
     }
 
     /**
@@ -30,10 +30,10 @@ class AdminController extends Controller
     public function create()
     {
         $viewData = [
-            "title" => "Tambah Admin",
+            "title" => "Tambah Pelanggan",
         ];
 
-        return view('admin.admin.create', $viewData);
+        return view('admin.pelanggan.create', $viewData);
     }
 
     /**
@@ -42,25 +42,28 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama_pelanggan' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
+            'alamat_pelanggan' => 'required|string',
+            'no_telp' => 'required|string|max:15',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
         DB::beginTransaction();
 
         try {
-            Admin::create([
-                'nama' => $validatedData['nama'],
+            Pelanggan::create([
+                'nama_pelanggan' => $validatedData['nama_pelanggan'],
                 'email' => $validatedData['email'],
                 'password' => bcrypt($validatedData['password']),
-                'role' => 'admin',
+                'alamat_pelanggan' => $validatedData['alamat_pelanggan'],
+                'no_telp' => $validatedData['no_telp'],
             ]);
             DB::commit();
-            return redirect()->route('admin.admin.index')->with('success', 'Admin created successfully');
+            return redirect()->route('admin.pelanggan.index')->with('success', 'Pelanggan created successfully');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Failed to create admin: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to create pelanggan: ' . $e->getMessage());
         }
     }
 
@@ -78,11 +81,11 @@ class AdminController extends Controller
     public function edit(string $id)
     {
         $viewData = [
-            "title" => "Edit Admin",
-            "data" => Admin::where('id_admin', $id)->first(),
+            "title" => "Edit Pelanggan",
+            "data" => Pelanggan::where('id_pelanggan', $id)->first(),
         ];
 
-        return view('admin.admin.edit', $viewData);
+        return view('admin.pelanggan.edit', $viewData);
     }
 
     /**
@@ -91,8 +94,9 @@ class AdminController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'id_admin' => 'required',
-            'nama' => 'required|string|max:255',
+            'id_pelanggan' => 'required',
+            'nama_pelanggan' => 'required|string|max:255',
+            'alamat_pelanggan' => 'required|string',
             'email' => 'required|string|email|max:255',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
@@ -100,16 +104,17 @@ class AdminController extends Controller
         DB::beginTransaction();
 
         try {
-            $admin = Admin::where('id_admin', $validatedData['id_admin'])->first();
-            $admin->nama = $validatedData['nama'];
-            $admin->email = $validatedData['email'];
+            $pelanggan = Pelanggan::where('id_pelanggan', $validatedData['id_pelanggan'])->first();
+            $pelanggan->nama_pelanggan = $validatedData['nama_pelanggan'];
+            $pelanggan->email = $validatedData['email'];
+            $pelanggan->alamat_pelanggan = $validatedData['alamat_pelanggan'];
             if (!empty($validatedData['password'])) {
-                $admin->password = bcrypt($validatedData['password']);
+                $pelanggan->password = bcrypt($validatedData['password']);
             }
-            $admin->save();
+            $pelanggan->save();
 
             DB::commit();
-            return redirect()->route('admin.admin.index')->with('success', 'Admin updated successfully');
+            return redirect()->route('admin.pelanggan.index')->with('success', 'Pelanggan updated successfully');
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Failed to update admin: ' . $e->getMessage());
@@ -123,10 +128,10 @@ class AdminController extends Controller
     {
         DB::beginTransaction();
         try {
-            $admin = Admin::where('id_admin', $request->id_admin)->first();
-            $admin->delete();
+            $pelanggan = Pelanggan::where('id_pelanggan', $request->id_pelanggan)->first();
+            $pelanggan->delete();
             DB::commit();
-            return redirect()->route('admin.admin.index')->with('success', 'Admin deleted successfully');
+            return redirect()->route('admin.pelanggan.index')->with('success', 'Pelanggan deleted successfully');
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Failed to delete admin: ' . $e->getMessage());

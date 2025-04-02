@@ -22,4 +22,9 @@ class Admin extends Authenticatable
         'password',
         'role',
     ];
+
+    public function penjual()
+    {
+        return $this->hasOne(Penjual::class, 'id_admin', 'id_admin');
+    }
 }

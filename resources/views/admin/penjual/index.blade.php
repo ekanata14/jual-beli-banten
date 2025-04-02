@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="mb-4">
-        <a href="{{ route('admin.admin.create') }}" class="btn-primary">Tambah Admin</a>
+        <a href="{{ route('admin.penjual.create') }}" class="btn-primary">Tambah Penjual</a>
     </div>
     <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -16,6 +16,12 @@
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Email
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Alamat
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        No Telp.
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Actions
@@ -34,9 +40,15 @@
                         <td class="px-6 py-4">
                             {{ $item->email }}
                         </td>
+                        <td class="px-6 py-4">
+                            {{ $item->penjual->alamat_penjual }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $item->penjual->no_telp }}
+                        </td>
                         <td class="px-6 py-4 flex gap-2">
-                            <a href="{{ route('admin.admin.edit', $item->id_admin) }}" class="btn-yellow">Edit</a>
-                            <form action="{{ route('admin.admin.destroy') }}" method="POST">
+                            <a href="{{ route('admin.penjual.edit', $item->id_admin) }}" class="btn-yellow">Edit</a>
+                            <form action="{{ route('admin.penjual.destroy') }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <input type="hidden" name="id_admin" value="{{ $item->id_admin }}">

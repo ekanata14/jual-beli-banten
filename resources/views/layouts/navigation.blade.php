@@ -16,8 +16,11 @@
                         <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.admin.index')" :active="request()->routeIs('admin.admin.index')">
+                        <x-nav-link :href="route('admin.admin.index')" :active="request()->routeIs('admin.admin*')">
                             {{ __('Admin') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.penjual.index')" :active="request()->routeIs('admin.penjual*')">
+                            {{ __('Penjual') }}
                         </x-nav-link>
                     </div>
                 @elseif (Auth::guard('admin')->user()->role == 'penjual')

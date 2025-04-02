@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminController as AdminAdminController;
 
 // Penjual Controller
 use App\Http\Controllers\Penjual\DashboardController as PenjualDashboardController;
+use App\Http\Controllers\Admin\PenjualController as AdminPenjualController;
 
 // Pelanggan Controller
 use App\Http\Controllers\Pelanggan\DashboardController as PelangganDashboardController;
@@ -30,9 +31,7 @@ Route::middleware('redirectIfAuthenticated')->group(function () {
 
 
 Route::middleware('authCheck')->group(function () {
-
     // Profile Controller
-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -47,6 +46,14 @@ Route::middleware('authCheck')->group(function () {
     Route::post('/admin-dashboard/admin/store', [AdminAdminController::class, 'store'])->name('admin.admin.store');
     Route::put('/admin-dashboard/admin/update', [AdminAdminController::class, 'update'])->name('admin.admin.update');
     Route::delete('/admin-dashboard/admin/delete', [AdminAdminController::class, 'destroy'])->name('admin.admin.destroy');
+
+    // Admin Penjual Controller
+    Route::get('/admin-dashboard/penjual', [AdminPenjualController::class, 'index'])->name('admin.penjual.index');
+    Route::get('/admin-dashboard/penjual/create', [AdminPenjualController::class, 'create'])->name('admin.penjual.create');
+    Route::get('/admin-dashboard/penjual/edit/{id}', [AdminPenjualController::class, 'edit'])->name('admin.penjual.edit');
+    Route::post('/admin-dashboard/penjual/store', [AdminPenjualController::class, 'store'])->name('admin.penjual.store');
+    Route::put('/admin-dashboard/penjual/update', [AdminPenjualController::class, 'update'])->name('admin.penjual.update');
+    Route::delete('/admin-dashboard/penjual/delete', [AdminPenjualController::class, 'destroy'])->name('admin.penjual.destroy');
 
     // Penjual Dashboard Controller
     Route::get('/penjual-dashboard', [PenjualDashboardController::class, 'index'])->name('penjual.dashboard');

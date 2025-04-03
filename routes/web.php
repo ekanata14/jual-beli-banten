@@ -15,6 +15,7 @@ use App\Http\Controllers\Penjual\DashboardController as PenjualDashboardControll
 use App\Http\Controllers\Admin\PenjualController as AdminPenjualController;
 use App\Http\Controllers\Admin\PelangganController as AdminPelangganController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\KurirController as AdminKurirController;
 
 // Pelanggan Controller
 use App\Http\Controllers\Pelanggan\DashboardController as PelangganDashboardController;
@@ -73,6 +74,14 @@ Route::middleware('authCheck')->group(function () {
     Route::post('/admin-dashboard/produk/store', [AdminProductController::class, 'store'])->name('admin.produk.store');
     Route::put('/admin-dashboard/produk/update', [AdminProductController::class, 'update'])->name('admin.produk.update');
     Route::delete('/admin-dashboard/produk/delete', [AdminProductController::class, 'destroy'])->name('admin.produk.destroy');
+
+    // Admin Kurir Controller
+    Route::get('/admin-dashboard/kurir', [AdminKurirController::class, 'index'])->name('admin.kurir.index');
+    Route::get('/admin-dashboard/kurir/create', [AdminKurirController::class, 'create'])->name('admin.kurir.create');
+    Route::get('/admin-dashboard/kurir/edit/{id}', [AdminKurirController::class, 'edit'])->name('admin.kurir.edit');
+    Route::post('/admin-dashboard/kurir/store', [AdminKurirController::class, 'store'])->name('admin.kurir.store');
+    Route::put('/admin-dashboard/kurir/update', [AdminKurirController::class, 'update'])->name('admin.kurir.update');
+    Route::delete('/admin-dashboard/kurir/delete', [AdminKurirController::class, 'destroy'])->name('admin.kurir.destroy');
 
     // Penjual Dashboard Controller
     Route::get('/penjual-dashboard', [PenjualDashboardController::class, 'index'])->name('penjual.dashboard');

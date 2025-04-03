@@ -25,6 +25,9 @@
                         <x-nav-link :href="route('admin.pelanggan.index')" :active="request()->routeIs('admin.pelanggan*')">
                             {{ __('Pelanggan') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.produk.index')" :active="request()->routeIs('admin.produk*')">
+                            {{ __('Produk') }}
+                        </x-nav-link>
                     </div>
                 @elseif (Auth::guard('admin')->user()->role == 'penjual')
                     <!-- Navigation Links -->

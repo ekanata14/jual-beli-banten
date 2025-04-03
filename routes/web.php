@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\AdminController as AdminAdminController;
 use App\Http\Controllers\Penjual\DashboardController as PenjualDashboardController;
 use App\Http\Controllers\Admin\PenjualController as AdminPenjualController;
 use App\Http\Controllers\Admin\PelangganController as AdminPelangganController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 
 // Pelanggan Controller
 use App\Http\Controllers\Pelanggan\DashboardController as PelangganDashboardController;
@@ -63,6 +64,15 @@ Route::middleware('authCheck')->group(function () {
     Route::post('/admin-dashboard/pelanggan/store', [AdminPelangganController::class, 'store'])->name('admin.pelanggan.store');
     Route::put('/admin-dashboard/pelanggan/update', [AdminPelangganController::class, 'update'])->name('admin.pelanggan.update');
     Route::delete('/admin-dashboard/pelanggan/delete', [AdminPelangganController::class, 'destroy'])->name('admin.pelanggan.destroy');
+
+    // Admin Produk Controller
+    Route::get('/admin-dashboard/produk', [AdminProductController::class, 'index'])->name('admin.produk.index');
+    Route::get('/admin-dashboard/produk/create', [AdminProductController::class, 'create'])->name('admin.produk.create');
+    Route::get('/admin-dashboard/produk/penjual/{id}', [AdminProductController::class, 'show'])->name('admin.produk.detail');
+    Route::get('/admin-dashboard/produk/edit/{id}', [AdminProductController::class, 'edit'])->name('admin.produk.edit');
+    Route::post('/admin-dashboard/produk/store', [AdminProductController::class, 'store'])->name('admin.produk.store');
+    Route::put('/admin-dashboard/produk/update', [AdminProductController::class, 'update'])->name('admin.produk.update');
+    Route::delete('/admin-dashboard/produk/delete', [AdminProductController::class, 'destroy'])->name('admin.produk.destroy');
 
     // Penjual Dashboard Controller
     Route::get('/penjual-dashboard', [PenjualDashboardController::class, 'index'])->name('penjual.dashboard');

@@ -67,7 +67,11 @@ class ProductController extends Controller
 
         try {
             if ($request->hasFile('foto')) {
-                $validatedData['foto'] = $request->file('foto')->store('produk', 'public');
+                $timestamp = now()->format('YmdHis');
+                $extension = $request->file('foto')->getClientOriginalExtension();
+                $filename = $request->id_admin . '_' . str_replace(' ', '_', $validatedData['nama_produk']) . '_' . $timestamp . '.' . $extension;
+                $fotoPath = $request->file('foto')->storeAs('produk', $filename, 'public');
+                $validatedData['foto'] = $fotoPath;
             }
 
             Produk::create($validatedData);
@@ -147,7 +151,10 @@ class ProductController extends Controller
                 if ($produk->foto && Storage::disk('public')->exists($produk->foto)) {
                     Storage::disk('public')->delete($produk->foto);
                 }
-                $fotoPath = $request->file('foto')->store('produk', 'public');
+                $timestamp = now()->format('YmdHis');
+                $extension = $request->file('foto')->getClientOriginalExtension();
+                $filename = $validatedData['id_produk'] . '_' . str_replace(' ', '_', $validatedData['nama_produk']) . '_' . $timestamp . '.' . $extension;
+                $fotoPath = $request->file('foto')->storeAs('produk', $filename, 'public');
                 $produk->foto = $fotoPath;
             }
 
@@ -169,6 +176,9 @@ class ProductController extends Controller
         DB::beginTransaction();
         try {
             $produk = Produk::where('id_produk', $request->id_produk)->first();
+            if ($produk->foto && Storage::disk('public')->exists($produk->foto)) {
+                Storage::disk('public')->delete($produk->foto);
+            }
             $produk->delete();
             DB::commit();
             return back()->with('success', 'Produk deleted successfully');

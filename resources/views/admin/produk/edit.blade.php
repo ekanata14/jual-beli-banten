@@ -16,7 +16,7 @@
                 <option value="" disabled selected>Pilih Penjual</option>
                 @foreach ($penjuals as $penjual)
                     <option value="{{ $penjual->id_admin }}"
-                        {{ old('penjual') == $penjual->Penjual->id_penjual || $data->id_penjual && $data->id_penjual == $penjual->Penjual->id_penjual ? 'selected' : '' }}>
+                        {{ old('penjual') == $penjual->Penjual->id_penjual || ($data->id_penjual && $data->id_penjual == $penjual->Penjual->id_penjual) ? 'selected' : '' }}>
                         {{ $penjual->nama }}
                     </option>
                 @endforeach
@@ -83,7 +83,7 @@
             <input type="file" id="foto" name="foto"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
             @if ($data->foto)
-                <p class="mt-2 text-sm text-gray-500">Current file: {{ $data->foto }}</p>
+                <img src="{{ asset('storage/' . $data->foto) }}" alt="foto" class="mt-4 w-96">
             @endif
             @error('foto')
                 <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>

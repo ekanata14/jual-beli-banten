@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./node_modules/preline/variants.css";
 :root{
     --big-fz : 52px;
     --med-fz : 32px;
@@ -15,9 +16,9 @@
 
 body{
     background-color: var(--bone-white);
-    font-family: 'Neue Montreal';
-    src: url('NeueMontreal-Regular.ttf');
-    font-weight: normal;
+    font-family: 'Neue Haas Grotesk Display Pro';
+    src: url('NeueHaasDisplay-Roman.eot');
+    font-weight: 500;
     font-style: normal;
     font-size: 16px;
     color: var(--body-fc);
@@ -66,13 +67,11 @@ p{
 
 nav{
     width: 95vw;
-    display: flex;
     padding: 20px 24px;
-    margin: 35px 40px 0px 40px;
-    justify-content: space-between;
-    align-items: center;
+    margin: 30px 40px 0px 40px;
     border-radius: 66px;
     background: white;
+    z-index: 100;
 }
 
 .nav-item p{
@@ -85,11 +84,16 @@ nav{
     
 }
 
-.nav-list .active{
-    position: relative;
+.nav-item.active p{
+    color: var(--black);
 }
 
-.nav-list .active::before{
+.nav-item.active{
+    position: relative;
+    padding-left: 10px;
+}
+
+.nav-item.active::before{
     content: '';
     background-color: var(--orange);
     width: 5px;
@@ -99,6 +103,8 @@ nav{
     left: 0;
     top: 40%;
 }
+
+
 
 ul{
     list-style: none;
@@ -146,6 +152,18 @@ footer{
     background-size: cover;
 }
 
+.product_card_header{
+    height: 350px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.product_card_header img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
 .finalcta{
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, #534538 100%), url("../images/final_cta_bg.png");
     background-position: center;
@@ -155,4 +173,8 @@ footer{
 
 .footer_menu_list{
     color: var(--grey);
+}
+
+.carousel {
+    transition: transform 0.5s ease;
 }

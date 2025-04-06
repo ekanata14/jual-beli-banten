@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama_metode', 50);
             $table->string('tipe', 50);
             $table->string('kode', 50);
-            $table->string('logo', 50);
+            $table->string('logo');
             $table->timestamps();
         });
     }

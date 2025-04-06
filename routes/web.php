@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PenjualController as AdminPenjualController;
 use App\Http\Controllers\Admin\PelangganController as AdminPelangganController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\KurirController as AdminKurirController;
+use App\Http\Controllers\Admin\MetodePembayaranController as AdminMetodePembayaranController;
 
 // Pelanggan Controller
 use App\Http\Controllers\Pelanggan\DashboardController as PelangganDashboardController;
@@ -82,6 +83,14 @@ Route::middleware('authCheck')->group(function () {
     Route::post('/admin-dashboard/kurir/store', [AdminKurirController::class, 'store'])->name('admin.kurir.store');
     Route::put('/admin-dashboard/kurir/update', [AdminKurirController::class, 'update'])->name('admin.kurir.update');
     Route::delete('/admin-dashboard/kurir/delete', [AdminKurirController::class, 'destroy'])->name('admin.kurir.destroy');
+
+    // Admin Metode Pembayaran Controller
+    Route::get('/admin-dashboard/metode-pembayaran', [AdminMetodePembayaranController::class, 'index'])->name('admin.metode-pembayaran.index');
+    Route::get('/admin-dashboard/metode-pembayaran/create', [AdminMetodePembayaranController::class, 'create'])->name('admin.metode-pembayaran.create');
+    Route::get('/admin-dashboard/metode-pembayaran/edit/{id}', [AdminMetodePembayaranController::class, 'edit'])->name('admin.metode-pembayaran.edit');
+    Route::post('/admin-dashboard/metode-pembayaran/store', [AdminMetodePembayaranController::class, 'store'])->name('admin.metode-pembayaran.store');
+    Route::put('/admin-dashboard/metode-pembayaran/update', [AdminMetodePembayaranController::class, 'update'])->name('admin.metode-pembayaran.update');
+    Route::delete('/admin-dashboard/metode-pembayaran/delete', [AdminMetodePembayaranController::class, 'destroy'])->name('admin.metode-pembayaran.destroy');
 
     // Penjual Dashboard Controller
     Route::get('/penjual-dashboard', [PenjualDashboardController::class, 'index'])->name('penjual.dashboard');

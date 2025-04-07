@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', [LandingPageController::class, 'index'])->name('home.index');
+Route::get('/', [LandingPageController::class, 'index'])->name('home');
+Route::get('/about', [LandingPageController::class, 'about'])->name('about');
+Route::get('/product', [LandingPageController::class, 'product'])->name('product');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

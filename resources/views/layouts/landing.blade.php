@@ -23,9 +23,9 @@
                 </div>
                 <div>
                     <ul class="nav-list gap-[53px]">
-                        <li class="nav-item {{ request()->is('/') ? 'active' : '' }} active" ><a href=""><p>Beranda</p></a></li>
-                        <li class="nav-item {{ request()->is('about') ? 'active' : '' }}"><a href=""><p>Tentang Kami</p></a></li>
-                        <li class="nav-item {{ request()->is('product') ? 'active' : '' }}"><a href=""><p>Produk</p></a></li>
+                        <li class="nav-item {{ request()->is('/') ? 'active' : '' }}" ><a href="{{ route('home') }}"><p>Beranda</p></a></li>
+                        <li class="nav-item {{ request()->is('about') ? 'active' : '' }}"><a href="{{ route('about') }}"><p>Tentang Kami</p></a></li>
+                        <li class="nav-item {{ request()->is('product') ? 'active' : '' }}"><a href="{{ route('product') }}"><p>Produk</p></a></li>
                     </ul>
                 </div>
                 <div class="nav-icon flex gap-2">

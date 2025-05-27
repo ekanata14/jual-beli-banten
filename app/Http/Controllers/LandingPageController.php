@@ -27,4 +27,11 @@ class LandingPageController extends Controller
         ];
         return view('landing-page.product',$viewData);
     }
+    public function productDetail(){
+        $viewData = [
+            'title' => 'Produk Detail | Bhakti E Commerce',
+            'activePage' => 'product/product_detail'
+        ];
+        return view('landing-page.productDetail',$viewData);
+    }
 }

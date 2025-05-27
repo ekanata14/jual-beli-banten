@@ -1,6 +1,6 @@
 @extends('layouts.landing')
 @section('content')
-    <section class="home_hero flex w-full justify-start items-end h-[100vh]">
+    <section class="home_hero hero flex w-full justify-start items-end h-[100vh]">
         <div class="home_hero_content py-9 px-10">
             <p class="sub-heading text-white">Harmoni Tradisi dan Teknologi</p>
             <h1 class="text-white">Sarana Upacara Hindu yang<br> Mudah & Praktis</h1>

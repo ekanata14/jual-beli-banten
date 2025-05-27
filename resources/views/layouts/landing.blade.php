@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title }}</title>
-    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/css/reset-css.css">
-    <link rel="stylesheet" href="assets/fonts/reckless_neue/stylesheet.css">
-    <link rel="stylesheet" href="assets/fonts/neue_montreal/stylesheet.css">
+    <link rel="icon" type="image/x-icon" href="../assets/icons/favicon.ico">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/reset-css.css">
+    <link rel="stylesheet" href="../assets/fonts/reckless_neue/stylesheet.css">
+    <link rel="stylesheet" href="../assets/fonts/neue_montreal/stylesheet.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,20 +17,20 @@
 </head>
 <body>
     <header class="w-full">
-        <nav class="flex justify-between items-center fixed">
+        <nav class="nav flex justify-between items-center fixed">
                 <div class="logo">
-                    <img src="assets/icons/bhakti_logo.svg" alt="">
+                    <img src="../assets/icons/bhakti_logo.svg" alt="">
                 </div>
                 <div>
                     <ul class="nav-list gap-[53px]">
                         <li class="nav-item {{ request()->is('/') ? 'active' : '' }}" ><a href="{{ route('home') }}"><p>Beranda</p></a></li>
                         <li class="nav-item {{ request()->is('about') ? 'active' : '' }}"><a href="{{ route('about') }}"><p>Tentang Kami</p></a></li>
-                        <li class="nav-item {{ request()->is('product') ? 'active' : '' }}"><a href="{{ route('product') }}"><p>Produk</p></a></li>
+                        <li class="nav-item {{ request()->is('product && product/product_detail') ? 'active' : '' }}"><a href="{{ route('product') }}"><p>Produk</p></a></li>
                     </ul>
                 </div>
                 <div class="nav-icon flex gap-2">
-                    <a href=""><img src="assets/icons/cart_icon.svg" alt=""></a>
-                    <a href=""><img src="assets/icons/profile_icon.svg" alt=""></a>
+                    <a href=""><img src="../assets/icons/cart_icon.svg" alt=""></a>
+                    <a href=""><img src="../assets/icons/profile_icon.svg" alt=""></a>
                 </div>
             </nav>
     </header>
@@ -49,7 +49,7 @@
                 <p>Kami siap membantu Anda mendapatkan banten dan sarana upacara terbaik dengan mudah.</p>
                 <a href="#" class="btn btn-primary flex items-center gap-1 mt-9">
                     <p class="py-3 px-12 bg-[#36302c] rounded-md text-white text-center">Lihat Semua Produk</p>
-                    <img src="assets/icons/arrow_right_white.svg" alt="" class="h-11 py-4 px-4 bg-[#36302c] rounded-md">
+                    <img src="../assets/icons/arrow_right_white.svg" alt="" class="h-11 py-4 px-4 bg-[#36302c] rounded-md">
                 </a>
             </div>
         </div>
@@ -60,7 +60,7 @@
             <div class="footer_contentTop flex justify-between items-start w-[60vw]">
 
                 <div class="footer_logo">
-                    <img src="assets/icons/bhakti_logo_footer.svg" alt="" srcset="">
+                    <img src="../assets/icons/bhakti_logo_footer.svg" alt="" srcset="">
                 </div>
                 <div class="footer_menu flex gap-[61px]">
                     <ul class="footer_menu_left flex flex-col items-start justify-between">
@@ -95,12 +95,12 @@
 
             <div class="footer_contentBottom flex flex-col w-full gap-5">
                 <div class="footer_contentBottom_1 flex justify-between items-end">
-                    <img src="assets/icons/scroll_top.svg" alt="Logo Bhakti" srcset="">
+                    <img src="../assets/icons/scroll_top.svg" alt="Logo Bhakti" srcset="">
                     <p class="text-xs">©2025 — Copyright — Anak Agung Gede Agung Aditya Widnyana — 210030008 — Sistem Informasi</p>
                 </div>
                 <div class="footer_contentBottom_2 flex justify-between items-center h-[150px] px-16 py-3 rounded-2xl bg-(--dark-brown) w-full">
                     <h4 class="w-50 ">Bergabung Menjadi Supplier</h4>
-                    <img src="assets/icons/righttop_arrow.svg" alt="" srcset="">
+                    <img src="../assets/icons/righttop_arrow.svg" alt="" srcset="">
                 </div>
             </div>
         </div>

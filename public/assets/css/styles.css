@@ -65,7 +65,7 @@ p{
     /* color: var(--body-fc); */
 }
 
-nav{
+nav.nav{
     width: 95vw;
     padding: 20px 24px;
     margin: 30px 40px 0px 40px;
@@ -145,7 +145,7 @@ footer{
     top: 40%;
 }
 
-.home_hero{
+.hero{
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 62.44%, rgba(0, 0, 0, 0.50) 100%), url("../images/Hero_bg.jpg");
     background-position: center;
     background-repeat: no-repeat;
@@ -177,4 +177,21 @@ footer{
 
 .carousel {
     transition: transform 0.5s ease;
+}
+
+.about_image{
+    border-radius: 6px 6px 0px 0px;
+    background: url("../images/about_img2.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.about_service_card_item{
+    border: 1px solid #DCDCDC;
+}
+
+.product_filter{
+    border-top: 1px solid rgba(0, 0, 0, 0.10);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
 }

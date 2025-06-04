@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('tabel_penjual', function (Blueprint $table) {
             $table->bigIncrements('id_penjual');
-            $table->unsignedBigInteger('id_admin');
-            $table->foreign('id_admin')->references('id_admin')->on('tabel_admin')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('nama_penjual', 50);
             $table->text('alamat_penjual');
             $table->string('no_telp');

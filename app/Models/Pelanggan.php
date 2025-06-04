@@ -16,7 +16,5 @@ class Pelanggan extends Authenticatable
         'nama_pelanggan',
         'alamat_pelanggan',
         'no_telp',
-        'email',
-        'password',
     ];
 }

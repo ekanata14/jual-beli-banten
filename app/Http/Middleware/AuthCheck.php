@@ -16,7 +16,7 @@ class AuthCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::guard('admin')->user() && !Auth::guard('pelanggan')->user()) {
+        if (!Auth::user()) {
             return redirect()->route("login");
         }
         return $next($request);

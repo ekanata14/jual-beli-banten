@@ -24,33 +24,39 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Admin::create([
-            "nama" => "Admin",
+        User::create([
+            "name" => "Admin",
             "email" => "admin@admin.com",
             "password" => bcrypt("admin"),
             "role" => "admin"
         ]);
 
-        $penjual = Admin::create([
-            "nama" => "Penjual 1",
+        $penjual = User::create([
+            "name" => "Penjual 1",
             "email" => "penjual_1@penjual.com",
             "password" => bcrypt("penjual"),
             "role" => "penjual"
         ]);
 
         Penjual::create([
-            "id_admin" => $penjual->id_admin,
+            "id_user" => $penjual->id,
             "nama_penjual" => "Penjual 1",
             "alamat_penjual" => "Jl. Penjual 1",
             "no_telp" => "081234567890"
         ]);
 
+        $pelanggan = User::create([
+            "name" => "Pelanggan 1",
+            "email" => "pelanggan_1@pelanggan.com",
+            "password" => bcrypt("penjual"),
+            "role" => "pelanggan"
+        ]);
+
         Pelanggan::create([
+            "id_user" => $pelanggan->id,
             "nama_pelanggan" => "Pelanggan 1",
             "alamat_pelanggan" => "Jl. Pelanggan 1",
             "no_telp" => "081234567890",
-            "email" => "pelanggan_1@pelanggan.com",
-            "password" => bcrypt("pelanggan")
         ]);
     }
 }

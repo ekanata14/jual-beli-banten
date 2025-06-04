@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Admin;
-use App\Models\Pelanggan;
+
+// Users
+use App\Models\User;
 
 class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login'); // Buat file ini di resources/views/auth/login.blade.php
+        $viewData = [
+            "title" => "Login",
+        ];
+        return view('auth.login', $viewData); // Buat file ini di resources/views/auth/login.blade.php
     }
 
     public function login(Request $request)
@@ -24,19 +28,19 @@ class AuthController extends Controller
             ]);
 
             $credentials = $request->only('email', 'password');
+            // Cek login sebagai User (Admin atau Pelanggan)
+            $user = User::where('email', $credentials['email'])->first();
+            if ($user && Hash::check($credentials['password'], $user->password)) {
+                Auth::login($user);
 
-            // Cek login sebagai Admin
-            $admin = Admin::where('email', $credentials['email'])->first();
-            if ($admin && Hash::check($credentials['password'], $admin->password)) {
-                Auth::guard('admin')->login($admin);
-                return redirect()->route('admin.dashboard')->with('success', 'Login sebagai Admin berhasil');
-            }
-
-            // Cek login sebagai Pelanggan
-            $pelanggan = Pelanggan::where('email', $credentials['email'])->first();
-            if ($pelanggan && Hash::check($credentials['password'], $pelanggan->password)) {
-                Auth::guard('pelanggan')->login($pelanggan);
-                return redirect()->route('penjual.dashboard')->with('success', 'Login sebagai Pelanggan berhasil');
+                // Misal ada kolom 'role' untuk membedakan admin/pelanggan
+                if ($user->role === 'admin') {
+                    return redirect()->route('admin.dashboard')->with('success', 'Login sebagai Admin berhasil');
+                } elseif ($user->role === 'penjual') {
+                    return redirect()->route('penjual.dashboard')->with('success', 'Login sebagai Penjual berhasil');
+                } else {
+                    return redirect()->route('penjual.dashboard')->with('success', 'Login sebagai Pelanggan berhasil');
+                }
             }
 
             return back()->withErrors(['email' => 'Email atau password salah']);

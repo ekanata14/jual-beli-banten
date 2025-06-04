@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('tabel_pelanggan', function (Blueprint $table) {
             $table->bigIncrements('id_pelanggan');
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('nama_pelanggan', 50);
             $table->text('alamat_pelanggan');
             $table->string('no_telp');
-            $table->string('email', 50);
-            $table->string('password');
             $table->timestamps();
         });
     }

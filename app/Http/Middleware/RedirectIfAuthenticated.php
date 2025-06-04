@@ -16,7 +16,7 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::guard('admin')->user() && Auth::guard('pelanggan')->user()) {
+        if (Auth::user()) {
             return back()->with("error", "Anda sudah login");
         }
 

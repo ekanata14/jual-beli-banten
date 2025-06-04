@@ -1,4 +1,5 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +13,7 @@
     <link rel="stylesheet" href="../assets/css/reset-css.css">
     <link rel="stylesheet" href="../assets/fonts/reckless_neue/stylesheet.css">
     <link rel="stylesheet" href="../assets/fonts/neue_montreal/stylesheet.css">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> --}}
     <!-- Scripts -->
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,16 +29,20 @@
 
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-        @include('layouts.navigation')
+        @if (Auth::check())
+            @include('layouts.navigation')
+        @endif
 
-        <!-- Page Heading -->
-        <header class="bg-white dark:bg-gray-800 shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    {{ $title }}
-                </h2>
-            </div>
-        </header>
+        @if (Auth::check())
+            <!-- Page Heading -->
+            <header class="bg-white dark:bg-gray-800 shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                        {{ $title }}
+                    </h2>
+                </div>
+            </header>
+        @endif
 
         <!-- Page Content -->
         <main>
@@ -74,4 +79,5 @@
         </script>
     @endif
 </body>
+
 </html>

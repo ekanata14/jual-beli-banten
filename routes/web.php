@@ -36,10 +36,6 @@ Route::get('/checkout', [LandingPageController::class, 'checkout'])->name('check
 Route::get('/transaction_success', [LandingPageController::class, 'transaction_success'])->name('transaction_success');
 Route::get('/transaction_failed', [LandingPageController::class, 'transaction_failed'])->name('transaction_failed');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 
 // Authentication Routes
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -125,4 +121,4 @@ Route::middleware('authCheck')->group(function () {
     Route::get('/pelanggan-dashboard', [PelangganDashboardController::class, 'index'])->name('pelanggan.dashboard');
 });
 
-// require __DIR__.'/auth.php';
+require __DIR__.'/auth.php';

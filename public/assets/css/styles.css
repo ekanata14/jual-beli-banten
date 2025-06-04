@@ -1,0 +1,235 @@
+@import "tailwindcss";
+@import "./node_modules/preline/variants.css";
+:root{
+    --big-fz : 52px;
+    --med-fz : 32px;
+    --small-fz : 16px;
+
+    --body-fc : #7F877F;
+    --black : #191C19;
+    --bone-white : #FAF5ED;
+    --brown : #534538;
+    --dark-brown : #36302c;
+    --orange : #FF9D00;
+    --grey : #ADB3AB;
+}
+.mb-4{
+    margin-bottom: 1rem;
+}
+body{
+    background-color: var(--bone-white);
+    font-family: 'Neue Haas Grotesk Display Pro';
+    src: url('NeueHaasDisplay-Roman.eot');
+    font-weight: 500;
+    font-style: normal;
+    font-size: 16px;
+    color: var(--body-fc);
+    line-height: 130%;
+    overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+h1{
+    font-family: 'Reckless Neue';
+    src: url('RecklessNeue-Book.ttf');
+    font-weight: 300;
+    font-style: normal;
+    font-size: 52px;
+    letter-spacing: -2px;
+    line-height: 110%;
+}
+
+h2{
+    font-family: 'Reckless Neue';
+    src: url('RecklessNeue-Regular.eot');
+    font-weight: 300;
+    font-style: normal;
+    font-size: 32px;
+}
+
+h3{
+    font-family: 'Reckless Neue';
+    src: url('RecklessNeue-Regular.eot');
+    font-weight: 300;
+    font-style: normal;
+    font-size: 28px;
+}
+
+h4{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+p{
+    letter-spacing: -2%;
+    /* color: var(--body-fc); */
+}
+
+nav.nav{
+    width: 95vw;
+    padding: 20px 24px;
+    margin: 30px 40px 0px 40px;
+    border-radius: 66px;
+    background: white;
+    z-index: 100;
+}
+
+.nav-item p{
+    color: var(--grey);
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-item p:hover{
+    color: var(--black);
+    
+}
+
+.nav-item.active p{
+    color: var(--black);
+}
+
+.nav-item.active{
+    position: relative;
+    padding-left: 10px;
+}
+
+.nav-item.active::before{
+    content: '';
+    background-color: var(--orange);
+    width: 5px;
+    height: 5px;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 40%;
+}
+
+
+
+ul{
+    list-style: none;
+    margin: 0;
+    display: flex;
+}
+
+footer{
+    background-color: var(--brown);
+    color: var(--bone-white);
+    height: 724px;
+    padding: 64px 40px 24px 40px;
+    gap: 10px;
+    /* position: absolute;
+    bottom: 0; */
+}
+
+.container {
+    margin: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sub-heading{
+    padding-left: 10px;
+    position: relative;
+}
+
+.sub-heading::before{
+    content: '';
+    background-color: var(--orange);
+    width: 5px;
+    height: 5px;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 40%;
+}
+
+.hero{
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 62.44%, rgba(0, 0, 0, 0.50) 100%), url("../images/Hero_bg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.product_card_header{
+    height: 350px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.product_card_header img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.finalcta{
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, #534538 100%), url("../images/final_cta_bg.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.footer_menu_list{
+    color: var(--grey);
+}
+
+.carousel {
+    transition: transform 0.5s ease;
+}
+
+.about_image{
+    border-radius: 6px 6px 0px 0px;
+    background: url("../images/about_img2.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.about_service_card_item{
+    border: 1px solid #DCDCDC;
+}
+
+.product_filter{
+    border-top: 1px solid rgba(0, 0, 0, 0.10);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.product_container{
+    border-bottom: 1px solid #e7e2e2;
+}
+
+.section_one{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.section_two{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.section_three{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.checkout_container{
+    background-color: white;
+    padding: 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.checkout_form{
+    background-color: white;
+    padding: 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-top: -5px;
+}
+
+.modal-btn{
+    border: 1px solid #D9D9D9;
+}

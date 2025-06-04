@@ -10,7 +10,14 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
-{
+{   
+    public function index(){
+        $viewData = [
+            'title' => 'Profile | Bhakti E Commerce',
+            'activePage' => '/profile'
+        ];
+        return view('profile.index',$viewData);
+    }
     /**
      * Display the user's profile form.
      */

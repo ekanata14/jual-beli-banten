@@ -2,7 +2,7 @@
     href="{{ $href ?? '#' }}" 
     {{ $attributes->merge(['class' => 'btn btn-primary flex items-center gap-1 mt-9']) }}>
     
-    <p class="py-3 px-12 bg-[#36302c] rounded-md text-white text-center">
+    <p class="py-3 px-12 bg-[#36302c] rounded-md text-white text-center w-full">
         {{ $slot }}
     </p>
 

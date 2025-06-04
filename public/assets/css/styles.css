@@ -13,7 +13,9 @@
     --orange : #FF9D00;
     --grey : #ADB3AB;
 }
-
+.mb-4{
+    margin-bottom: 1rem;
+}
 body{
     background-color: var(--bone-white);
     font-family: 'Neue Haas Grotesk Display Pro';
@@ -23,6 +25,7 @@ body{
     font-size: 16px;
     color: var(--body-fc);
     line-height: 130%;
+    overflow-x: hidden;
 }
 
 body::-webkit-scrollbar {
@@ -57,7 +60,7 @@ h3{
 
 h4{
     font-size: 20px;
-    font-weight: 300;
+    font-weight: 500;
 }
 
 p{
@@ -194,4 +197,35 @@ footer{
 .product_filter{
     border-top: 1px solid rgba(0, 0, 0, 0.10);
     border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.product_container{
+    border-bottom: 1px solid #e7e2e2;
+}
+
+.section_one{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.section_two{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.section_three{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.checkout_container{
+    background-color: white;
+    padding: 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.checkout_form{
+    background-color: white;
+    padding: 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-top: -5px;
 }

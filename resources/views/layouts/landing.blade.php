@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="../assets/css/reset-css.css">
     <link rel="stylesheet" href="../assets/fonts/reckless_neue/stylesheet.css">
     <link rel="stylesheet" href="../assets/fonts/neue_montreal/stylesheet.css">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Scripts -->
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet"> -->
@@ -25,12 +27,12 @@
                     <ul class="nav-list gap-[53px]">
                         <li class="nav-item {{ request()->is('/') ? 'active' : '' }}" ><a href="{{ route('home') }}"><p>Beranda</p></a></li>
                         <li class="nav-item {{ request()->is('about') ? 'active' : '' }}"><a href="{{ route('about') }}"><p>Tentang Kami</p></a></li>
-                        <li class="nav-item {{ request()->is('product && product/product_detail') ? 'active' : '' }}"><a href="{{ route('product') }}"><p>Produk</p></a></li>
+                        <li class="nav-item {{ request()->is('product') && ('product/product_detail') ? 'active' : '' }}"><a href="{{ route('product') }}"><p>Produk</p></a></li>
                     </ul>
                 </div>
                 <div class="nav-icon flex gap-2">
-                    <a href=""><img src="../assets/icons/cart_icon.svg" alt=""></a>
-                    <a href=""><img src="../assets/icons/profile_icon.svg" alt=""></a>
+                    <a href="{{ route('cart') }}"><img src="../assets/icons/cart_icon.svg" alt=""></a>
+                    <a href="/"><img src="../assets/icons/profile_icon.svg" alt=""></a>
                 </div>
             </nav>
     </header>
@@ -43,7 +45,7 @@
         <div class="finalcta_content flex py-24 items-center justify-between">
             <div class="finalcta_contentleft w-1/2">
                 <p>Join Our Growing Wellness Community</p>
-                <h1>Mudahnya Memenuhi Kebutuhan Upacara Anda</h1>
+                <h1 class="text-white">Mudahnya Memenuhi Kebutuhan Upacara Anda</h1>
             </div>
             <div class="finalcta_contentright w-1/4">
                 <p>Kami siap membantu Anda mendapatkan banten dan sarana upacara terbaik dengan mudah.</p>
@@ -105,7 +107,7 @@
             </div>
         </div>
     </footer>
-    
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script>
         const carousel = document.querySelector('.carousel');
         const testimonials = document.querySelectorAll('.testimonial-card');

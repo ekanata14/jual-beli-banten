@@ -34,4 +34,25 @@ class LandingPageController extends Controller
         ];
         return view('landing-page.productDetail',$viewData);
     }
+    public function cart(){
+        $viewData = [
+            'title' => 'Keranjang Belanja | Bhakti E Commerce',
+            'activePage' => 'cart'
+        ];
+        return view('landing-page.cart',$viewData);
+    }
+    public function detail_transaction(){
+        $viewData = [
+            'title' => 'Detail Transaksi | Bhakti E Commerce',
+            'activePage' => 'detail'
+        ];
+        return view('landing-page.detail-transaction',$viewData);
+    }
+    public function checkout(){
+        $viewData = [
+            'title' => 'Checkout Product | Bhakti E Commerce',
+            'activePage' => 'checkout'
+        ];
+        return view('landing-page.checkout',$viewData);
+    }
 }

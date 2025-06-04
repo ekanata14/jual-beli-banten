@@ -34,6 +34,9 @@
                         <x-nav-link :href="route('admin.metode-pembayaran.index')" :active="request()->routeIs('admin.metode-pembayaran*')">
                             {{ __('Metode Pembayaran') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.transaksi.index')" :active="request()->routeIs('admin.transaksi*')">
+                            {{ __('Transaksi') }}
+                        </x-nav-link>
                     </div>
                 @elseif (Auth::guard('admin')->user()->role == 'penjual')
                     <!-- Navigation Links -->

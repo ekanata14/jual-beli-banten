@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\PelangganController as AdminPelangganController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\KurirController as AdminKurirController;
 use App\Http\Controllers\Admin\MetodePembayaranController as AdminMetodePembayaranController;
+use App\Http\Controllers\Admin\TransaksiController as AdminTransaksiController;
 
 // Pelanggan Controller
 use App\Http\Controllers\Pelanggan\DashboardController as PelangganDashboardController;
@@ -91,6 +92,9 @@ Route::middleware('authCheck')->group(function () {
     Route::post('/admin-dashboard/metode-pembayaran/store', [AdminMetodePembayaranController::class, 'store'])->name('admin.metode-pembayaran.store');
     Route::put('/admin-dashboard/metode-pembayaran/update', [AdminMetodePembayaranController::class, 'update'])->name('admin.metode-pembayaran.update');
     Route::delete('/admin-dashboard/metode-pembayaran/delete', [AdminMetodePembayaranController::class, 'destroy'])->name('admin.metode-pembayaran.destroy');
+
+    // Admin Transaksi Controller
+    Route::get('/admin-dashboard/transaksi', [AdminTransaksiController::class, 'index'])->name('admin.transaksi.index');
 
     // Penjual Dashboard Controller
     Route::get('/penjual-dashboard', [PenjualDashboardController::class, 'index'])->name('penjual.dashboard');

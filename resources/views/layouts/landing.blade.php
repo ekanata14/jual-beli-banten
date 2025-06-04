@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,26 +18,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet"> -->
     <!-- <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}"> -->
 </head>
+
 <body>
     <header class="w-full">
         <nav class="nav flex justify-between items-center fixed">
-                <div class="logo">
-                    <img src="../assets/icons/bhakti_logo.svg" alt="">
-                </div>
-                <div>
-                    <ul class="nav-list gap-[53px]">
-                        <li class="nav-item {{ request()->is('/') ? 'active' : '' }}" ><a href="{{ route('home') }}"><p>Beranda</p></a></li>
-                        <li class="nav-item {{ request()->is('about') ? 'active' : '' }}"><a href="{{ route('about') }}"><p>Tentang Kami</p></a></li>
-                        <li class="nav-item {{ request()->is('product') && ('product/product_detail') ? 'active' : '' }}"><a href="{{ route('product') }}"><p>Produk</p></a></li>
-                    </ul>
-                </div>
-                <div class="nav-icon flex gap-2">
+            <div class="logo">
+                <img src="../assets/icons/bhakti_logo.svg" alt="">
+            </div>
+            <div>
+                <ul class="nav-list gap-[53px]">
+                    <li class="nav-item {{ request()->is('/') ? 'active' : '' }}"><a href="{{ route('home') }}">
+                            <p>Beranda</p>
+                        </a></li>
+                    <li class="nav-item {{ request()->is('about') ? 'active' : '' }}"><a href="{{ route('about') }}">
+                            <p>Tentang Kami</p>
+                        </a></li>
+                    <li class="nav-item {{ request()->is('product') && 'product/product_detail' ? 'active' : '' }}"><a
+                            href="{{ route('product') }}">
+                            <p>Produk</p>
+                        </a></li>
+                </ul>
+            </div>
+            <div class="nav-icon flex gap-2">
+                @if (auth()->check())
                     <a href="{{ route('cart') }}"><img src="../assets/icons/cart_icon.svg" alt=""></a>
                     <a href="/"><img src="../assets/icons/profile_icon.svg" alt=""></a>
-                </div>
-            </nav>
+                @else
+                    <a href="{{ route('login') }}"><img src="../assets/icons/login_icon.svg" alt="" class="btn-gray">Masuk
+                    </a>
+                @endif
+            </div>
+        </nav>
     </header>
-    
+
     <main>
         @yield('content')
     </main>
@@ -51,7 +65,8 @@
                 <p>Kami siap membantu Anda mendapatkan banten dan sarana upacara terbaik dengan mudah.</p>
                 <a href="#" class="btn btn-primary flex items-center gap-1 mt-9">
                     <p class="py-3 px-12 bg-[#36302c] rounded-md text-white text-center">Lihat Semua Produk</p>
-                    <img src="../assets/icons/arrow_right_white.svg" alt="" class="h-11 py-4 px-4 bg-[#36302c] rounded-md">
+                    <img src="../assets/icons/arrow_right_white.svg" alt=""
+                        class="h-11 py-4 px-4 bg-[#36302c] rounded-md">
                 </a>
             </div>
         </div>
@@ -66,7 +81,9 @@
                 </div>
                 <div class="footer_menu flex gap-[61px]">
                     <ul class="footer_menu_left flex flex-col items-start justify-between">
-                        <li><p class="text-white text-sm mb-4">Menu</p></li>
+                        <li>
+                            <p class="text-white text-sm mb-4">Menu</p>
+                        </li>
                         <div class="footer_menu_list pr-12 gap-[15px] flex flex-col">
                             <li class=""><a href="#">Beranda</a></li>
                             <li class=""><a href="#">Tentang Kami</a></li>
@@ -75,7 +92,7 @@
                             <li class=""><a href="#">Profil</a></li>
                         </div>
                     </ul>
-                    
+
                     <div class="footer_menu_right flex flex-col items-center justify-between gap-[48px]">
                         <div class="footer_contactInfo">
                             <p class="text-white text-sm mb-4">Contact Us</p>
@@ -83,7 +100,9 @@
                         </div>
                         <div class="footer_socialInfo">
                             <ul class="footer_menu_right flex flex-col items-start">
-                                <li><p class="text-white text-sm mb-4">Sosial Media</p></li>
+                                <li>
+                                    <p class="text-white text-sm mb-4">Sosial Media</p>
+                                </li>
                                 <div class="footer_menu_list pr-12 gap-[25px] flex">
                                     <li class=""><a href="#">Twitter</a></li>
                                     <li class=""><a href="#">Instagram</a></li>
@@ -98,9 +117,11 @@
             <div class="footer_contentBottom flex flex-col w-full gap-5">
                 <div class="footer_contentBottom_1 flex justify-between items-end">
                     <img src="../assets/icons/scroll_top.svg" alt="Logo Bhakti" srcset="">
-                    <p class="text-xs">©2025 — Copyright — Anak Agung Gede Agung Aditya Widnyana — 210030008 — Sistem Informasi</p>
+                    <p class="text-xs">©2025 — Copyright — Anak Agung Gede Agung Aditya Widnyana — 210030008 — Sistem
+                        Informasi</p>
                 </div>
-                <div class="footer_contentBottom_2 flex justify-between items-center h-[150px] px-16 py-3 rounded-2xl bg-(--dark-brown) w-full">
+                <div
+                    class="footer_contentBottom_2 flex justify-between items-center h-[150px] px-16 py-3 rounded-2xl bg-(--dark-brown) w-full">
                     <h4 class="w-50 ">Bergabung Menjadi Supplier</h4>
                     <img src="../assets/icons/righttop_arrow.svg" alt="" srcset="">
                 </div>
@@ -138,4 +159,5 @@
         updateDots(); // Initialize dots
     </script>
 </body>
+
 </html>

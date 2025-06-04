@@ -6,7 +6,7 @@
         <h3>Transaksi Berhasil !</h3>
         <p class="mt-4">Transaksi Telah Berhasil. Pengiriman sedang diproses, klik tombol lihat transaksi untuk lebih lanjut</p>
     </div>
-    <div class="transaction_detail_container w-full bg-white py-14 px-8 mt-20">
+    <div class="transaction_detail_container w-full bg-white py-14 px-8 mt-20 rounded-md">
         <div class="product_container flex justify-between pb-9">
             <div class="flex gap-5">
                 <img src="{{ asset('assets/images/product_img.png') }}" alt="Empty Star" class="w-50">

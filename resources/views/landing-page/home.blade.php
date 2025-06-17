@@ -16,7 +16,8 @@
                 <p class="sub-heading">Tentang Kami</p>
                 <h2 class="text-black w-[90%] text-center">Menghadirkan Sarana Upacara dengan Ketulusan</h2>
             </div>
-            <p class="w-1/3 text-center mt-9">Dengan pengalaman dalam menyediakan banten dan sarana upacara, kami memastikan setiap produk dibuat dengan penuh          ketulusan dan mengikuti tradisi yang    diwariskan turun-temurun.</p>
+            <p class="w-1/3 text-center mt-9">Dengan pengalaman dalam menyediakan banten dan sarana upacara, kami memastikan
+                setiap produk dibuat dengan penuh ketulusan dan mengikuti tradisi yang diwariskan turun-temurun.</p>
             <!-- button -->
             <x-button href="/produk" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-24">
                 Baca Lebih Lengkap
@@ -39,10 +40,16 @@
                 </x-button>
             </div>
             <div class="home_product_wrapper flex items-center self-stretch gap-6">
-                @include('components.product-card')
-                @include('components.product-card')
-                @include('components.product-card')
-                @include('components.product-card')
+                @foreach ($products as $product)
+                    @include('components.product-card', [
+                        'name' => $product->nama_produk ?? 'Nama Produk',
+                        'price' => 'Rp. ' . number_format($product->harga ?? 2000, 0, ',', '.') . '/PCS',
+                        'image' => $product->foto ?? 'assets/images/product_img.png',
+                        'rating' => $product->rating ?? 5,
+                        'reviews' => $product->jumlah_review ?? 'Jumlah Review',
+                        'link' => route('productDetail', ['id' => $product->id ?? 1]),
+                    ])
+                @endforeach
             </div>
         </div>
     </section>
@@ -51,14 +58,12 @@
         <div class="home_testi_content flex flex-col items-center gap-44">
             <div class="home_testi_content_header flex flex-col items-center justify-center w-1/2">
                 <p class="sub-heading">Pendapat pelanggan tentang produk kami</p>
-                <h2 class="text-center text-black mt-2">Setiap banten diproses dengan penuh ketulusan agar sesuai dengan nilai-nilai spiritual yang dijunjung tinggi.</h2>
+                <h2 class="text-center text-black mt-2">Setiap banten diproses dengan penuh ketulusan agar sesuai dengan
+                    nilai-nilai spiritual yang dijunjung tinggi.</h2>
             </div>
             <div class="home_testi_content_footer pl-1">
                 @include('components.testi-card')
             </div>
         </div>
     </section>
-    
-
-    
 @endsection

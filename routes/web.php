@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LandingPageController::class, 'index'])->name('home');
 Route::get('/about', [LandingPageController::class, 'about'])->name('about');
 Route::get('/product', [LandingPageController::class, 'product'])->name('product');
-Route::get('/product/product_detail', [LandingPageController::class, 'productDetail'])->name('productDetail');
+Route::get('/product/detail', [LandingPageController::class, 'productDetail'])->name('productDetail');
 Route::get('/cart', [LandingPageController::class, 'cart'])->name('cart');
 Route::get('/detail/detail_transaction', [LandingPageController::class, 'detail_transaction'])->name('detail_transaction');
 Route::get('/checkout', [LandingPageController::class, 'checkout'])->name('checkout');

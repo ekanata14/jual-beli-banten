@@ -35,7 +35,7 @@
                             {{ $loop->iteration }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ $item->nama }}
+                            {{ $item->name }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->email }}
@@ -47,7 +47,7 @@
                             {{ $item->penjual->no_telp }}
                         </td>
                         <td class="px-6 py-4 flex gap-2">
-                            <a href="{{ route('admin.penjual.edit', $item->id_admin) }}" class="btn-yellow">Edit</a>
+                            <a href="{{ route('admin.penjual.edit', $item->id) }}" class="btn-yellow">Edit</a>
                             <form action="{{ route('admin.penjual.destroy') }}" method="POST">
                                 @csrf
                                 @method('DELETE')

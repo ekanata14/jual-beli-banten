@@ -40,7 +40,6 @@ class DatabaseSeeder extends Seeder
 
         Penjual::create([
             "id_user" => $penjual->id,
-            "nama_penjual" => "Penjual 1",
             "alamat_penjual" => "Jl. Penjual 1",
             "no_telp" => "081234567890"
         ]);
@@ -48,13 +47,12 @@ class DatabaseSeeder extends Seeder
         $pelanggan = User::create([
             "name" => "Pelanggan 1",
             "email" => "pelanggan_1@pelanggan.com",
-            "password" => bcrypt("penjual"),
+            "password" => bcrypt("pelanggan"),
             "role" => "pelanggan"
         ]);
 
         Pelanggan::create([
             "id_user" => $pelanggan->id,
-            "nama_pelanggan" => "Pelanggan 1",
             "alamat_pelanggan" => "Jl. Pelanggan 1",
             "no_telp" => "081234567890",
         ]);

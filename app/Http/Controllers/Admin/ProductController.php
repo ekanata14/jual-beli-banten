@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Produk;
 use App\Models\Admin;
 use App\Models\Penjual;
+use App\Models\User;
 
 class ProductController extends Controller
 {
@@ -21,7 +22,7 @@ class ProductController extends Controller
     {
         $viewData = [
             "title" => "Data Produk",
-            "datas" => Admin::where('role', 'penjual')->paginate(10),
+            "datas" => User::where('role', 'penjual')->paginate(10),
         ];
 
         return view("admin.produk.index", $viewData);
@@ -32,10 +33,11 @@ class ProductController extends Controller
      */
     public function create()
     {
+        $penjual = User::where('role', 'penjual')->first();
         $viewData = [
-            "title" => "Tambah Produk",
-            "penjuals" => Admin::where('role', 'penjual')->get(),
-            'idPenjual' => request()->query('id'),
+            "title" => "Tambah Produk | " . $penjual->name,
+            'id' => request()->query('id'),
+            "penjuals" => User::where('role', 'penjual')->get(),
         ];
 
 
@@ -48,7 +50,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'id_admin' => 'required|integer',
+            'id_user' => 'required|integer',
             'nama_produk' => 'required|string|max:255',
             'deskripsi_produk' => 'required|string',
             'harga' => 'required|numeric|min:0',
@@ -60,16 +62,16 @@ class ProductController extends Controller
 
         DB::beginTransaction();
 
-        $penjual = Penjual::where('id_admin', $request->id_admin)->first();
+        $penjual = User::where('id', $validatedData['id_user'])->first();
 
-        $validatedData['id_penjual'] = $penjual->id_penjual;
+        $validatedData['id_user'] = $penjual->id;
 
 
         try {
             if ($request->hasFile('foto')) {
                 $timestamp = now()->format('YmdHis');
                 $extension = $request->file('foto')->getClientOriginalExtension();
-                $filename = $request->id_admin . '_' . str_replace(' ', '_', $validatedData['nama_produk']) . '_' . $timestamp . '.' . $extension;
+                $filename = $request->id_user . '_' . str_replace(' ', '_', $validatedData['nama_produk']) . '_' . $timestamp . '.' . $extension;
                 $fotoPath = $request->file('foto')->storeAs('produk', $filename, 'public');
                 $validatedData['foto'] = $fotoPath;
             }
@@ -77,7 +79,7 @@ class ProductController extends Controller
             Produk::create($validatedData);
 
             DB::commit();
-            return redirect()->route('admin.produk.detail', $validatedData['id_admin'])->with('success', 'Produk created successfully');
+            return redirect()->route('admin.produk.detail', $validatedData['id_user'])->with('success', 'Produk created successfully');
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->withInput()->with('error', 'Failed to create produk: ' . $e->getMessage());
@@ -89,12 +91,12 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $penjual = Penjual::where('id_admin', $id)->first();
+        $penjual = User::where('id', $id)->first();
 
         $viewData = [
-            "title" => "Data Produk " . $penjual->nama_penjual,
-            "datas" => Produk::where('id_penjual', $penjual->id_penjual)->paginate(10),
-            'idPenjual' => $id,
+            "title" => "Data Produk | " . $penjual->name,
+            'idPenjual' => $penjual->id,
+            "datas" => Produk::where('id_user', $penjual->id)->paginate(10),
         ];
 
         return view('admin.produk.produk-penjual', $viewData);
@@ -107,8 +109,8 @@ class ProductController extends Controller
     {
         $viewData = [
             "title" => "Edit Produk",
-            "data" => Produk::where('id_produk', $id)->first(),
-            "penjuals" => Admin::where('role', 'penjual')->get(),
+            "data" => Produk::where('id', $id)->first(),
+            "penjuals" => User::where('role', 'penjual')->get(),
         ];
 
         return view('admin.produk.edit', $viewData);
@@ -120,8 +122,8 @@ class ProductController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'id_produk' => 'required|integer',
-            'id_admin' => 'required|integer',
+            'id' => 'required|integer',
+            'id_user' => 'required|integer',
             'nama_produk' => 'required|string|max:255',
             'deskripsi_produk' => 'required|string',
             'harga' => 'required|numeric|min:0',
@@ -133,13 +135,11 @@ class ProductController extends Controller
 
         DB::beginTransaction();
 
-        $penjual = Penjual::where('id_admin', $validatedData['id_admin'])->first();
-
-        $validatedData['id_penjual'] = $penjual->id_penjual;
+        $penjual = User::where('id', $validatedData['id_user'])->first();
 
         try {
-            $produk = Produk::where('id_produk', $validatedData['id_produk'])->first();
-            $produk->id_penjual = $validatedData['id_penjual'];
+            $produk = Produk::where('id', $validatedData['id'])->first();
+            $produk->id_user = $validatedData['id_user'];
             $produk->nama_produk = $validatedData['nama_produk'];
             $produk->deskripsi_produk = $validatedData['deskripsi_produk'];
             $produk->harga = $validatedData['harga'];
@@ -153,7 +153,7 @@ class ProductController extends Controller
                 }
                 $timestamp = now()->format('YmdHis');
                 $extension = $request->file('foto')->getClientOriginalExtension();
-                $filename = $validatedData['id_produk'] . '_' . str_replace(' ', '_', $validatedData['nama_produk']) . '_' . $timestamp . '.' . $extension;
+                $filename = $validatedData['id'] . '_' . str_replace(' ', '_', $validatedData['nama_produk']) . '_' . $timestamp . '.' . $extension;
                 $fotoPath = $request->file('foto')->storeAs('produk', $filename, 'public');
                 $produk->foto = $fotoPath;
             }
@@ -161,7 +161,7 @@ class ProductController extends Controller
             $produk->save();
 
             DB::commit();
-            return redirect()->route('admin.produk.detail', $validatedData['id_admin'])->with('success', 'Produk updated successfully');
+            return redirect()->route('admin.produk.detail', $validatedData['id_user'])->with('success', 'Produk updated successfully');
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Failed to update produk: ' . $e->getMessage());
@@ -175,7 +175,7 @@ class ProductController extends Controller
     {
         DB::beginTransaction();
         try {
-            $produk = Produk::where('id_produk', $request->id_produk)->first();
+            $produk = Produk::where('id', $request->id)->first();
             if ($produk->foto && Storage::disk('public')->exists($produk->foto)) {
                 Storage::disk('public')->delete($produk->foto);
             }

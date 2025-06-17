@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 // Models
+use App\Models\User;
 use App\Models\Admin;
 use App\Models\Penjual;
 
@@ -19,7 +20,7 @@ class PenjualController extends Controller
     {
         $viewData = [
             "title" => "Data Penjual",
-            "datas" => Admin::where('role', 'penjual')->paginate(10),
+            "datas" => User::where('role', 'penjual')->paginate(10),
         ];
 
         return view("admin.penjual.index", $viewData);
@@ -43,7 +44,7 @@ class PenjualController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:8|confirmed',
             'alamat_penjual' => 'required|string',
@@ -53,16 +54,15 @@ class PenjualController extends Controller
         DB::beginTransaction();
 
         try {
-            $admin = Admin::create([
-                'nama' => $validatedData['nama'],
+            $user = User::create([
+                'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'password' => bcrypt($validatedData['password']),
                 'role' => 'penjual',
             ]);
 
             $penjual = Penjual::create([
-                'id_admin' => $admin->id_admin,
-                'nama_penjual' => $validatedData['nama'],
+                'id_user' => $user->id,
                 'alamat_penjual' => $validatedData['alamat_penjual'],
                 'no_telp' => $validatedData['no_telp'],
             ]);
@@ -90,7 +90,7 @@ class PenjualController extends Controller
     {
         $viewData = [
             "title" => "Edit Penjual",
-            "data" => Admin::where('id_admin', $id)->first(),
+            "data" => User::where('id', $id)->first(),
         ];
 
         return view('admin.penjual.edit', $viewData);
@@ -102,8 +102,8 @@ class PenjualController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'id_admin' => 'required',
-            'nama' => 'required|string|max:255',
+            'id' => 'required|integer',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'password' => 'nullable|string|min:8|confirmed',
             'alamat_penjual' => 'required|string',
@@ -113,16 +113,15 @@ class PenjualController extends Controller
         DB::beginTransaction();
 
         try {
-            $admin = Admin::where('id_admin', $validatedData['id_admin'])->first();
-            $admin->nama = $validatedData['nama'];
-            $admin->email = $validatedData['email'];
+            $user = User::where('id', $validatedData['id'])->first();
+            $user->name = $validatedData['name'];
+            $user->email = $validatedData['email'];
             if (!empty($validatedData['password'])) {
-                $admin->password = bcrypt($validatedData['password']);
+                $user->password = bcrypt($validatedData['password']);
             }
-            $admin->save();
+            $user->save();
 
-            $penjual = Penjual::where('id_admin', $validatedData['id_admin'])->first();
-            $penjual->nama_penjual = $validatedData['nama'];
+            $penjual = Penjual::where('id_user', $validatedData['id'])->first();
             $penjual->alamat_penjual = $validatedData['alamat_penjual'];
             $penjual->no_telp = $validatedData['no_telp'];
             $penjual->save();
@@ -142,7 +141,7 @@ class PenjualController extends Controller
     {
         DB::beginTransaction();
         try {
-            $admin = Admin::where('id_admin', $request->id_admin)->first();
+            $admin = User::where('id', $request->id)->first();
             $admin->delete();
             DB::commit();
             return redirect()->route('admin.penjual.index')->with('success', 'Penjual deleted successfully');

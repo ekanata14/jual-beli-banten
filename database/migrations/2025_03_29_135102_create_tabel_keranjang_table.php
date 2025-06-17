@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('tabel_keranjang', function (Blueprint $table) {
             $table->bigIncrements('id_keranjang');
             $table->unsignedBigInteger('id_produk');
-            $table->foreign('id_produk')->references('id_produk')->on('tabel_produk')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_produk')->references('id')->on('tabel_produk')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('id_pelanggan');
-            $table->foreign('id_pelanggan')->references('id_pelanggan')->on('tabel_pelanggan')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_pelanggan')->references('id')->on('tabel_pelanggan')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('jumlah');
             $table->timestamps();
         });

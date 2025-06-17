@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_transaksi');
             $table->foreign('id_transaksi')->references('id_transaksi')->on('tabel_transaksi')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('id_produk');
-            $table->foreign('id_produk')->references('id_produk')->on('tabel_produk')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_produk')->references('id')->on('tabel_produk')->onUpdate('cascade')->onDelete('cascade');
             $table->text('deskripsi_ulasan');
             $table->integer('rating');
             $table->timestamps();

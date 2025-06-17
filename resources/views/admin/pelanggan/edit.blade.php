@@ -4,12 +4,21 @@
     <form class="bg-white p-8 rounded-xl" method="POST" action="{{ route('admin.pelanggan.update') }}">
         @csrf
         @method('PUT')
-        <input type="hidden" name="id_pelanggan" value="{{ $data->id_pelanggan }}">
+        @if ($errors->any())
+            <div class="mb-4 p-4 rounded bg-red-100 border border-red-400 text-red-700">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        <input type="hidden" name="id" value="{{ $data->id }}">
         <div class="mb-6">
             <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-            <input type="text" id="nama" name="nama_pelanggan"
+            <input type="text" id="name" name="name"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="John Doe" value="{{ old('nama_pelanggan', $data->nama_pelanggan) }}" required />
+                placeholder="John Doe" value="{{ old('name', $data->name) }}" required />
             @error('nama')
                 <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
             @enderror
@@ -24,20 +33,12 @@
             @enderror
         </div>
         <div class="mb-6">
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email address</label>
-            <input type="email" id="email" name="email"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="john.doe@company.com" value="{{ old('email', $data->email) }}" required />
-            @error('email')
-                <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
-        <div class="mb-6">
             <label for="alamat_penjual" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat
-                Penjual</label>
+                Pelanggan</label>
             <input type="text" id="alamat_penjual" name="alamat_pelanggan"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Alamat lengkap" value="{{ old('alamat_pelanggan', $data->alamat_pelanggan) }}" required />
+                placeholder="Alamat lengkap" value="{{ old('alamat_pelanggan', $data->pelanggan->alamat_pelanggan) }}"
+                required />
             @error('alamat_penjual')
                 <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
             @enderror
@@ -47,7 +48,7 @@
             <label for="no_telp" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">No. Telepon</label>
             <input type="number" id="no_telp" name="no_telp"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="081234567890" value="{{ old('no_telp', $data->no_telp) }}" required />
+                placeholder="081234567890" value="{{ old('no_telp', $data->pelanggan->no_telp) }}" required />
             @error('no_telp')
                 <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
             @enderror

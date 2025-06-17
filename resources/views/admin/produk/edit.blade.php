@@ -3,21 +3,29 @@
 @section('content')
     <form class="bg-white p-8 rounded-xl" method="POST" action="{{ route('admin.produk.update') }}"
         enctype="multipart/form-data">
+        @if ($errors->any())
+            <div class="mb-4 p-4 rounded bg-red-100 border border-red-400 text-red-700">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         @csrf
         @method('PUT')
 
-        <input type="hidden" name="id_produk" value="{{ $data->id_produk }}">
+        <input type="hidden" name="id" value="{{ $data->id }}">
 
         <div class="mb-6">
             <label for="penjual" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Penjual</label>
-            <select id="penjual" name="id_admin"
+            <select id="penjual" name="id_user"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required>
                 <option value="" disabled selected>Pilih Penjual</option>
                 @foreach ($penjuals as $penjual)
-                    <option value="{{ $penjual->id_admin }}"
-                        {{ old('penjual') == $penjual->Penjual->id_penjual || ($data->id_penjual && $data->id_penjual == $penjual->Penjual->id_penjual) ? 'selected' : '' }}>
-                        {{ $penjual->nama }}
+                    <option value="{{ $penjual->id }}" {{ old('id_user', $data->id_user) == $penjual->id ? 'selected' : '' }}>
+                        {{ $penjual->name }}
                     </option>
                 @endforeach
             </select>

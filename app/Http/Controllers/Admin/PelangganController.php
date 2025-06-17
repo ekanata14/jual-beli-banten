@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 // Models
 use App\Models\Pelanggan;
+use App\Models\User;
 
 class PelangganController extends Controller
 {
@@ -18,7 +19,7 @@ class PelangganController extends Controller
     {
         $viewData = [
             "title" => "Data Pelanggan",
-            "datas" => Pelanggan::paginate(10),
+            "datas" => User::where('role', 'pelanggan')->paginate(10),
         ];
 
         return view("admin.pelanggan.index", $viewData);
@@ -42,7 +43,7 @@ class PelangganController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nama_pelanggan' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'alamat_pelanggan' => 'required|string',
             'no_telp' => 'required|string|max:15',
@@ -52,9 +53,15 @@ class PelangganController extends Controller
         DB::beginTransaction();
 
         try {
-            Pelanggan::create([
-                'nama_pelanggan' => $validatedData['nama_pelanggan'],
+            $user = User::create([
+                'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
+                'password' => bcrypt($validatedData['password']),
+                'role' => 'pelanggan', // Assuming role is required
+            ]);
+
+            Pelanggan::create([
+                'id_user' => $user->id, // Assuming id_user is not required for Pelanggan
                 'password' => bcrypt($validatedData['password']),
                 'alamat_pelanggan' => $validatedData['alamat_pelanggan'],
                 'no_telp' => $validatedData['no_telp'],
@@ -82,7 +89,7 @@ class PelangganController extends Controller
     {
         $viewData = [
             "title" => "Edit Pelanggan",
-            "data" => Pelanggan::where('id_pelanggan', $id)->first(),
+            "data" => User::where('id', $id)->first(),
         ];
 
         return view('admin.pelanggan.edit', $viewData);
@@ -94,20 +101,32 @@ class PelangganController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'id_pelanggan' => 'required',
-            'nama_pelanggan' => 'required|string|max:255',
+            'id' => 'required|integer|exists:users,id',
+            'name' => 'required|string|max:255',
             'alamat_pelanggan' => 'required|string',
             'email' => 'required|string|email|max:255',
             'password' => 'nullable|string|min:8|confirmed',
+            'no_telp' => 'required|string|max:15',
         ]);
 
         DB::beginTransaction();
 
         try {
-            $pelanggan = Pelanggan::where('id_pelanggan', $validatedData['id_pelanggan'])->first();
-            $pelanggan->nama_pelanggan = $validatedData['nama_pelanggan'];
-            $pelanggan->email = $validatedData['email'];
+            $user = User::where('id', $validatedData['id'])->first();
+            if (!$user) {
+                return redirect()->back()->with('error', 'User not found');
+            }
+            $user->name = $validatedData['name'];
+            $user->email = $validatedData['email'];
+            if (!empty($validatedData['password'])) {
+                $user->password = bcrypt($validatedData['password']);
+            }
+            $user->save();
+
+            // Update Pelanggan details
+            $pelanggan = Pelanggan::where('id_user', $validatedData['id'])->first();
             $pelanggan->alamat_pelanggan = $validatedData['alamat_pelanggan'];
+            $pelanggan->no_telp = $validatedData['no_telp'];
             if (!empty($validatedData['password'])) {
                 $pelanggan->password = bcrypt($validatedData['password']);
             }

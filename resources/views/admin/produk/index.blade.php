@@ -47,7 +47,7 @@
                             {{ $item->penjual->no_telp }}
                         </td>
                         <td class="px-6 py-4 flex gap-2">
-                            <a href="{{ route('admin.produk.detail', $item->id_admin) }}" class="btn-primary">Data Produk</a>
+                            <a href="{{ route('admin.produk.detail', $item->id) }}" class="btn-primary">Data Produk</a>
                         </td>
                     </tr>
                 @endforeach

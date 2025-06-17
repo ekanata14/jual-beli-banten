@@ -3,29 +3,36 @@
 @section('content')
     <form class="bg-white p-8 rounded-xl" method="POST" action="{{ route('admin.produk.store') }}"
         enctype="multipart/form-data">
+        @if ($errors->any())
+            <div class="mb-4 p-4 rounded bg-red-100 border border-red-400 text-red-700">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         @csrf
-        {{-- <input type="hidden" id="id_penjual" name="id_penjual" value="{{ auth()->user()->id }}" /> --}}
-
-        {{-- FOR PENJUAL --}}
-        {{-- {{ auth()->guard('admin')->user()->id_admin }} --}}
-
-        <div class="mb-6">
-            <label for="penjual" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Penjual</label>
-            <select id="penjual" name="id_admin"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required>
-                <option value="" disabled selected>Pilih Penjual</option>
-                @foreach ($penjuals as $penjual)
-                    <option value="{{ $penjual->id_admin }}"
-                        {{ old('penjual') == $penjual->id_admin || (isset($idPenjual) && $idPenjual == $penjual->id_admin) ? 'selected' : '' }}>
-                        {{ $penjual->nama }}
-                    </option>
-                @endforeach
-            </select>
-            @error('penjual')
-                <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
+        @if ($id !== null)
+            <input type="hidden" name="id_user" value="{{ $id }}">
+        @else
+            <div class="mb-6">
+                <label for="penjual" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Penjual</label>
+                <select id="penjual" name="id_user"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required>
+                    <option value="" disabled selected>Pilih Penjual</option>
+                    @foreach ($penjuals as $penjual)
+                        <option value="{{ $penjual->id }}">
+                            {{ $penjual->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('penjual')
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+        @endif
 
         <div class="mb-6">
             <label for="nama_produk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama

@@ -35,19 +35,19 @@
                             {{ $loop->iteration }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ $item->nama_pelanggan }}
+                            {{ $item->name }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->email }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->alamat_pelanggan }}
+                            {{ $item->pelanggan->alamat_pelanggan }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->no_telp }}
+                            {{ $item->pelanggan->no_telp }}
                         </td>
                         <td class="px-6 py-4 flex gap-2">
-                            <a href="{{ route('admin.pelanggan.edit', $item->id_pelanggan) }}" class="btn-yellow">Edit</a>
+                            <a href="{{ route('admin.pelanggan.edit', $item->id) }}" class="btn-yellow">Edit</a>
                             <form action="{{ route('admin.pelanggan.destroy') }}" method="POST">
                                 @csrf
                                 @method('DELETE')

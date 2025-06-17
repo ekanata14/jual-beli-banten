@@ -54,11 +54,11 @@
                             {{ $item->berat }}
                         </td>
                         <td class="px-6 py-4 flex gap-2">
-                            <a href="{{ route('admin.produk.edit', $item->id_produk) }}" class="btn-yellow">Edit</a>
+                            <a href="{{ route('admin.produk.edit', $item->id) }}" class="btn-yellow">Edit</a>
                             <form action="{{ route('admin.produk.destroy') }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <input type="hidden" name="id_produk" value="{{ $item->id_produk }}">
+                                <input type="hidden" name="id" value="{{ $item->id }}">
                                 <button type="button" class="btn-danger" onclick="confirmDelete(this)">Delete</button>
                                 <script>
                                     function confirmDelete(button) {

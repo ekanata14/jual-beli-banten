@@ -10,10 +10,9 @@ class Pelanggan extends Authenticatable
 {
     use Notifiable;
     protected $table = "tabel_pelanggan";
-    protected $primaryKey = 'id_pelanggan';
 
     protected $fillable = [
-        'nama_pelanggan',
+        'id_user',
         'alamat_pelanggan',
         'no_telp',
     ];

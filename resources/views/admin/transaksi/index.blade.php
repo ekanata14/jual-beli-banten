@@ -47,7 +47,7 @@
                             {{ $loop->iteration }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ $item->pelanggan->nama_pelanggan }}
+                            {{ $item->user->name }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->no_resi }}
@@ -64,8 +64,14 @@
                         <td class="px-6 py-4">
                             {{ $item->unit_durasi }}
                         </td>
+                        <td class="px-6 py-4">
+                            {{ $item->unit_durasi }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ 'Rp ' . number_format($item->total_harga, 0, ',', '.') }}
+                        </td>
                         <td class="px-6 py-4 flex gap-2">
-                            <a href="{{ route('admin.kurir.edit', $item->id_kurir) }}" class="btn-yellow">Edit</a>
+                            {{-- <a href="{{ route('admin.kurir.edit', $item->id_kurir) }}" class="btn-yellow">Edit</a>
                             <form action="{{ route('admin.kurir.destroy') }}" method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -88,7 +94,7 @@
                                         });
                                     }
                                 </script>
-                            </form>
+                            </form> --}}
                         </td>
                     </tr>
                 @endforeach

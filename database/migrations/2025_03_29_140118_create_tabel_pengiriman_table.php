@@ -12,20 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tabel_pengiriman', function (Blueprint $table) {
-            $table->bigIncrements('id_pengiriman');
+            $table->id();
             $table->unsignedBigInteger('id_transaksi');
-            $table->foreign('id_transaksi')->references('id_transaksi')->on('tabel_transaksi')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_transaksi')->references('id')->on('tabel_transaksi')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('id_order');
-            $table->foreign('id_order')->references('id_order')->on('tabel_order')->onUpdate('cascade')->onDelete('cascade');e('cascade');
-            $table->unsignedBigInteger('id_kurir');
-            $table->foreign('id_kurir')->references('id_kurir')->on('tabel_kurir')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('no_resi', 250);
+            $table->foreign('id_order')->references('id')->on('tabel_order')->onUpdate('cascade')->onDelete('cascade');
+            e('cascade');
+            $table->unsignedBigInteger('id_kurir')->nullable();
+            $table->foreign('id_kurir')->references('id')->on('tabel_kurir')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('no_resi', 250)->nullable();
             $table->string('nama_penerima', 250);
             $table->string('alamat_penerima', 250);
             $table->string('telp_penerima');
             $table->string('status_pengiriman', 250);
-            $table->datetime('waktu_pengiriman');
-            $table->integer('biaya_pengiriman');
+            $table->datetime('waktu_pengiriman')->nullable();
+            $table->integer('biaya_pengiriman')->nullable();
             $table->timestamps();
         });
     }

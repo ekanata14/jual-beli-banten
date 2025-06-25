@@ -20,8 +20,8 @@
 </head>
 
 <body>
-    <header class="w-full">
-        <nav class="nav flex justify-between items-center fixed">
+    <header class="w-full sticky top-0 z-50">
+        <nav class="nav flex justify-between items-center bg-white bg-opacity-90 backdrop-blur fixed w-full">
             <div class="logo">
                 <img src="../assets/icons/bhakti_logo.svg" alt="">
             </div>
@@ -33,7 +33,7 @@
                     <li class="nav-item {{ request()->is('about') ? 'active' : '' }}"><a href="{{ route('about') }}">
                             <p>Tentang Kami</p>
                         </a></li>
-                    <li class="nav-item {{ request()->is('product') && 'product/product_detail' ? 'active' : '' }}"><a
+                    <li class="nav-item {{ request()->is('product*') ? 'active' : '' }}"><a
                             href="{{ route('product') }}">
                             <p>Produk</p>
                         </a></li>
@@ -42,9 +42,29 @@
             <div class="nav-icon flex gap-2">
                 @if (auth()->check())
                     <a href="{{ route('cart') }}"><img src="../assets/icons/cart_icon.svg" alt=""></a>
-                    <a href="/"><img src="../assets/icons/profile_icon.svg" alt=""></a>
+                    <div class="relative group">
+                        <button class="flex items-center focus:outline-none">
+                            <img src="../assets/icons/profile_icon.svg" alt="">
+                            <span class="ml-2">{{ auth()->user()->name ?? 'Profil' }}</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div
+                            class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity z-50">
+                            <a href="#"
+                                class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Profil</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                    class="w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">Logout</button>
+                            </form>
+                        </div>
+                    </div>
                 @else
-                    <a href="{{ route('login') }}"><img src="../assets/icons/login_icon.svg" alt="" class="btn-gray">Masuk
+                    <a href="{{ route('login') }}"><img src="../assets/icons/login_icon.svg" alt=""
+                            class="btn-gray">Masuk
                     </a>
                 @endif
             </div>
@@ -158,6 +178,7 @@
 
         updateDots(); // Initialize dots
     </script>
+    @stack('scripts')
 </body>
 
 </html>

@@ -6,10 +6,14 @@
                 <img src="{{ asset('storage/' . $product['foto']) }}" alt="{{ $product['nama_produk'] }}" class="w-full">
             </div>
             <div class="product_image_list w-full flex justify-between mt-5 gap-4">
-                <img src="{{ asset('storage/' . $product['foto']) }}" alt="{{ $product['nama_produk'] }}" class="flex-1 w-2/9 h-20 object-cover rounded">
-                <img src="{{ asset('storage/' . $product['foto']) }}" alt="{{ $product['nama_produk'] }}" class="flex-1 w-2/9 h-20 object-cover rounded">
-                <img src="{{ asset('storage/' . $product['foto']) }}" alt="{{ $product['nama_produk'] }}" class="flex-1 h-2/9 h-20 object-cover rounded">
-                <img src="{{ asset('storage/' . $product['foto']) }}" alt="{{ $product['nama_produk'] }}" class="flex-1 h-2/9 h-20 object-cover rounded">
+                <img src="{{ asset('storage/' . $product['foto']) }}" alt="{{ $product['nama_produk'] }}"
+                    class="flex-1 w-2/9 h-20 object-cover rounded">
+                <img src="{{ asset('storage/' . $product['foto']) }}" alt="{{ $product['nama_produk'] }}"
+                    class="flex-1 w-2/9 h-20 object-cover rounded">
+                <img src="{{ asset('storage/' . $product['foto']) }}" alt="{{ $product['nama_produk'] }}"
+                    class="flex-1 h-2/9 h-20 object-cover rounded">
+                <img src="{{ asset('storage/' . $product['foto']) }}" alt="{{ $product['nama_produk'] }}"
+                    class="flex-1 h-2/9 h-20 object-cover rounded">
             </div>
         </div>
         <div class="product_info flex flex-col gap-16 w-2/3">
@@ -44,8 +48,8 @@
                     <p>Tersedia</p>
                 </div>
                 <div class="product_button_cta">
-                    <x-button href="/checkout" icon="{{ asset('assets/icons/arrow_right_white.svg') }}"
-                        class="mt-24 w-full">
+                    <x-button href="{{ route('checkout', ['id' => $product['id'] ?? 1]) }}"
+                        icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-24 w-full">
                         Beli Sekarang
                     </x-button>
                 </div>

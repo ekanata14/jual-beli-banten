@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tabel_transaksi', function (Blueprint $table) {
-            $table->bigIncrements('id_transaksi'); 
-            $table->unsignedBigInteger('id_pelanggan');
-            $table->foreign('id_pelanggan')->references('id')->on('tabel_pelanggan')->onUpdate('cascade')->onDelete('cascade');
+            $table->id();
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->decimal('total_harga', 10, 2);
             $table->string('status', 50);
             $table->enum('metode_pembayaran', ['transfer', 'cod']);

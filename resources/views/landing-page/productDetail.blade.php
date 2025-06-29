@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="product__footer">
-                <div class="product_stock flex items-center gap-2">
+                {{-- <div class="product_stock flex items-center gap-2"> --}}
                     <p>Stok :</p>
                     <p class="text-[#FF7006]">{{ $product['stok'] }}</p>
                     <p>Tersedia</p>

@@ -11,20 +11,48 @@ class BiteshipService
 
     public function __construct()
     {
-        $this->apiKey = config('services.biteship.api_key');
+        $this->apiKey = "biteship_test.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXBpX2tleV93ZWIiLCJ1c2VySWQiOiI2N2NkMzY5NjczMzA4ZjAwMTIyNWNiMjEiLCJpYXQiOjE3NTA4NDc4NTZ9.YjkkgBvbovhckif11WOyEBGv2vr81shgZDCz-UQM5KI";
         $this->endpoint = config('services.biteship.endpoint');
     }
 
     public function getCouriers($destination_postal_code)
     {
+        $items = [
+            'name' => 'Item Name', // Ganti dengan nama item kamu
+            'value ' => 100000, // Ganti dengan nilai item kamu
+            'quantity' => 1,
+            'weight' => 1000,
+        ];
         $response = Http::withHeaders([
-            'Authorization' => "Bearer {$this->apiKey}",
-        ])->get("{$this->endpoint}/couriers/cost", [
-            'origin_area_id' => 'ID-DPS-201', // Ganti dengan origin kamu
-            'destination_postal_code' => $destination_postal_code,
+            'Authorization' => 'Bearer ' . $this->apiKey,
+        ])->post("{$this->endpoint}/rates/couriers", [
+            'origin_area_id' => 'IDNP1IDNC110IDND261IDZ80111', // Ganti dengan origin kamu
+            'destination_area_id' => 'IDNP1IDNC437IDND5477IDZ82111',
             'couriers' => 'jne,jnt,sicepat,pos,tiki',
-            'weight' => 1000 // berat dalam gram
+            'items' => [$items],
         ]);
+
+        return $response->json();
+    }
+
+    public function searchAreas($input)
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->apiKey,
+        ])->get("{$this->endpoint}/maps/areas", [
+            'countries' => 'ID',
+            'input' => $input,
+            'type' => 'single',
+        ]);
+
+        return $response->json();
+    }
+
+    public function listCouriers()
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->apiKey,
+        ])->get("{$this->endpoint}/couriers");
 
         return $response->json();
     }

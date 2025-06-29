@@ -222,4 +222,12 @@ class LandingPageController extends Controller
 
         return response()->json($costs);
     }
+
+    public function searchAreas(Request $request, BiteshipService $biteship)
+    {
+        $input = $request->input('input');
+        $areas = $biteship->searchAreas($input);
+
+        return response()->json($areas);
+    }
 }

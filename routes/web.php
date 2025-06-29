@@ -43,6 +43,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/checkout/callback', [LandingPageController::class, 'midtransCallback'])->name('checkout.callback');
 
     Route::get('/ongkir', [LandingPageController::class, 'getShippingOptions'])->name('ongkir');
+
+    // Route for searchAreas
+    Route::get('/search-areas', [LandingPageController::class, 'searchAreas'])->name('search.areas');
+    // Route for searchAreas
+    Route::get('/couriers', [LandingPageController::class, 'listCouriers'])->name('couriers');
 });
 
 

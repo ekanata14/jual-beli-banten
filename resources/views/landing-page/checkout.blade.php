@@ -84,20 +84,100 @@
                                         class="block w-full p-4 ps-10 text-sm placeholder-gray-300 text-gray-900 border border-gray-50 rounded-lg bg-gray-50 focus:ring-amber-800 focus:border-broring-amber-800 mt-3"
                                         placeholder="Masukan Alamat Anda" required />
                                 </div>
-                                <div class="mt-4 flex gap-5">
-                                    <div class="input_kota w-full">
-                                        <label for="penerima_kota">Kota</label>
-                                        <input type="text" name="penerima_kota"
+                                <div class="mt-4 flex flex-col gap-5">
+                                    <div class="input_kota_kabupaten w-full relative">
+                                        <label for="penerima_kota_kabupaten">Kota / Kabupaten</label>
+                                        <input type="text" name="penerima_kota_kabupaten" id="penerima_kota_kabupaten"
                                             class="block w-full p-4 ps-10 text-sm placeholder-gray-300 text-gray-900 border border-gray-50 rounded-lg bg-gray-50 focus:ring-amber-800 focus:border-broring-amber-800 mt-3"
-                                            placeholder="Masukan Kota" required />
-                                    </div>
-                                    <div class="input_kabupaten w-full">
-                                        <label for="penerima_kabupaten">Kabupaten</label>
-                                        <input type="text" name="penerima_kabupaten"
-                                            class="block w-full p-4 ps-10 text-sm placeholder-gray-300 text-gray-900 border border-gray-50 rounded-lg bg-gray-50 focus:ring-amber-800 focus:border-broring-amber-800 mt-3"
-                                            placeholder="Masukan Kabupaten" required />
+                                            placeholder="Masukan Kota atau Kabupaten" autocomplete="off" required />
+                                        <ul id="kota_kabupaten_suggestions"
+                                            class="bg-white border border-gray-200 rounded mt-1 hidden absolute z-10 w-full flex flex-col">
+                                        </ul>
                                     </div>
                                 </div>
+                                @push('scripts')
+                                <script>
+                                    // Debounce helper
+                                    function debounce(func, wait) {
+                                        let timeout;
+                                        return function(...args) {
+                                            clearTimeout(timeout);
+                                            timeout = setTimeout(() => func.apply(this, args), wait);
+                                        };
+                                    }
+
+                                    // Fetch area suggestions from backend (single endpoint)
+                                    async function fetchAreaSuggestions(input, callback) {
+                                        if (!input) {
+                                            callback([]);
+                                            return;
+                                        }
+                                        try {
+                                            const res = await fetch(`{{ route('search.areas') }}?input=${encodeURIComponent(input)}`);
+                                            if (!res.ok) return callback([]);
+                                            const data = await res.json();
+                                            callback(data.areas || []);
+                                        } catch {
+                                            callback([]);
+                                        }
+                                    }
+
+                                    // Kota/Kabupaten autocomplete
+                                    const kotaKabupatenInput = document.getElementById('penerima_kota_kabupaten');
+                                    const kotaKabupatenSuggestions = document.getElementById('kota_kabupaten_suggestions');
+
+                                    kotaKabupatenInput.addEventListener('input', debounce(function() {
+                                        fetchAreaSuggestions(this.value, function(areas) {
+                                            kotaKabupatenSuggestions.innerHTML = '';
+                                            if (areas.length === 0) {
+                                                kotaKabupatenSuggestions.classList.add('hidden');
+                                                return;
+                                            }
+                                            areas.forEach((area, idx) => {
+                                                // Compose label with details
+                                                const city = area.administrative_division_level_2_name || '';
+                                                const district = area.administrative_division_level_3_name || '';
+                                                const province = area.administrative_division_level_1_name || '';
+                                                let label = '';
+                                                if (city && district) {
+                                                    label = `${district}, ${city}${province ? ' - ' + province : ''}`;
+                                                } else if (city) {
+                                                    label = `${city}${province ? ' - ' + province : ''}`;
+                                                } else if (district) {
+                                                    label = `${district}${province ? ' - ' + province : ''}`;
+                                                }
+                                                // Add details inline
+                                                let details = [];
+                                                if (area.country_name) details.push(`<span class="text-xs text-gray-500">Negara: ${area.country_name}</span>`);
+                                                if (area.country_code) details.push(`<span class="text-xs text-gray-500">Kode Negara: ${area.country_code}</span>`);
+                                                if (area.administrative_division_level_1_name) details.push(`<span class="text-xs text-gray-500">Provinsi: ${area.administrative_division_level_1_name}</span>`);
+                                                if (area.administrative_division_level_1_type) details.push(`<span class="text-xs text-gray-500">Tipe Provinsi: ${area.administrative_division_level_1_type}</span>`);
+                                                if (area.administrative_division_level_2_name) details.push(`<span class="text-xs text-gray-500">Kota/Kabupaten: ${area.administrative_division_level_2_name}</span>`);
+                                                if (area.administrative_division_level_2_type) details.push(`<span class="text-xs text-gray-500">Tipe Kota/Kabupaten: ${area.administrative_division_level_2_type}</span>`);
+                                                if (area.administrative_division_level_3_name) details.push(`<span class="text-xs text-gray-500">Kecamatan: ${area.administrative_division_level_3_name}</span>`);
+                                                if (area.administrative_division_level_3_type) details.push(`<span class="text-xs text-gray-500">Tipe Kecamatan: ${area.administrative_division_level_3_type}</span>`);
+                                                if (area.postal_code) details.push(`<span class="text-xs text-gray-500">Kode Pos: ${area.postal_code}</span>`);
+                                                if (area.name) details.push(`<span class="text-xs text-gray-500">Nama Lengkap Wilayah: ${area.name}</span>`);
+                                                const li = document.createElement('li');
+                                                li.innerHTML = `<div class="font-medium">${label}</div>${details.length ? '<div class="flex flex-wrap gap-x-3 gap-y-1 mt-1">' + details.join('') + '</div>' : ''}`;
+                                                li.className = 'px-4 py-2 hover:bg-gray-100 cursor-pointer';
+                                                li.addEventListener('click', function() {
+                                                    kotaKabupatenInput.value = label;
+                                                    kotaKabupatenSuggestions.classList.add('hidden');
+                                                });
+                                                kotaKabupatenSuggestions.appendChild(li);
+                                            });
+                                            kotaKabupatenSuggestions.classList.remove('hidden');
+                                        });
+                                    }, 400));
+
+                                    document.addEventListener('click', function(e) {
+                                        if (!kotaKabupatenInput.contains(e.target) && !kotaKabupatenSuggestions.contains(e.target)) {
+                                            kotaKabupatenSuggestions.classList.add('hidden');
+                                        }
+                                    });
+                                </script>
+                                @endpush
                                 <div class="mt-4 flex gap-5">
                                     <div class="input_kode_pos w-full">
                                         <label for="penerima_kode_pos">Kode Pos</label>

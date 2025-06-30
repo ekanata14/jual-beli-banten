@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Transaksi extends Model
-{ 
+{
     protected $table = 'tabel_transaksi';
 
     protected $fillable = [
@@ -24,7 +24,8 @@ class Transaksi extends Model
     {
         return $this->belongsTo(MetodePembayaran::class, 'metode_pembayaran', 'metode_pembayaran');
     }
-    public function Pengiriman(){
+    public function Pengiriman()
+    {
         return $this->hasOne(Pengiriman::class, 'id_transaksi', 'id');
     }
 }

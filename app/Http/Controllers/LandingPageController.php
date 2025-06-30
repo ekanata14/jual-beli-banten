@@ -74,6 +74,7 @@ class LandingPageController extends Controller
     {
         $viewData = [
             'title' => 'Checkout Product | Bhakti E Commerce',
+            'snapToken' => null,
             'product' => Produk::find(request()->query('id')) ?: null
         ];
         return view('landing-page.checkout', $viewData);
@@ -81,6 +82,7 @@ class LandingPageController extends Controller
 
     public function checkoutStore(Request $request)
     {
+        $product = Produk::find(request()->query('id')) ?: null;
         try {
             DB::beginTransaction();
 
@@ -157,9 +159,10 @@ class LandingPageController extends Controller
 
             $snapToken = Snap::getSnapToken($params);
 
-            return view('landing-page.payment-redirect', [
+            return view('landing-page.checkout', [
                 'title' => 'Pembayaran',
                 'snapToken' => $snapToken,
+                'product' => $product,
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -214,20 +217,16 @@ class LandingPageController extends Controller
         return view('landing-page.transaction-failed', $viewData);
     }
 
-
-    public function getShippingOptions(Request $request, BiteshipService $biteship)
+    public function getRates(Request $request, BiteshipService $biteship)
     {
-        $postalCode = $request->input('kode_pos');
-        $costs = $biteship->getCouriers($postalCode);
+        $origin_postal_code = $request->input('origin_postal_code');
+        $destination_postal_code = $request->input('destination_postal_code');
+        // $couriers = $request->input('couriers', []);
+        // $itemId = $request->input('item_id');
 
-        return response()->json($costs);
-    }
 
-    public function searchAreas(Request $request, BiteshipService $biteship)
-    {
-        $input = $request->input('input');
-        $areas = $biteship->searchAreas($input);
+        $rates = $biteship->getRates($origin_postal_code, $destination_postal_code);
 
-        return response()->json($areas);
+        return response()->json($rates);
     }
 }

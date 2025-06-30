@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use App\Models\Produk;
 
 class BiteshipService
 {
@@ -15,21 +16,29 @@ class BiteshipService
         $this->endpoint = config('services.biteship.endpoint');
     }
 
-    public function getCouriers($destination_postal_code)
+    public function getRates($origin_postal_code, $destination_postal_code)
     {
-        $items = [
-            'name' => 'Item Name', // Ganti dengan nama item kamu
-            'value ' => 100000, // Ganti dengan nilai item kamu
-            'quantity' => 1,
-            'weight' => 1000,
+        $item = [
+            [
+                "name" => "Shoes",
+                "description" => "Black colored size 45",
+                "value" => 199000,
+                "length" => 30,
+                "width" => 15,
+                "height" => 20,
+                "weight" => 200,
+                "quantity" => 2
+            ]
         ];
+        $couriers = "ninja,sap,gojek,grab,deliveree,jne,tiki,ninja,lion,rara,sicepat,jnt,idexpress,rpx,jdl,wahana,pos,anteraja,sap,paxel,borzo,lalamove";
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->apiKey,
+            'Authorization' => "Bearer {$this->apiKey}",
+            'Content-Type' => 'application/json',
         ])->post("{$this->endpoint}/rates/couriers", [
-            'origin_area_id' => 'IDNP1IDNC110IDND261IDZ80111', // Ganti dengan origin kamu
-            'destination_area_id' => 'IDNP1IDNC437IDND5477IDZ82111',
-            'couriers' => 'jne,jnt,sicepat,pos,tiki',
-            'items' => [$items],
+            'origin_postal_code' => $origin_postal_code,
+            'destination_postal_code' => $destination_postal_code,
+            'couriers' => $couriers,
+            'items' => $item,
         ]);
 
         return $response->json();
@@ -38,7 +47,7 @@ class BiteshipService
     public function searchAreas($input)
     {
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->apiKey,
+            'Authorization' => 'Bearer ' . "biteship_test.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYXBpX2tleV93ZWIiLCJ1c2VySWQiOiI2N2NkMzY5NjczMzA4ZjAwMTIyNWNiMjEiLCJpYXQiOjE3NTA4NDc4NTZ9.YjkkgBvbovhckif11WOyEBGv2vr81shgZDCz-UQM5KI",
         ])->get("{$this->endpoint}/maps/areas", [
             'countries' => 'ID',
             'input' => $input,

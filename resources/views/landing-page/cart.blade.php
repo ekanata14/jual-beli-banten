@@ -40,37 +40,39 @@
                             <div class="ml-6 text-black font-semibold item-total" data-id="{{ $keranjang->id }}">
                                 Total: Rp. {{ number_format($itemTotal, 0, ',', '.') }}
                             </div>
-                            <form action="{{ route('cart.remove') }}" method="POST" class="remove-cart-form" data-id="{{ $keranjang->id }}">
+                            <form action="{{ route('cart.remove') }}" method="POST" class="remove-cart-form"
+                                data-id="{{ $keranjang->id }}">
                                 @csrf
                                 @method('DELETE')
                                 <input type="hidden" name="id" value="{{ $keranjang->id }}">
-                                <button type="button" class="hover:text-[#FF9D00] text-red-600 remove-cart-btn cursor-pointer"
+                                <button type="button"
+                                    class="hover:text-[#FF9D00] text-red-600 remove-cart-btn cursor-pointer"
                                     data-id="{{ $keranjang->id }}">X Hapus Produk</button>
                             </form>
                             @push('scripts')
-                            <script>
-                                document.querySelectorAll('.remove-cart-btn').forEach(function(btn) {
-                                    btn.addEventListener('click', function(e) {
-                                        e.preventDefault();
-                                        const id = this.getAttribute('data-id');
-                                        const form = document.querySelector('.remove-cart-form[data-id="' + id + '"]');
-                                        Swal.fire({
-                                            title: 'Hapus produk dari keranjang?',
-                                            text: "Produk akan dihapus dari keranjang Anda.",
-                                            icon: 'warning',
-                                            showCancelButton: true,
-                                            confirmButtonColor: '#FF9D00',
-                                            cancelButtonColor: '#d33',
-                                            confirmButtonText: 'Ya, hapus!',
-                                            cancelButtonText: 'Batal'
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                form.submit();
-                                            }
+                                <script>
+                                    document.querySelectorAll('.remove-cart-btn').forEach(function(btn) {
+                                        btn.addEventListener('click', function(e) {
+                                            e.preventDefault();
+                                            const id = this.getAttribute('data-id');
+                                            const form = document.querySelector('.remove-cart-form[data-id="' + id + '"]');
+                                            Swal.fire({
+                                                title: 'Hapus produk dari keranjang?',
+                                                text: "Produk akan dihapus dari keranjang Anda.",
+                                                icon: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#FF9D00',
+                                                cancelButtonColor: '#d33',
+                                                confirmButtonText: 'Ya, hapus!',
+                                                cancelButtonText: 'Batal'
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    form.submit();
+                                                }
+                                            });
                                         });
                                     });
-                                });
-                            </script>
+                                </script>
                             @endpush
                         </div>
                     </div>
@@ -85,9 +87,34 @@
                 <p>Subtotal ({{ $datas->sum('jumlah') }} Produk)</p>
                 <p id="subtotal">Rp. {{ number_format($totalPrice, 0, ',', '.') }}</p>
             </div>
-            <x-button href="/produk" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-24">
-                Checkout
-            </x-button>
+            <form id="checkout-form" action="{{ route('cart.checkout') }}" method="POST">
+                @csrf
+                <x-button type="button" id="checkout-btn" icon="{{ asset('assets/icons/arrow_right_white.svg') }}"
+                    class="mt-24">
+                    Checkout
+                </x-button>
+            </form>
+            @push('scripts')
+                <script>
+                    document.getElementById('checkout-btn').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        Swal.fire({
+                            title: 'Lanjut ke Checkout?',
+                            text: "Anda akan diarahkan ke halaman checkout.",
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#FF9D00',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya, lanjut!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('checkout-form').submit();
+                            }
+                        });
+                    });
+                </script>
+            @endpush
         </div>
 
         @push('scripts')

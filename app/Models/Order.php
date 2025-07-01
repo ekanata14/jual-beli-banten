@@ -14,4 +14,13 @@ class Order extends Model
         'jumlah',
         'subtotal',
     ];
+
+    public function Transaksi()
+    {
+        return $this->belongsTo(Transaksi::class, 'id_transaksi', 'id');
+    }
+    public function Produk()
+    {
+        return $this->belongsTo(Produk::class, 'id_produk', 'id');
+    }
 }

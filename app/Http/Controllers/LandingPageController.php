@@ -194,39 +194,115 @@ class LandingPageController extends Controller
         ];
         return view('landing-page.detail-transaction', $viewData);
     }
-    public function checkout()
+
+    public function checkoutItem()
+    {
+        // Ambil semua item keranjang milik user
+        $cartItems = Keranjang::where('id_user', auth()->user()->id)
+            ->with('produk')
+            ->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->back()->with('error', 'Keranjang belanja Anda kosong.');
+        }
+
+        // Buat transaksi baru
+        DB::beginTransaction();
+        try {
+            $totalHarga = 0;
+            foreach ($cartItems as $item) {
+                $totalHarga += ($item->produk ? $item->produk->harga : 0) * $item->jumlah;
+            }
+
+            $transaksi = new Transaksi();
+            $transaksi->id_user = auth()->user()->id;
+            $transaksi->total_harga = $totalHarga;
+            $transaksi->status = 'pending';
+            $transaksi->metode_pembayaran = 'transfer';
+            $transaksi->tanggal_transaksi = now();
+            $transaksi->save();
+
+            // Simpan setiap item keranjang ke tabel order
+            foreach ($cartItems as $item) {
+                Order::create([
+                    'id_transaksi' => $transaksi->id,
+                    'id_produk' => $item->id_produk,
+                    'jumlah' => $item->jumlah,
+                    'subtotal' => ($item->produk ? $item->produk->harga : 0) * $item->jumlah,
+                ]);
+            }
+
+            // Kosongkan keranjang user
+            Keranjang::where('id_user', auth()->user()->id)->delete();
+
+            DB::commit();
+
+            return redirect()->route('checkout', $transaksi->id)->with('success', 'Checkout berhasil, silakan isi data pengiriman.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal melakukan checkout: ' . $e->getMessage());
+        }
+    }
+
+    public function checkoutPengirimanData(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $validatedData = $request->validate([
+                'id_transaksi' => 'required|integer|exists:tabel_transaksi,id',
+                'id_order' => 'nullable|integer|exists:tabel_order,id',
+                'nama_penerima' => 'required|string|max:250',
+                'alamat_penerima' => 'required|string|max:250',
+                'telp_penerima' => 'required|string|max:255',
+            ]);
+
+            $pengiriman = Pengiriman::create([
+                'id_transaksi' => $validatedData['id_transaksi'],
+                'id_order' => $validatedData['id_order'] ?? null,
+                'nama_penerima' => $validatedData['nama_penerima'],
+                'alamat_penerima' => $validatedData['alamat_penerima'],
+                'telp_penerima' => $validatedData['telp_penerima'],
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('checkout.third', ['id' => $validatedData['id_transaksi']])
+                ->with('success', 'Data pengiriman berhasil disimpan');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->withErrors([
+                'error' => 'Gagal menyimpan data pengiriman: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    public function checkout(string $id)
     {
         $viewData = [
             'title' => 'Checkout Product | Bhakti E Commerce',
             'snapToken' => null,
-            'product' => Produk::find(request()->query('id')) ?: null
+            'transaksi' => Transaksi::where('id', $id)
+                ->orderBy('created_at', 'desc')
+                ->first(),
         ];
         return view('landing-page.checkout.checkout-first', $viewData);
     }
 
-    public function checkoutSecond()
+    public function checkoutSecond(string $id)
     {
-        $informasiAnda = [
-            'name' => request()->input('name'),
-            'email' => request()->input('email'),
-            'no_telp' => request()->input('no_telp')
-        ];
         $viewData = [
             'title' => 'Checkout Product | Bhakti E Commerce',
             'snapToken' => null,
-            'product' => Produk::find(request()->query('id')) ?: null,
-            'informasiAnda' => $informasiAnda
+            'transaksi' => Transaksi::where('id', $id)
+                ->orderBy('created_at', 'desc')
+                ->first(),
         ];
         return view('landing-page.checkout.checkout-second', $viewData);
     }
 
     public function checkoutThird()
     {
-        $informasiAnda = request()->input('informasiAnda', [
-            'name' => request()->input('name'),
-            'email' => request()->input('email'),
-            'no_telp' => request()->input('no_telp')
-        ]);
         $informasiPenerima = [
             'penerima_nama' => request()->input('penerima_nama'),
             'penerima_no_telp' => request()->input('penerima_no_telp'),
@@ -351,9 +427,9 @@ class LandingPageController extends Controller
         $signatureKey = hash(
             'sha512',
             $request->order_id .
-            $request->status_code .
-            $request->gross_amount .
-            $serverKey
+                $request->status_code .
+                $request->gross_amount .
+                $serverKey
         );
 
         if ($signatureKey !== $request->signature_key) {

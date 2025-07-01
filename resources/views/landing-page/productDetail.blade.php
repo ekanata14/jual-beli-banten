@@ -70,7 +70,7 @@
                             <input type="hidden" name="quantity" id="cart_quantity" value="1">
                             <input type="hidden" name="id_pelanggan" value="{{ auth()->user()->id ?? '' }}">
                             <button type="submit"
-                                class="w-full flex items-center justify-center bg-white text-black border border-[#FF7006] hover:bg-[#FF7006] hover:text-white transition-colors duration-200 rounded py-2">
+                                class="w-full flex items-center justify-center bg-white text-black border border-[#FF7006] hover:bg-[#FF7006] hover:text-white transition-colors duration-200 rounded py-2 cursor-pointer">
                                 Tambah ke Keranjang
                             </button>
                         </form>

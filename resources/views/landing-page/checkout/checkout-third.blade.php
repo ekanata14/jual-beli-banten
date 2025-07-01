@@ -1,14 +1,17 @@
 @extends('layouts.landing')
 @section('content')
     <div class="flex justify-between main_content py-40 px-36 gap-16">
+        @php
+            $subtotal = $transaksi->orders->sum('subtotal');
+        @endphp
         <div class="left_content w-[60%]">
             <!-- informasi anda -->
             <div class="checkout_container">
                 <h3 class="text-black">Informasi Anda</h3>
                 <div class="informasi_data mt-9">
-                    @foreach ($informasiAnda as $info)
-                        <p>{{ $info }}</p>
-                    @endforeach
+                    <p>{{ auth()->user()?->name }}</p>
+                    <p>{{ auth()->user()?->email }}</p>
+                    <p>{{ auth()->user()?->pelanggan?->no_telp }}</p>
                 </div>
             </div>
 
@@ -34,8 +37,10 @@
                     </button>
                 </div>
                 <!-- Modal for shipment rates -->
-                <div id="select-modal"
-                    class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-25">
+                <div id="select-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+                    <!-- Modal background overlay -->
+                    <div class="absolute inset-0 bg-black opacity-50"></div>
+                    <!-- Modal content -->
                     <div class="bg-white rounded-lg p-6 w-full max-w-md fixed top-50">
                         <h4 class="text-lg font-bold mb-4">Pilih Layanan Pengiriman</h4>
                         <div id="rates-list" class="overflow-y-auto" style="max-height: 300px;">
@@ -45,11 +50,40 @@
                             class="mt-6 w-full bg-gray-200 hover:bg-gray-300 rounded py-2">Tutup</button>
                     </div>
                 </div>
-                <form id="shipment-form" action="{{ route('checkout.fourth') }}" method="GET">
+                <form id="shipment-form" action="{{ route('cart.checkout.biaya.pengiriman') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="id_pengiriman" value="{{ $pengiriman->id }}">
+                    <input type="hidden" name="id_transaksi" value="{{ $transaksi->id }}">
                     <input type="hidden" name="selected_rate" id="selected_rate">
-                    <x-button type="submit" icon="{{ asset('assets/icons/arrow_right_white.svg') }}">
-                        Lanjut Ke Pembayaran
-                    </x-button>
+                    <input type="hidden" name="biaya_pengiriman" id="shipping_price">
+                    <button type="submit" id="btn-lanjut-pembayaran">
+                        <x-button icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-4">
+                            Lanjut Ke Pembayaran
+                        </x-button>
+                    </button>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const btnLanjut = document.getElementById('btn-lanjut-pembayaran');
+                            const shipmentForm = document.getElementById('shipment-form');
+                            btnLanjut.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                Swal.fire({
+                                    title: 'Konfirmasi',
+                                    text: 'Apakah Anda yakin ingin melanjutkan ke pembayaran?',
+                                    icon: 'question',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Ya, lanjutkan',
+                                    cancelButtonText: 'Batal'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        shipmentForm.submit();
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+
                 </form>
             </div>
 
@@ -60,7 +94,11 @@
                     const closeModal = document.getElementById('close-modal');
                     const ratesList = document.getElementById('rates-list');
                     const selectedRateInput = document.getElementById('selected_rate');
+                    const shippingPriceInput = document.getElementById('shipping_price');
                     const shipmentForm = document.getElementById('shipment-form');
+                    const biayaPengiriman = document.getElementById('biaya-pengiriman');
+                    const totalHarga = document.getElementById('total-harga');
+                    const subtotal = {{ $subtotal }};
 
                     btn.addEventListener('click', function() {
                         modal.classList.remove('hidden');
@@ -73,8 +111,8 @@
                                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                                 },
                                 body: JSON.stringify({
-                                    origin_postal_code: "{{ $product->user->penjual->kode_pos }}",
-                                    destination_postal_code: "{{ $informasiPenerima['penerima_kode_pos'] }}"
+                                    origin_postal_code: "{{ $transaksi->orders[0]->Produk->user->penjual->kode_pos }} ",
+                                    destination_postal_code: "{{ auth()->user()->pelanggan->kode_pos }}"
                                 })
                             })
                             .then(response => response.json())
@@ -97,9 +135,20 @@
                                         `;
                                         rateBtn.addEventListener('click', function() {
                                             selectedRateInput.value = JSON.stringify(rate);
+                                            shippingPriceInput.value = rate.price || 0;
                                             modal.classList.add('hidden');
                                             btn.textContent =
                                                 `${rate.courier_name || '-'} - ${rate.service_name || '-'} (Rp. ${(rate.price || 0).toLocaleString('id-ID')})`;
+                                            // Update biaya pengiriman and total
+                                            if (biayaPengiriman) {
+                                                biayaPengiriman.textContent = 'Rp. ' + (rate
+                                                    .price || 0).toLocaleString('id-ID');
+                                            }
+                                            if (totalHarga) {
+                                                totalHarga.textContent = 'Rp. ' + (subtotal + (
+                                                    rate.price || 0)).toLocaleString(
+                                                    'id-ID');
+                                            }
                                         });
                                         ratesList.appendChild(rateBtn);
                                     });
@@ -128,31 +177,58 @@
                 });
             </script>
         </div>
-
         <div class="right_content bg-white py-6 px-5 w-[40%] rounded-md h-full">
-            <div class="product_container flex justify-between pb-9">
-                <div class="flex gap-5">
-                    <img src="{{ asset('assets/images/product_img.png') }}" alt="Empty Star" class="w-50">
-                    <div class="flex flex-col">
-                        <h4 class="text-black font-bold mb-4">Nama Produk</h4>
-                        <p>Kuantiti : 1</p>
+            @php
+                $subtotal = $transaksi->orders->sum('subtotal');
+            @endphp
+
+            @forelse($transaksi->orders as $item)
+                <div class="product_container flex justify-between pb-9">
+                    <div class="flex gap-5">
+                        <img src="{{ asset('storage/' . ($item->produk->foto ?? 'assets/images/product_img.png')) }}"
+                            alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-50">
+                        <div class="flex flex-col">
+                            <h4 class="text-black font-bold mb-4">{{ $item->produk->nama_produk ?? '-' }}</h4>
+                            <p>Jumlah : {{ $item->jumlah ?? 1 }}</p>
+                            <p class="text-black font-bold">
+                                Total : Rp. {{ number_format($item->subtotal, 0, ',', '.') }}
+                            </p>
+                        </div>
                     </div>
+                    <h4 class="text-black font-bold">Rp. {{ number_format($item->produk->harga ?? 0, 0, ',', '.') }}</h4>
                 </div>
-                <h4 class="text-black font-bold">Rp. 50,000</h4>
-            </div>
+            @empty
+                <div class="text-gray-500 text-center py-8">Tidak ada produk dalam transaksi ini.</div>
+            @endforelse
             <div class="product_sub flex justify-between mt-4">
                 <p>Subtotal</p>
-                <p class="text-black">Rp. 100,000</p>
+                <p class="text-black">Rp. {{ number_format($subtotal, 0, ',', '.') }}</p>
             </div>
             <div class="product_sub flex justify-between mt-4">
                 <p>Biaya Pengiriman</p>
-                <p>-</p>
+                <p id="biaya-pengiriman">-</p>
+                <input type="hidden" name="biaya_pengiriman" id="input-biaya-pengiriman" value="">
+                <script>
+                    // Update hidden input when biaya pengiriman changes
+                    const biayaPengirimanElem = document.getElementById('biaya-pengiriman');
+                    const inputBiayaPengiriman = document.getElementById('input-biaya-pengiriman');
+                    // Observe changes to biayaPengirimanElem
+                    const observer = new MutationObserver(function() {
+                        // Extract numeric value from text (e.g., "Rp. 10.000")
+                        const value = biayaPengirimanElem.textContent.replace(/[^\d]/g, '');
+                        inputBiayaPengiriman.value = value ? parseInt(value, 10) : '';
+                    });
+                    observer.observe(biayaPengirimanElem, {
+                        childList: true,
+                        characterData: true,
+                        subtree: true
+                    });
+                </script>
             </div>
             <div class="product_sub flex justify-between mt-4">
                 <p class="text-black">Total</p>
-                <p class="text-black">Rp.100,000</p>
+                <p class="text-black" id="total-harga">Rp. {{ number_format($subtotal, 0, ',', '.') }}</p>
             </div>
         </div>
-
     </div>
 @endsection

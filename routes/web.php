@@ -33,20 +33,25 @@ Route::get('/product/detail', [LandingPageController::class, 'productDetail'])->
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/cart', [LandingPageController::class, 'cart'])->name('cart');
-    Route::post('/cart/checkout', [LandingPageController::class, 'checkoutItem'])->name('cart.checkout');
-    Route::post('/cart/checkout/data', [LandingPageController::class, 'checkoutItem'])->name('cart.checkout.pengiriman.data');
     Route::post('/cart/add', [LandingPageController::class, 'addToCart'])->name('cart.add');
     Route::post('/cart/update', [LandingPageController::class, 'updateCart'])->name('cart.update');
     Route::post('/cart/remove', [LandingPageController::class, 'removeFromCart'])->name('cart.remove');
     Route::get('/detail/detail-transaction', [LandingPageController::class, 'detail_transaction'])->name('detail_transaction');
-    Route::get('/checkout/{id}', [LandingPageController::class, 'checkout'])->name('checkout');
-    Route::get('/checkout/second/{id}', [LandingPageController::class, 'checkoutSecond'])->name('checkout.second');
-    Route::get('/checkout/third/{id}', [LandingPageController::class, 'checkoutThird'])->name('checkout.third');
-    Route::get('/checkout/fourth/{id}', [LandingPageController::class, 'checkoutFourth'])->name('checkout.fourth');
     // Route::get('/checkout', [LandingPageController::class, 'checkout'])->name('checkout.third');
     Route::post('/checkout/store', [LandingPageController::class, 'checkoutStore'])->name('checkout.store');
     Route::get('/transaction/success', [LandingPageController::class, 'transaction_success'])->name('transaction_success');
     Route::get('/transaction/failed', [LandingPageController::class, 'transaction_failed'])->name('transaction_failed');
+
+    // Checkout Step
+    Route::get('/checkout/{id}', [LandingPageController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout/second/{id}', [LandingPageController::class, 'checkoutSecond'])->name('checkout.second');
+    Route::get('/checkout/third/{id}', [LandingPageController::class, 'checkoutThird'])->name('checkout.third');
+    Route::get('/checkout/fourth/{id}', [LandingPageController::class, 'checkoutFourth'])->name('checkout.fourth');
+
+    // Cart Checkout
+    Route::post('/cart/checkout', [LandingPageController::class, 'checkoutItem'])->name('cart.checkout');
+    Route::post('/cart/checkout/data', [LandingPageController::class, 'checkoutPengirimanData'])->name('cart.checkout.pengiriman.data');
+    Route::post('/cart/checkout/biaya-pengiriman', [LandingPageController::class, 'checkoutBiayaPengiriman'])->name('cart.checkout.biaya.pengiriman');
 
     Route::post('/checkout/snap', [LandingPageController::class, 'getSnapToken'])->name('checkout.snap');
     Route::post('/checkout/callback', [LandingPageController::class, 'midtransCallback'])->name('checkout.callback');

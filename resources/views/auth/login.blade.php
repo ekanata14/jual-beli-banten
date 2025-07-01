@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 @section('content')
     <div class="flex justify-center items-center h-screen gap-8">
         <div class="order-2 lg:order-1 flex flex-col justify-center p-10 gap-40 w-full">

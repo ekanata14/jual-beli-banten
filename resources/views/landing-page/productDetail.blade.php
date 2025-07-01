@@ -3,7 +3,7 @@
     <section class="productdetail flex w-full py-40 px-24 gap-16">
         <div class="product_image w-1/3">
             <div class="product_image_primary w-full">
-                <img src="{{ asset('storage/' . $product['foto']) }}" alt="{{ $product['nama_produk'] }}" class="w-full">
+                <img src="{{ asset('storage/' . $product->foto) }}" alt="{{ $product['nama_produk'] }}" class="w-full">
             </div>
             <div class="product_image_list w-full flex justify-between mt-5 gap-4">
                 <img src="{{ asset('storage/' . $product['foto']) }}" alt="{{ $product['nama_produk'] }}"
@@ -43,16 +43,77 @@
             </div>
             <div class="product__footer">
                 {{-- <div class="product_stock flex items-center gap-2"> --}}
-                    <p>Stok :</p>
-                    <p class="text-[#FF7006]">{{ $product['stok'] }}</p>
-                    <p>Tersedia</p>
+                <p>Stok :</p>
+                <p class="text-[#FF7006]">{{ $product['stok'] }}</p>
+                <p>Tersedia</p>
+                <div class="flex items-center gap-2 mt-4 mb-8">
+                    <button type="button" id="decrement"
+                        class="px-3 py-1 bg-gray-200 rounded text-lg font-bold cursor-pointer">-</button>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1"
+                        max="{{ $product['stok'] }}" class="w-16 text-center border rounded" readonly>
+                    <button type="button" id="increment"
+                        class="px-3 py-1 bg-gray-200 rounded text-lg font-bold cursor-pointer">+</button>
                 </div>
                 <div class="product_button_cta">
-                    <x-button href="{{ route('checkout', ['id' => $product['id'] ?? 1]) }}"
-                        icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-24 w-full">
-                        Beli Sekarang
-                    </x-button>
+                    <div class="flex flex-col gap-4 w-full">
+                        <form action="{{ route('checkout', ['id' => $product['id'] ?? 1]) }}" method="GET" class="w-1/2"
+                            id="checkoutForm">
+                            <input type="hidden" name="quantity" id="checkout_quantity" value="1">
+                            <x-button type="submit" icon="{{ asset('assets/icons/arrow_right_white.svg') }}"
+                                class="w-full">
+                                Beli Sekarang
+                            </x-button>
+                        </form>
+                        <form action="{{ route('cart.add') }}" method="POST" class="w-1/2" id="cartForm">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product['id'] }}">
+                            <input type="hidden" name="quantity" id="cart_quantity" value="1">
+                            <input type="hidden" name="id_pelanggan" value="{{ auth()->user()->id ?? '' }}">
+                            <button type="submit"
+                                class="w-full flex items-center justify-center bg-white text-black border border-[#FF7006] hover:bg-[#FF7006] hover:text-white transition-colors duration-200 rounded py-2">
+                                Tambah ke Keranjang
+                            </button>
+                        </form>
+                    </div>
                 </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const decrement = document.getElementById('decrement');
+                        const increment = document.getElementById('increment');
+                        const quantity = document.getElementById('quantity');
+                        const checkoutQty = document.getElementById('checkout_quantity');
+                        const cartQty = document.getElementById('cart_quantity');
+                        const max = parseInt(quantity.max);
+
+                        function updateAllQtyInputs(val) {
+                            quantity.value = val;
+                            if (checkoutQty) checkoutQty.value = val;
+                            if (cartQty) cartQty.value = val;
+                        }
+
+                        decrement.addEventListener('click', function() {
+                            let val = parseInt(quantity.value);
+                            if (val > 1) {
+                                updateAllQtyInputs(val - 1);
+                            }
+                        });
+
+                        increment.addEventListener('click', function() {
+                            let val = parseInt(quantity.value);
+                            if (val < max) {
+                                updateAllQtyInputs(val + 1);
+                            }
+                        });
+
+                        // In case user changes input manually (if not readonly)
+                        quantity.addEventListener('input', function() {
+                            let val = parseInt(quantity.value);
+                            if (isNaN(val) || val < 1) val = 1;
+                            if (val > max) val = max;
+                            updateAllQtyInputs(val);
+                        });
+                    });
+                </script>
             </div>
         </div>
     </section>

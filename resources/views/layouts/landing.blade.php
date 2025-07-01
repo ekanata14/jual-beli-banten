@@ -16,7 +16,7 @@
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet"> -->
-    <!-- <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}"> -->
+    {{-- <!-- <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}"> --> --}}
 </head>
 
 <body>
@@ -53,8 +53,7 @@
                         </button>
                         <div
                             class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity z-50">
-                            <a href="#"
-                                class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Profil</a>
+                            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">Profil</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit"
@@ -178,7 +177,33 @@
 
         updateDots(); // Initialize dots
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('scripts')
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '{{ session('success') }}',
+                showConfirmButton: true,
+                confirmButtonColor: '#1C4ED8',
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('error') }}',
+                showConfirmButton: true,
+                confirmButtonColor: '#E02423',
+            });
+        </script>
+    @endif
 </body>
 
 </html>

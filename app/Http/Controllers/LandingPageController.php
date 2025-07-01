@@ -17,6 +17,7 @@ use App\Models\Transaksi;
 use App\Models\Pengiriman;
 use App\Models\Order;
 use App\Models\Produk;
+use App\Models\Keranjang;
 
 class LandingPageController extends Controller
 {
@@ -42,7 +43,9 @@ class LandingPageController extends Controller
     {
         $viewData = [
             'title' => 'Tentang Kami | Bhakti E Commerce',
-            'activePage' => 'product'
+            'activePage' => 'product',
+            'products' => Produk::orderBy('created_at', 'desc')
+                ->paginate(10)
         ];
         return view('landing-page.product', $viewData);
     }
@@ -59,10 +62,131 @@ class LandingPageController extends Controller
     {
         $viewData = [
             'title' => 'Keranjang Belanja | Bhakti E Commerce',
-            'activePage' => 'cart'
+            'activePage' => 'cart',
+            'datas' => Keranjang::where('id_user', auth()->user()->id)
+                ->with('produk')
+                ->get()
         ];
         return view('landing-page.cart', $viewData);
     }
+
+    public function addToCart(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $validatedData = $request->validate([
+                'product_id' => 'required|integer',
+                'quantity' => 'required|integer|min:1',
+            ]);
+
+            $validatedData['id_user'] = auth()->user()->id;
+            // Menggunakan model Keranjang
+            $cartItem = Keranjang::where([
+                ['id_produk', '=', $validatedData['product_id']],
+                ['id_user', '=', $validatedData['id_user']],
+            ])->first();
+
+            if ($cartItem) {
+                $cartItem->jumlah += $validatedData['quantity'];
+                $cartItem->updated_at = now();
+                $cartItem->save();
+            } else {
+                Keranjang::create([
+                    'id_produk' => $validatedData['product_id'],
+                    'jumlah' => $validatedData['quantity'],
+                    'id_user' => $validatedData['id_user'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            DB::commit();
+            return back()->with('success', 'Produk berhasil ditambahkan ke keranjang');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with(['error' => 'Gagal menambahkan ke keranjang: ' . $e->getMessage()]);
+        }
+    }
+
+    public function updateCart(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $validatedData = $request->validate([
+                'id' => 'required|integer',
+                'quantity' => 'required|integer|min:1',
+            ]);
+
+            $cartItem = Keranjang::where('id', $validatedData['id'])
+                ->where('id_user', auth()->user()->id)
+                ->with('produk')
+                ->first();
+
+            if ($cartItem) {
+                $cartItem->jumlah = $validatedData['quantity'];
+                $cartItem->updated_at = now();
+                $cartItem->save();
+
+                // Hitung ulang subtotal keranjang
+                $cartItems = Keranjang::where('id_user', auth()->user()->id)->with('produk')->get();
+                $totalPrice = 0;
+                $totalJumlah = 0;
+                foreach ($cartItems as $item) {
+                    $totalPrice += ($item->produk ? $item->produk->harga : 0) * $item->jumlah;
+                    $totalJumlah += $item->jumlah;
+                }
+
+                DB::commit();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Jumlah produk di keranjang berhasil diperbarui',
+                    'harga' => $cartItem->produk ? $cartItem->produk->harga : 0,
+                    'totalPrice' => $totalPrice,
+                    'totalJumlah' => $totalJumlah,
+                ]);
+            } else {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Keranjang tidak ditemukan atau tidak sesuai user.'
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function removeFromCart(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $validatedData = $request->validate([
+                'id' => 'required|integer',
+                'product_id' => 'required|integer',
+            ]);
+
+            $cartItem = Keranjang::where('id', $validatedData['id'])->first();
+
+            if ($cartItem) {
+                $cartItem->delete();
+                DB::commit();
+                return back()->with('success', 'Produk berhasil dihapus dari keranjang');
+            } else {
+                return back()->with('error', 'Produk tidak ditemukan di keranjang');
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with(['error' => 'Gagal menghapus dari keranjang: ' . $e->getMessage()]);
+        }
+    }
+
     public function detail_transaction()
     {
         $viewData = [
@@ -77,7 +201,58 @@ class LandingPageController extends Controller
             'snapToken' => null,
             'product' => Produk::find(request()->query('id')) ?: null
         ];
-        return view('landing-page.checkout', $viewData);
+        return view('landing-page.checkout.checkout-first', $viewData);
+    }
+
+    public function checkoutSecond()
+    {
+        $informasiAnda = [
+            'name' => request()->input('name'),
+            'email' => request()->input('email'),
+            'no_telp' => request()->input('no_telp')
+        ];
+        $viewData = [
+            'title' => 'Checkout Product | Bhakti E Commerce',
+            'snapToken' => null,
+            'product' => Produk::find(request()->query('id')) ?: null,
+            'informasiAnda' => $informasiAnda
+        ];
+        return view('landing-page.checkout.checkout-second', $viewData);
+    }
+
+    public function checkoutThird()
+    {
+        $informasiAnda = request()->input('informasiAnda', [
+            'name' => request()->input('name'),
+            'email' => request()->input('email'),
+            'no_telp' => request()->input('no_telp')
+        ]);
+        $informasiPenerima = [
+            'penerima_nama' => request()->input('penerima_nama'),
+            'penerima_no_telp' => request()->input('penerima_no_telp'),
+            'penerima_alamat' => request()->input('penerima_alamat'),
+            'penerima_kota' => request()->input('penerima_kota'),
+            'penerima_kode_pos' => request()->input('penerima_kode_pos'),
+            'penerima_kabupaten' => request()->input('penerima_kabupaten')
+        ];
+        $viewData = [
+            'title' => 'Checkout Product | Bhakti E Commerce',
+            'snapToken' => null,
+            'product' => Produk::find(1) ?: null,
+            'informasiAnda' => $informasiAnda,
+            'informasiPenerima' => $informasiPenerima
+        ];
+        return view('landing-page.checkout.checkout-third', $viewData);
+    }
+
+    public function checkoutFourth()
+    {
+        $viewData = [
+            'title' => 'Checkout Product | Bhakti E Commerce',
+            'snapToken' => null,
+            'product' => Produk::find(1) ?: null
+        ];
+        return view('landing-page.checkout.checkout-fourth', $viewData);
     }
 
     public function checkoutStore(Request $request)
@@ -176,9 +351,9 @@ class LandingPageController extends Controller
         $signatureKey = hash(
             'sha512',
             $request->order_id .
-                $request->status_code .
-                $request->gross_amount .
-                $serverKey
+            $request->status_code .
+            $request->gross_amount .
+            $serverKey
         );
 
         if ($signatureKey !== $request->signature_key) {

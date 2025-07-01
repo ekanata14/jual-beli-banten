@@ -46,6 +46,7 @@ class PelangganController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'alamat_pelanggan' => 'required|string',
+            'kode_pos' => 'required|string',
             'no_telp' => 'required|string|max:15',
             'password' => 'required|string|min:8|confirmed',
         ]);
@@ -64,6 +65,7 @@ class PelangganController extends Controller
                 'id_user' => $user->id, // Assuming id_user is not required for Pelanggan
                 'password' => bcrypt($validatedData['password']),
                 'alamat_pelanggan' => $validatedData['alamat_pelanggan'],
+                'kode_pos' => $validatedData['kode_pos'],
                 'no_telp' => $validatedData['no_telp'],
             ]);
             DB::commit();
@@ -106,6 +108,7 @@ class PelangganController extends Controller
             'alamat_pelanggan' => 'required|string',
             'email' => 'required|string|email|max:255',
             'password' => 'nullable|string|min:8|confirmed',
+            'kode_pos' => 'required|string',
             'no_telp' => 'required|string|max:15',
         ]);
 
@@ -130,6 +133,7 @@ class PelangganController extends Controller
             if (!empty($validatedData['password'])) {
                 $pelanggan->password = bcrypt($validatedData['password']);
             }
+            $pelanggan->kode_pos = $validatedData['kode_pos'];
             $pelanggan->save();
 
             DB::commit();

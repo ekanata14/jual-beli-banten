@@ -29,12 +29,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LandingPageController::class, 'index'])->name('home');
 Route::get('/about', [LandingPageController::class, 'about'])->name('about');
 Route::get('/product', [LandingPageController::class, 'product'])->name('product');
-Route::get('/product/detail', [LandingPageController::class, 'productDetail'])->name('productDetail');
+Route::get('/product/detail', [LandingPageController::class, 'productDetail'])->name('product.detail');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/cart', [LandingPageController::class, 'cart'])->name('cart');
+    Route::post('/cart/add', [LandingPageController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/update', [LandingPageController::class, 'updateCart'])->name('cart.update');
+    Route::post('/cart/remove', [LandingPageController::class, 'removeFromCart'])->name('cart.remove');
     Route::get('/detail/detail-transaction', [LandingPageController::class, 'detail_transaction'])->name('detail_transaction');
     Route::get('/checkout', [LandingPageController::class, 'checkout'])->name('checkout');
+    Route::get('/checkout/second', [LandingPageController::class, 'checkoutSecond'])->name('checkout.second');
+    Route::get('/checkout/third', [LandingPageController::class, 'checkoutThird'])->name('checkout.third');
+    Route::get('/checkout/fourth', [LandingPageController::class, 'checkoutFourth'])->name('checkout.fourth');
+    // Route::get('/checkout', [LandingPageController::class, 'checkout'])->name('checkout.third');
     Route::post('/checkout/store', [LandingPageController::class, 'checkoutStore'])->name('checkout.store');
     Route::get('/transaction/success', [LandingPageController::class, 'transaction_success'])->name('transaction_success');
     Route::get('/transaction/failed', [LandingPageController::class, 'transaction_failed'])->name('transaction_failed');

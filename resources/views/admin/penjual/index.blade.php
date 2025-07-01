@@ -21,6 +21,9 @@
                         Alamat
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Kode Pos
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         No Telp.
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -42,6 +45,9 @@
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->penjual->alamat_penjual }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $item->penjual->kode_pos }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->penjual->no_telp }}

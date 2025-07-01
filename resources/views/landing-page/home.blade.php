@@ -47,7 +47,7 @@
                         'image' => $product->foto ?? 'assets/images/product_img.png',
                         'rating' => $product->rating ?? 5,
                         'reviews' => $product->jumlah_review ?? 'Jumlah Review',
-                        'link' => route('productDetail', ['id' => $product->id ?? 1]),
+                        'link' => route('product.detail', ['id' => $product->id ?? 1]),
                     ])
                 @endforeach
             </div>

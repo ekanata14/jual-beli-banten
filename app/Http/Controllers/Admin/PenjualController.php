@@ -48,6 +48,7 @@ class PenjualController extends Controller
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:8|confirmed',
             'alamat_penjual' => 'required|string',
+            'kode_pos' => 'required|string',
             'no_telp' => 'required|string|max:15',
         ]);
 
@@ -65,6 +66,7 @@ class PenjualController extends Controller
                 'id_user' => $user->id,
                 'alamat_penjual' => $validatedData['alamat_penjual'],
                 'no_telp' => $validatedData['no_telp'],
+                'kode_pos' => $validatedData['kode_pos']
             ]);
 
             DB::commit();
@@ -107,6 +109,7 @@ class PenjualController extends Controller
             'email' => 'required|string|email|max:255',
             'password' => 'nullable|string|min:8|confirmed',
             'alamat_penjual' => 'required|string',
+            'kode_pos' => 'required|string',
             'no_telp' => 'required|string|max:15',
         ]);
 
@@ -124,6 +127,7 @@ class PenjualController extends Controller
             $penjual = Penjual::where('id_user', $validatedData['id'])->first();
             $penjual->alamat_penjual = $validatedData['alamat_penjual'];
             $penjual->no_telp = $validatedData['no_telp'];
+            $penjual->kode_pos = $validatedData['kode_pos'];
             $penjual->save();
 
             DB::commit();

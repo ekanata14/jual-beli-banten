@@ -22,7 +22,10 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $viewData = [
+            'title' => 'Register Page',
+        ];
+        return view('auth.register', $viewData);
     }
 
     /**
@@ -34,9 +37,10 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'alamat_pelanggan' => ['nullable', 'string', 'max:255'],
+            'kode_pos' => ['nullable', 'string', 'max:10'], // Optional postal code
             'phone_number' => ['nullable', 'string', 'max:15'],
         ]);
 
@@ -51,6 +55,7 @@ class RegisteredUserController extends Controller
         Pelanggan::create([
             'id_user' => $user->id,
             'alamat_pelanggan' => $request->alamat_pelanggan,
+            'kode_pos' => $request->kode_pos,
             'no_telp' => $request->phone_number,
         ]);
 

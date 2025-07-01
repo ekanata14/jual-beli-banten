@@ -10,7 +10,12 @@ class Keranjang extends Model
 
     protected $fillable = [
         'id_produk',
-        'id_pelanggan',
+        'id_user',
         'jumlah'
     ];
+
+    public function produk()
+    {
+        return $this->belongsTo(Produk::class, 'id_produk');
+    }
 }

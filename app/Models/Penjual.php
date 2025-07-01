@@ -12,6 +12,7 @@ class Penjual extends Model
     protected $fillable = [
         'id_user',
         'alamat_penjual',
+        'kode_pos',
         'no_telp',
     ];
 

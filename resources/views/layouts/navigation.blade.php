@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('admin.dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <img src="{{ asset('assets/icons/bhakti_logo.svg') }}" alt="bhakti-logo">
                     </a>
                 </div>
                 @if (auth()->user()->role == 'admin')

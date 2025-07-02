@@ -19,10 +19,9 @@
             <div class="checkout_container">
                 <h3 class="text-black">Informasi Penerima</h3>
                 <div class="informasi_data mt-9">
-                    @foreach ($informasiPenerima as $key => $value)
-                        <p>{{ ucfirst(str_replace('_', ' ', $key)) }}: {{ $value }}</p>
-                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                    @endforeach
+                    <p><strong>Nama Penerima:</strong> {{ $informasiPenerima->nama_penerima ?? '-' }}</p>
+                    <p><strong>Alamat Penerima:</strong> {{ $informasiPenerima->alamat_penerima ?? '-' }}</p>
+                    <p><strong>Telepon Penerima:</strong> {{ $informasiPenerima->telp_penerima ?? '-' }}</p>
                 </div>
             </div>
             <!-- pengiriman -->

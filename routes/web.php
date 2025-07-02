@@ -38,8 +38,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/cart/remove', [LandingPageController::class, 'removeFromCart'])->name('cart.remove');
     Route::get('/detail/detail-transaction', [LandingPageController::class, 'detail_transaction'])->name('detail_transaction');
     // Route::get('/checkout', [LandingPageController::class, 'checkout'])->name('checkout.third');
+
     Route::post('/checkout/store', [LandingPageController::class, 'checkoutStore'])->name('checkout.store');
-    Route::get('/transaction/success', [LandingPageController::class, 'transaction_success'])->name('transaction_success');
     Route::get('/transaction/failed', [LandingPageController::class, 'transaction_failed'])->name('transaction_failed');
 
     // Checkout Step
@@ -47,6 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout/second/{id}', [LandingPageController::class, 'checkoutSecond'])->name('checkout.second');
     Route::get('/checkout/third/{id}', [LandingPageController::class, 'checkoutThird'])->name('checkout.third');
     Route::get('/checkout/fourth/{id}', [LandingPageController::class, 'checkoutFourth'])->name('checkout.fourth');
+    Route::get('/transaction/success/{id}', [LandingPageController::class, 'transaction_success'])->name('transaction.success');
 
     // Cart Checkout
     Route::post('/cart/checkout', [LandingPageController::class, 'checkoutItem'])->name('cart.checkout');
@@ -60,6 +61,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Route for searchAreas
     Route::get('/search-areas', [LandingPageController::class, 'searchAreas'])->name('search.areas');
+
     // Route for searchAreas
     Route::get('/couriers', [LandingPageController::class, 'listCouriers'])->name('couriers');
     Route::post('/rates', [LandingPageController::class, 'getRates'])->name('rates');

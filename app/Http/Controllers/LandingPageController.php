@@ -453,14 +453,16 @@ class LandingPageController extends Controller
 
         $transaksi->save();
 
-        return response()->json(['message' => 'Notification received']);
+        return redirect()->route('transaction.success', ['id' => $transaksi->id])
+            ->with('success', 'Transaksi berhasil diproses');
     }
 
 
-    public function transaction_success()
+    public function transaction_success(string $id)
     {
         $viewData = [
             'title' => 'Transaksi Berhasil | Bhakti E Commerce',
+            'transaksi' => Transaksi::find($id) ?: null
         ];
         return view('landing-page.transaction-success', $viewData);
     }

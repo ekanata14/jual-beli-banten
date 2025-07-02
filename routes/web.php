@@ -65,6 +65,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route for searchAreas
     Route::get('/couriers', [LandingPageController::class, 'listCouriers'])->name('couriers');
     Route::post('/rates', [LandingPageController::class, 'getRates'])->name('rates');
+
+    // Route for History
+    Route::get('/history', [LandingPageController::class, 'history'])->name('history');
 });
 
 

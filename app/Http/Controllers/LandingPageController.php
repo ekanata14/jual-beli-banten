@@ -58,6 +58,20 @@ class LandingPageController extends Controller
         ];
         return view('landing-page.productDetail', $viewData);
     }
+
+    public function history()
+    {
+        $viewData = [
+            'title' => 'Riwayat Transaksi | Bhakti E Commerce',
+            'activePage' => 'history',
+            'datas' => Transaksi::where('id_user', auth()->user()->id)
+                ->with('pengiriman')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+        ];
+        
+        return view('landing-page.history', $viewData);
+    }
     public function cart()
     {
         $viewData = [
@@ -431,9 +445,9 @@ class LandingPageController extends Controller
         $signatureKey = hash(
             'sha512',
             $request->order_id .
-            $request->status_code .
-            $request->gross_amount .
-            $serverKey
+                $request->status_code .
+                $request->gross_amount .
+                $serverKey
         );
 
         if ($signatureKey !== $request->signature_key) {

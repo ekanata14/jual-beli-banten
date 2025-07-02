@@ -53,13 +53,13 @@
                             {{ $item->no_resi }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->Pengiriman->nama_penerima }}
+                            {{ $item->Pengiriman->nama_penerima ?? "-" }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->Pengiriman->alamat_penerima }}
+                            {{ $item->Pengiriman->alamat_penerima ?? "-" }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->Pengiriman->telp_penerima }}
+                            {{ $item->Pengiriman->telp_penerima ?? "-" }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->unit_durasi }}

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaksi extends Model
 {
+    use SoftDeletes;
     protected $table = 'tabel_transaksi';
 
     protected $fillable = [

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('password', 255);
             $table->string('role', 255);
             $table->timestamps();
+            $table->softDeletesTz('deleted_at', precision: 0);
         });
     }
 

@@ -57,7 +57,7 @@
                             <form action="{{ route('admin.penjual.destroy') }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <input type="hidden" name="id_admin" value="{{ $item->id_admin }}">
+                                <input type="hidden" name="id" value="{{ $item->id }}">
                                 <button type="button" class="btn-danger" onclick="confirmDelete(this)">Delete</button>
                                 <script>
                                     function confirmDelete(button) {

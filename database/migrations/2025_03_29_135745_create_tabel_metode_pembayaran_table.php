@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('tipe', 50);
             $table->string('kode', 50);
             $table->string('logo');
+            $table->softDeletesTz('deleted_at', precision: 0);
             $table->timestamps();
         });
     }

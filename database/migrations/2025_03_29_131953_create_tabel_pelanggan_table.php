@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('kode_pos')->nullable();
             $table->string('no_telp');
             $table->timestamps();
+            $table->softDeletesTz('deleted_at', precision: 0);
         });
     }
 

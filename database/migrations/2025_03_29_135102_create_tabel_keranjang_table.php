@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('jumlah');
+            $table->softDeletesTz('deleted_at', precision: 0);
             $table->timestamps();
         });
     }

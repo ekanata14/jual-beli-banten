@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nama_servis', 250);
             $table->string('rentan_durasi', 250);
             $table->string('unit_durasi', 250);
+            $table->softDeletesTz('deleted_at', precision: 0);
             $table->timestamps();
         });
     }

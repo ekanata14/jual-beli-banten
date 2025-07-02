@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('foto', 255);
             $table->integer('berat');
             $table->timestamps();
+            $table->softDeletesTz('deleted_at', precision: 0);
         });
     }
 

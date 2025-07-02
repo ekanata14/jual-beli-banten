@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->string('status_pengiriman', 250)->default('pending');
             $table->datetime('waktu_pengiriman')->nullable();
             $table->integer('biaya_pengiriman')->nullable();
+            $table->softDeletesTz('deleted_at', precision: 0);
             $table->timestamps();
         });
     }

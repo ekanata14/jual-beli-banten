@@ -30,9 +30,9 @@
                         <x-nav-link :href="route('admin.kurir.index')" :active="request()->routeIs('admin.kurir*')">
                             {{ __('Kurir') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.metode-pembayaran.index')" :active="request()->routeIs('admin.metode-pembayaran*')">
+                        {{-- <x-nav-link :href="route('admin.metode-pembayaran.index')" :active="request()->routeIs('admin.metode-pembayaran*')">
                             {{ __('Metode Pembayaran') }}
-                        </x-nav-link>
+                        </x-nav-link> --}}
                         <x-nav-link :href="route('admin.transaksi.index')" :active="request()->routeIs('admin.transaksi*')">
                             {{ __('Transaksi') }}
                         </x-nav-link>

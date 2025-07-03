@@ -56,7 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/cart/checkout/biaya-pengiriman', [LandingPageController::class, 'checkoutBiayaPengiriman'])->name('cart.checkout.biaya.pengiriman');
 
     Route::post('/checkout/snap', [LandingPageController::class, 'getSnapToken'])->name('checkout.snap');
-    Route::post('/checkout/callback', [LandingPageController::class, 'midtransCallback'])->name('checkout.callback');
+    Route::get('/checkout/callback', [LandingPageController::class, 'midtransCallback'])->name('checkout.callback');
 
     Route::get('/ongkir', [LandingPageController::class, 'getShippingOptions'])->name('ongkir');
 

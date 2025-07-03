@@ -50,7 +50,7 @@
                 <p class="text-black">Total</p>
                 <p class="text-black">Rp. {{ number_format($transaksi->total_harga, 0, ',', '.') }}</p>
             </div>
-            <x-button href="/produk" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-15">
+            <x-button href="{{ route('history.detail', $transaksi->id) }}" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-15">
                 Lihat Detail Transaksi
             </x-button>
         </div>

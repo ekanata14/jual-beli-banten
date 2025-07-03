@@ -51,7 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Cart Checkout
     Route::post('/cart/checkout', [LandingPageController::class, 'checkoutItem'])->name('cart.checkout');
-    Route::post('/cart/checkout/direct', [LandingPageController::class, 'checkoutItem'])->name('cart.checkout.direct');
+    Route::post('/cart/checkout/direct', [LandingPageController::class, 'checkoutDirect'])->name('cart.checkout.direct');
     Route::post('/cart/checkout/data', [LandingPageController::class, 'checkoutPengirimanData'])->name('cart.checkout.pengiriman.data');
     Route::post('/cart/checkout/biaya-pengiriman', [LandingPageController::class, 'checkoutBiayaPengiriman'])->name('cart.checkout.biaya.pengiriman');
 

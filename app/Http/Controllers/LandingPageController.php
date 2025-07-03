@@ -290,7 +290,7 @@ class LandingPageController extends Controller
     public function checkoutDirect(Request $request)
     {
         $validated = $request->validate([
-            'product_id' => 'required|integer|exists:produk,id',
+            'product_id' => 'required|integer',
             'quantity' => 'required|integer|min:1',
         ]);
 

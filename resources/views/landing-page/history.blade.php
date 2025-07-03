@@ -2,18 +2,41 @@
 @section('content')
     <div class="flex justify-between main_content py-40 px-36 gap-16">
         <div class="right_content bg-white py-6 px-5 w-[40%] rounded-md">
-            <h4 class="text-black ">Ringkasan</h4>
-            <div class="product_sub flex justify-between mt-8">
-                <p>Subtotal ({{ $datas->sum('jumlah') }} Produk</p>
-                {{-- <p id="subtotal">Rp. {{ number_format($totalPrice, 0, ',', '.') }}</p> --}}
+            <!-- Transaction History Card -->
+            <div class="transaction-history mt-10">
+                <h5 class="text-lg font-semibold mb-4">Riwayat Transaksi</h5>
+                @if($datas->count())
+                    <div class="space-y-4">
+                        @foreach($datas as $index => $data)
+                            <div class="bg-gray-50 p-4 rounded shadow flex flex-col gap-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium text-gray-700">No: {{ $index + 1 }}</span>
+                                    <span class="text-xs text-gray-500">{{ $data->created_at->format('d M Y') }}</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-sm">
+                                    <div>
+                                        <div><span class="font-semibold">Nama Pelanggan:</span> {{ $data->user->name ?? '-' }}</div>
+                                        <div><span class="font-semibold">Nomor Resi:</span> {{ $data->nomor_resi ?? '-' }}</div>
+                                        <div><span class="font-semibold">Nama Penerima:</span> {{ $data->nama_penerima ?? '-' }}</div>
+                                        <div><span class="font-semibold">Alamat Penerima:</span> {{ $data->alamat_penerima ?? '-' }}</div>
+                                    </div>
+                                    <div>
+                                        <div><span class="font-semibold">Telepon:</span> {{ $data->telepon ?? '-' }}</div>
+                                        <div><span class="font-semibold">Status Transaksi:</span> {{ $data->status_transaksi ?? '-' }}</div>
+                                        <div><span class="font-semibold">Status Pengiriman:</span> {{ $data->status_pengiriman ?? '-' }}</div>
+                                        <div><span class="font-semibold">Total Harga:</span> Rp. {{ number_format($data->total_harga, 0, ',', '.') }}</div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end">
+                                    <a href="{{ route('transaction.show', $data->id) }}" class="text-blue-600 hover:underline text-sm">Detail</a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="text-gray-500 text-center py-8">Belum ada riwayat transaksi.</div>
+                @endif
             </div>
-            <form id="checkout-form" action="{{ route('cart.checkout') }}" method="POST">
-                @csrf
-                <x-button type="button" id="checkout-btn" icon="{{ asset('assets/icons/arrow_right_white.svg') }}"
-                    class="mt-24">
-                    Checkout
-                </x-button>
-            </form>
             @push('scripts')
                 <script>
                     document.getElementById('checkout-btn').addEventListener('click', function(e) {
@@ -36,53 +59,5 @@
                 </script>
             @endpush
         </div>
-
-        @push('scripts')
-            <script>
-                document.querySelectorAll('.decrement-btn, .increment-btn').forEach(function(btn) {
-                    btn.addEventListener('click', function() {
-                        const id = this.getAttribute('data-id');
-                        const isIncrement = this.classList.contains('increment-btn');
-                        const jumlahSpan = document.querySelector('.counter[data-id="' + id + '"]');
-                        let jumlah = parseInt(jumlahSpan.textContent);
-                        if (isIncrement) {
-                            jumlah++;
-                        } else if (jumlah > 1) {
-                            jumlah--;
-                        }
-                        // Optionally, send AJAX to update on server
-                        fetch("{{ route('cart.update') }}", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                                },
-                                body: JSON.stringify({
-                                    id: id,
-                                    quantity: jumlah
-                                })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    jumlahSpan.textContent = jumlah;
-                                    // Update item total
-                                    const harga = data.harga;
-                                    const itemTotal = jumlah * harga;
-                                    document.querySelector('.item-total[data-id="' + id + '"]').textContent =
-                                        'Total: Rp. ' + itemTotal.toLocaleString('id-ID');
-                                    // Update subtotal
-                                    document.getElementById('subtotal').textContent = 'Rp. ' + data.totalPrice
-                                        .toLocaleString('id-ID');
-                                    // Update subtotal product count
-                                    document.querySelector('.product_sub p').textContent =
-                                        `Subtotal (${data.totalJumlah} Produk)`;
-                                }
-                            });
-                    });
-                });
-            </script>
-        @endpush
-
     </div>
 @endsection

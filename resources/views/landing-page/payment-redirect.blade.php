@@ -6,10 +6,10 @@
         window.onload = function() {
             snap.pay('{{ $snapToken }}', {
                 onSuccess: function(result) {
-                    window.location.href = '/transaction/success';
+                    window.location.href = '/transaction/success/' + '{{ $transaksi->id }}';
                 },
                 onPending: function(result) {
-                    window.location.href = '/transaction/pending';
+                    window.location.href = '/transaction/pending/' + '{{ $transaksi->id }}';
                 },
                 onError: function(result) {
                     alert('Payment error');

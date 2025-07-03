@@ -66,6 +66,7 @@
             @empty
                 <div class="text-gray-500 text-center py-8">Tidak ada produk dalam transaksi ini.</div>
             @endforelse
+            <h3 class="text-black font-bold mt-4">{{ $transaksi->invoice_number }}</h3>
             <div class="product_sub flex justify-between mt-4">
                 <p>Subtotal</p>
                 <p class="text-black">Rp. {{ number_format($subtotal, 0, ',', '.') }}</p>

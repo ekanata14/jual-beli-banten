@@ -39,7 +39,7 @@
                     Lihat Semua Produk
                 </x-button>
             </div>
-            <div class="home_product_wrapper flex items-center self-stretch gap-6">
+            <div class="home_product_wrapper grid-cols-1 md:grid grid-cols-2 xl:grid-cols-4 items-center self-stretch gap-6">
                 @foreach ($products as $product)
                     @include('components.product-card', [
                         'name' => $product->nama_produk ?? 'Nama Produk',

@@ -40,7 +40,7 @@
                             required maxlength="250" />
                     </div>
                     <!-- input kota_penerima -->
-                    <div class="mt-4">
+                    {{-- <div class="mt-4">
                         <label for="kota_penerima">Kota Penerima</label>
                         <input type="text" name="kota_penerima" id="kota_penerima"
                             class="block w-full p-4 ps-10 text-sm placeholder-gray-300 text-gray-900 border border-gray-50 rounded-lg bg-gray-50 focus:ring-amber-800 focus:border-broring-amber-800 mt-3"
@@ -55,7 +55,7 @@
                             placeholder="Masukan Kabupaten Penerima"
                             value="{{ old('kabupaten_penerima', auth()->user()?->pelanggan?->kabupaten ?? '') }}"
                             maxlength="100" />
-                    </div>
+                    </div> --}}
                     <!-- input telp_penerima -->
                     <div class="mt-4">
                         <label for="telp_penerima">Telepon Penerima</label>

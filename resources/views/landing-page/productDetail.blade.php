@@ -56,24 +56,69 @@
                 </div>
                 <div class="product_button_cta">
                     <div class="flex flex-col gap-4 w-full">
-                        <form action="{{ route('checkout', ['id' => $product['id'] ?? 1]) }}" method="GET" class="w-1/2"
-                            id="checkoutForm">
+                        <form action="{{ route('cart.checkout.direct') }}" method="POST" class="w-full" id="checkoutForm">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product['id'] }}">
                             <input type="hidden" name="quantity" id="checkout_quantity" value="1">
                             <x-button type="submit" icon="{{ asset('assets/icons/arrow_right_white.svg') }}"
-                                class="w-full">
+                                class="w-full" id="checkoutBtn">
                                 Beli Sekarang
                             </x-button>
                         </form>
-                        <form action="{{ route('cart.add') }}" method="POST" class="w-1/2" id="cartForm">
+                        <form action="{{ route('cart.add') }}" method="POST" class="w-full" id="cartForm">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product['id'] }}">
                             <input type="hidden" name="quantity" id="cart_quantity" value="1">
                             <input type="hidden" name="id_pelanggan" value="{{ auth()->user()->id ?? '' }}">
                             <button type="submit"
-                                class="w-full flex items-center justify-center bg-white text-black border border-[#FF7006] hover:bg-[#FF7006] hover:text-white transition-colors duration-200 rounded py-2 cursor-pointer">
+                                class="w-full flex items-center justify-center bg-white text-black border border-[#FF7006] hover:bg-[#FF7006] hover:text-white transition-colors duration-200 rounded py-2 cursor-pointer"
+                                id="cartBtn">
                                 Tambah ke Keranjang
                             </button>
                         </form>
+                        {{-- SweetAlert2 --}}
+                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Checkout confirmation
+                                const checkoutForm = document.getElementById('checkoutForm');
+                                const checkoutBtn = document.getElementById('checkoutBtn');
+                                checkoutBtn.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    Swal.fire({
+                                        title: 'Konfirmasi Pembelian',
+                                        text: 'Apakah Anda yakin ingin membeli produk ini sekarang?',
+                                        icon: 'question',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'Ya, Beli Sekarang',
+                                        cancelButtonText: 'Batal'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            checkoutForm.submit();
+                                        }
+                                    });
+                                });
+
+                                // Add to cart confirmation
+                                const cartForm = document.getElementById('cartForm');
+                                const cartBtn = document.getElementById('cartBtn');
+                                cartBtn.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    Swal.fire({
+                                        title: 'Tambah ke Keranjang',
+                                        text: 'Apakah Anda ingin menambah produk ini ke keranjang?',
+                                        icon: 'question',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'Ya, Tambahkan',
+                                        cancelButtonText: 'Batal'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            cartForm.submit();
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
                     </div>
                 </div>
                 <script>

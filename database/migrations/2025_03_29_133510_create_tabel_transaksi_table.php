@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('invoice_number')->unique();
             $table->decimal('total_harga', 10, 2);
             $table->string('status', 50);
             $table->enum('metode_pembayaran', ['transfer', 'cod']);

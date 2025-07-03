@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Admin;
 use App\Models\Penjual;
 use App\Models\Pelanggan;
+use App\Models\Produk;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -44,6 +45,18 @@ class DatabaseSeeder extends Seeder
             "kode_pos" => "80226",
             "no_telp" => "081234567890"
         ]);
+        for ($i = 1; $i <= 8; $i++) {
+            Produk::create([
+                "id_user" => $penjual->id,
+                "nama_produk" => "Produk $i",
+                "deskripsi_produk" => "Deskripsi Produk $i",
+                "harga" => 100000 * $i,
+                "stok" => 10 * $i,
+                "berat" => 1000,
+                "kategori" => "Upacara",
+                "foto" => "produk/produk.jpg",
+            ]);
+        }
 
         $pelanggan = User::create([
             "name" => "Pelanggan 1",

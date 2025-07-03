@@ -1,34 +1,68 @@
 @extends('layouts.landing')
 @section('content')
-    <div class="flex justify-between main_content py-40 px-36 gap-16">
-        <div class="right_content bg-white py-6 px-5 w-[40%] rounded-md">
+    <div class="flex main_content py-40 px-36 gap-16">
+        <div class="bg-white py-6 px-5 w-full rounded-md">
             <!-- Transaction History Card -->
             <div class="transaction-history mt-10">
                 <h5 class="text-lg font-semibold mb-4">Riwayat Transaksi</h5>
-                @if($datas->count())
+                @if ($datas->count())
                     <div class="space-y-4">
-                        @foreach($datas as $index => $data)
-                            <div class="bg-gray-50 p-4 rounded shadow flex flex-col gap-2">
-                                <div class="flex justify-between items-center">
-                                    <span class="font-medium text-gray-700">No: {{ $index + 1 }}</span>
-                                    <span class="text-xs text-gray-500">{{ $data->created_at->format('d M Y') }}</span>
+                        @foreach ($datas as $item)
+                            <div
+                                class="p-6 bg-white rounded-lg shadow flex flex-col md:flex-row md:items-center md:justify-between">
+                                <div class="flex flex-col gap-1">
+                                    <a href="{{ route('history.detail', $item->id) }}"
+                                        class="text-lg font-semibold text-blue-600 hover:underline">{{ $item->invoice_number ?? '-' }}</a>
+                                    <span
+                                        class="text-sm text-gray-500">{{ $item->created_at ? $item->created_at->format('d M Y') : '-' }}</span>
                                 </div>
-                                <div class="grid grid-cols-2 gap-2 text-sm">
-                                    <div>
-                                        <div><span class="font-semibold">Nama Pelanggan:</span> {{ $data->user->name ?? '-' }}</div>
-                                        <div><span class="font-semibold">Nomor Resi:</span> {{ $data->nomor_resi ?? '-' }}</div>
-                                        <div><span class="font-semibold">Nama Penerima:</span> {{ $data->nama_penerima ?? '-' }}</div>
-                                        <div><span class="font-semibold">Alamat Penerima:</span> {{ $data->alamat_penerima ?? '-' }}</div>
-                                    </div>
-                                    <div>
-                                        <div><span class="font-semibold">Telepon:</span> {{ $data->telepon ?? '-' }}</div>
-                                        <div><span class="font-semibold">Status Transaksi:</span> {{ $data->status_transaksi ?? '-' }}</div>
-                                        <div><span class="font-semibold">Status Pengiriman:</span> {{ $data->status_pengiriman ?? '-' }}</div>
-                                        <div><span class="font-semibold">Total Harga:</span> Rp. {{ number_format($data->total_harga, 0, ',', '.') }}</div>
-                                    </div>
+
+                                <div class="mt-4 md:mt-0 md:text-center">
+                                    <p class="text-sm text-gray-500">
+                                        <span
+                                            class="font-medium text-gray-900">{{ $item->orders->sum('jumlah') ?? '-' }}</span>
+                                        items
+                                    </p>
+                                    <p class="text-sm text-gray-500">
+                                        <span class="font-medium text-gray-900">IDR
+                                            {{ number_format($item->total_harga ?? 0, 0, ',', '.') }}</span>
+                                    </p>
                                 </div>
-                                <div class="flex justify-end">
-                                    <a href="{{ route('transaction.show', $data->id) }}" class="text-blue-600 hover:underline text-sm">Detail</a>
+
+                                <div class="mt-4 md:mt-0">
+                                    @if ($item->status === 'pending')
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded bg-yellow-100 text-yellow-800 text-xs font-medium">
+                                            Pending
+                                        </span>
+                                    @elseif ($item->status === 'denied')
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded bg-red-100 text-red-800 text-xs font-medium">
+                                            Denied
+                                        </span>
+                                    @elseif ($item->status === 'waiting')
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded bg-blue-100 text-blue-800 text-xs font-medium">
+                                            Waiting
+                                        </span>
+                                    @elseif ($item->status === 'paid')
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded bg-green-100 text-green-800 text-xs font-medium">
+                                            Paid
+                                        </span>
+                                    @else
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded bg-gray-100 text-gray-800 text-xs font-medium">
+                                            {{ ucfirst($item->status_pembayaran ?? 'Unknown') }}
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div class="mt-4 md:mt-0">
+                                    <a href="{{ route('history.detail', $item->id) }}"
+                                        class="inline-block px-4 py-2 border border-gray-300 text-sm rounded-lg hover:bg-gray-100">
+                                        Detail
+                                    </a>
                                 </div>
                             </div>
                         @endforeach

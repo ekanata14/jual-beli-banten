@@ -40,17 +40,17 @@
                                 @csrf
                                 @method('DELETE')
                                 <input type="hidden" name="id_admin" value="{{ $item->id_admin }}">
-                                <button type="button" class="btn-danger" onclick="confirmDelete(this)">Delete</button>
+                                <button type="button" class="btn-danger" onclick="confirmInactive(this)">Nonaktifkan</button>
                                 <script>
-                                    function confirmDelete(button) {
+                                    function confirmInactive(button) {
                                         Swal.fire({
-                                            title: 'Are you sure?',
-                                            text: "You won't be able to revert this!",
+                                            title: 'Nonaktifkan Admin?',
+                                            text: "Admin akan dinonaktifkan dan tidak dapat mengakses sistem.",
                                             icon: 'warning',
                                             showCancelButton: true,
                                             confirmButtonColor: '#d33',
                                             cancelButtonColor: '#3085d6',
-                                            confirmButtonText: 'Yes, delete it!'
+                                            confirmButtonText: 'Ya, Nonaktifkan!'
                                         }).then((result) => {
                                             if (result.isConfirmed) {
                                                 button.closest('form').submit();

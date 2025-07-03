@@ -69,8 +69,22 @@ class LandingPageController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
         ];
-        
+
         return view('landing-page.history', $viewData);
+    }
+
+    public function historyDetail(string $id)
+    {
+        $viewData = [
+            'title' => 'Riwayat Transaksi | Bhakti E Commerce',
+            'activePage' => 'history',
+            'data' => Transaksi::where('id', $id)
+                ->with('pengiriman')
+                ->orderBy('created_at', 'desc')
+                ->first()
+        ];
+
+        return view('landing-page.detail-transaction', $viewData);
     }
     public function cart()
     {
@@ -94,12 +108,24 @@ class LandingPageController extends Controller
                 'quantity' => 'required|integer|min:1',
             ]);
 
+            $produk = Produk::find($validatedData['product_id']);
+            if (!$produk) {
+                return back()->with('error', 'Produk tidak ditemukan');
+            }
+
+
             $validatedData['id_user'] = auth()->user()->id;
             // Menggunakan model Keranjang
             $cartItem = Keranjang::where([
                 ['id_produk', '=', $validatedData['product_id']],
                 ['id_user', '=', $validatedData['id_user']],
             ])->first();
+
+            $produk->stok -= $validatedData['quantity'];
+            if ($produk->stok < 0) {
+                return back()->with('error', 'Stok produk tidak mencukupi');
+            }
+            $produk->save();
 
             if ($cartItem) {
                 $cartItem->jumlah += $validatedData['quantity'];
@@ -228,13 +254,16 @@ class LandingPageController extends Controller
                 $totalHarga += ($item->produk ? $item->produk->harga : 0) * $item->jumlah;
             }
 
-            $transaksi = new Transaksi();
-            $transaksi->id_user = auth()->user()->id;
-            $transaksi->total_harga = $totalHarga;
-            $transaksi->status = 'pending';
-            $transaksi->metode_pembayaran = 'transfer';
-            $transaksi->tanggal_transaksi = now();
-            $transaksi->save();
+            $invoiceNumber = 'INV-' . time() . '-' . auth()->user()->id . '-' . rand(1000, 9999);
+
+            $transaksi = Transaksi::create([
+                'id_user' => auth()->user()->id,
+                'invoice_number' => $invoiceNumber,
+                'total_harga' => $totalHarga,
+                'status' => 'pending',
+                'metode_pembayaran' => 'transfer',
+                'tanggal_transaksi' => now(),
+            ]);
 
             // Simpan setiap item keranjang ke tabel order
             foreach ($cartItems as $item) {
@@ -248,6 +277,56 @@ class LandingPageController extends Controller
 
             // Kosongkan keranjang user
             Keranjang::where('id_user', auth()->user()->id)->delete();
+
+            DB::commit();
+
+            return redirect()->route('checkout', $transaksi->id)->with('success', 'Checkout berhasil, silakan isi data pengiriman.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal melakukan checkout: ' . $e->getMessage());
+        }
+    }
+
+    public function checkoutDirect(Request $request)
+    {
+        $validated = $request->validate([
+            'product_id' => 'required|integer|exists:produk,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $produk = Produk::find($validated['product_id']);
+        if (!$produk) {
+            return redirect()->back()->with('error', 'Produk tidak ditemukan.');
+        }
+
+        if ($produk->stok < $validated['quantity']) {
+            return redirect()->back()->with('error', 'Stok produk tidak mencukupi.');
+        }
+
+        DB::beginTransaction();
+        try {
+            $totalHarga = $produk->harga * $validated['quantity'];
+            $invoiceNumber = 'INV-' . time() . '-' . auth()->user()->id . '-' . rand(1000, 9999);
+
+            $transaksi = Transaksi::create([
+                'id_user' => auth()->user()->id,
+                'invoice_number' => $invoiceNumber,
+                'total_harga' => $totalHarga,
+                'status' => 'pending',
+                'metode_pembayaran' => 'transfer',
+                'tanggal_transaksi' => now(),
+            ]);
+
+            Order::create([
+                'id_transaksi' => $transaksi->id,
+                'id_produk' => $produk->id,
+                'jumlah' => $validated['quantity'],
+                'subtotal' => $totalHarga,
+            ]);
+
+            // Kurangi stok produk
+            $produk->stok -= $validated['quantity'];
+            $produk->save();
 
             DB::commit();
 
@@ -414,7 +493,7 @@ class LandingPageController extends Controller
 
             $params = [
                 'transaction_details' => [
-                    'order_id' => 'TRX-' . $transaksi->id,
+                    'order_id' => $transaksi->invoice_number,
                     'gross_amount' => $transaksi->total_harga,
                 ],
                 'customer_details' => [
@@ -445,9 +524,9 @@ class LandingPageController extends Controller
         $signatureKey = hash(
             'sha512',
             $request->order_id .
-                $request->status_code .
-                $request->gross_amount .
-                $serverKey
+            $request->status_code .
+            $request->gross_amount .
+            $serverKey
         );
 
         if ($signatureKey !== $request->signature_key) {
@@ -467,7 +546,7 @@ class LandingPageController extends Controller
 
         $transaksi->save();
 
-        return redirect()->route('transaction.success', ['id' => $transaksi->id])
+        return redirect()->route('transaction.success', $transaksi->id)
             ->with('success', 'Transaksi berhasil diproses');
     }
 

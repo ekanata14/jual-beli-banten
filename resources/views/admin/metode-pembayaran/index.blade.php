@@ -52,17 +52,17 @@
                                 @csrf
                                 @method('DELETE')
                                 <input type="hidden" name="id_metode" value="{{ $item->id_metode }}">
-                                <button type="button" class="btn-danger" onclick="confirmDelete(this)">Delete</button>
+                                <button type="button" class="btn-danger" onclick="confirmInactive(this)">Nonaktifkan</button>
                                 <script>
-                                    function confirmDelete(button) {
+                                    function confirmInactive(button) {
                                         Swal.fire({
-                                            title: 'Are you sure?',
-                                            text: "You won't be able to revert this!",
+                                            title: 'Nonaktifkan metode pembayaran?',
+                                            text: "Metode pembayaran akan dinonaktifkan dan tidak dapat digunakan.",
                                             icon: 'warning',
                                             showCancelButton: true,
                                             confirmButtonColor: '#d33',
                                             cancelButtonColor: '#3085d6',
-                                            confirmButtonText: 'Yes, delete it!'
+                                            confirmButtonText: 'Ya, nonaktifkan'
                                         }).then((result) => {
                                             if (result.isConfirmed) {
                                                 button.closest('form').submit();

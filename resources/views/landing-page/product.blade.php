@@ -42,12 +42,12 @@
             <p>(Harga Tertinggi)</p>
         </div>
     </section>
-    <section class="product_products_wrapper w-full flex items-center self-stretch gap-6 px-10 mb-14">
+    <section class="product_products_wrapper w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 items-center self-stretch gap-6 px-10 mb-14">
         @foreach ($products as $product)
             @include('components.product-card', [
-                'name' => $product->name ?? 'Nama Produk',
-                'price' => $product->price
-                    ? 'Rp. ' . number_format($product->price, 0, ',', '.') . '/PCS'
+                'name' => $product->nama_produk ?? 'Nama Produk',
+                'price' => $product->harga
+                    ? 'Rp. ' . number_format($product->harga, 0, ',', '.') . '/PCS'
                     : 'Rp. 2,000/PCS',
                 'image' => $product->foto ?? 'assets/images/product_img.png',
                 'rating' => $product->rating ?? 5,

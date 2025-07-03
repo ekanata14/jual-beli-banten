@@ -533,8 +533,7 @@ class LandingPageController extends Controller
             return response()->json(['message' => 'Invalid signature'], 403);
         }
 
-        $orderId = str_replace('TRX-', '', $request->order_id);
-        $transaksi = Transaksi::find($orderId);
+        $transaksi = Transaksi::find($request->order_id);
 
         if ($request->transaction_status === 'settlement') {
             $transaksi->status = 'paid';

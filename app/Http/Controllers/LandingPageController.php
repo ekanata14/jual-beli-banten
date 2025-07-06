@@ -775,38 +775,51 @@ class LandingPageController extends Controller
 
     public function midtransCallbackAPI(Request $request)
     {
-        Log::info('Midtrans Callback Request:', $request->all());
-        $serverKey = config('services.midtrans.serverKey');
-        $signatureKey = hash(
-            'sha512',
-            $request->order_id .
-                $request->status_code .
-                $request->gross_amount .
-                $serverKey
-        );
+        try {
+            Log::info('Midtrans Callback Request:', $request->all());
+            $serverKey = config('services.midtrans.serverKey');
+            $signatureKey = hash(
+                'sha512',
+                $request->order_id .
+                    $request->status_code .
+                    $request->gross_amount .
+                    $serverKey
+            );
 
-        if ($signatureKey !== $request->signature_key) {
-            return response()->json(['message' => 'Invalid signature'], 403);
+            if ($signatureKey !== $request->signature_key) {
+                return response()->json(['message' => 'Invalid signature'], 403);
+            }
+
+            $transaksi = Transaksi::find($request->order_id);
+
+            if (!$transaksi) {
+                return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+            }
+
+            if ($request->transaction_status === 'settlement') {
+                $transaksi->status = 'paid';
+            } elseif ($request->transaction_status === 'pending') {
+                $transaksi->status = 'pending';
+            } elseif ($request->transaction_status === 'expire') {
+                $transaksi->status = 'expired';
+            }
+
+            $transaksi->save();
+
+            return response()->json([
+                'success' => true,
+                'code' => 200,
+                'message' => 'Transaksi berhasil diproses',
+                'transaksi' => $transaksi
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Midtrans Callback Error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'code' => 500,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
         }
-
-        $transaksi = Transaksi::find($request->order_id);
-
-        if ($request->transaction_status === 'settlement') {
-            $transaksi->status = 'paid';
-        } elseif ($request->transaction_status === 'pending') {
-            $transaksi->status = 'pending';
-        } elseif ($request->transaction_status === 'expire') {
-            $transaksi->status = 'expired';
-        }
-
-        $transaksi->save();
-
-        return response()->json([
-            'success' => true,
-            'code' => 200,
-            'message' => 'Transaksi berhasil diproses',
-            'transaksi' => $transaksi
-        ]);
     }
 
 

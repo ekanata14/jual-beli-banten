@@ -109,8 +109,8 @@
                                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                                 },
                                 body: JSON.stringify({
-                                    origin_postal_code: "{{ $transaksi->orders[0]->Produk->user->penjual->kode_pos }} ",
-                                    destination_postal_code: "{{ auth()->user()->pelanggan->kode_pos }}"
+                                    origin_latitude: "{{ $transaksi->orders[0]->produk->user->penjual->latitude }}",
+                                    origin_longitude: "{{ $transaksi->orders[0]->produk->user->penjual->longitude }}",
                                 })
                             })
                             .then(response => response.json())

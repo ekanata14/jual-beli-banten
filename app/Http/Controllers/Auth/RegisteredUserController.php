@@ -40,6 +40,8 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'alamat_pelanggan' => ['nullable', 'string', 'max:255'],
+            'latitude' => ['nullable', 'numeric'], // Optional latitude
+            'longitude' => ['nullable', 'numeric'], // Optional longitude
             'kode_pos' => ['nullable', 'string', 'max:10'], // Optional postal code
             'phone_number' => ['nullable', 'string', 'max:15'],
         ]);
@@ -55,6 +57,8 @@ class RegisteredUserController extends Controller
         Pelanggan::create([
             'id_user' => $user->id,
             'alamat_pelanggan' => $request->alamat_pelanggan,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
             'kode_pos' => $request->kode_pos,
             'no_telp' => $request->phone_number,
         ]);

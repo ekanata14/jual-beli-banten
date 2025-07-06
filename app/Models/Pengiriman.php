@@ -22,4 +22,9 @@ class Pengiriman extends Model
         'waktu_pengiriman',
         'biaya_pengiriman',
     ];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'id_order', 'id');
+    }
 }

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->text('alamat_penjual');
+            $table->string('latitude')->nullable(); // Optional latitude
+            $table->string('longitude')->nullable(); // Optional longitude
             $table->string('kode_pos')->nullable();
             $table->string('no_telp');
             $table->timestamps();

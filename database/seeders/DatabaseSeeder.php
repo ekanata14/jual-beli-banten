@@ -42,6 +42,8 @@ class DatabaseSeeder extends Seeder
         Penjual::create([
             "id_user" => $penjual->id,
             "alamat_penjual" => "Jl. Penjual 1",
+            'latitude' => -6.123456,
+            'longitude' => 106.123456,
             "kode_pos" => "80226",
             "no_telp" => "081234567890"
         ]);

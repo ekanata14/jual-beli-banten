@@ -16,29 +16,31 @@ class BiteshipService
         $this->endpoint = config('services.biteship.endpoint');
     }
 
-    public function getRates($origin_postal_code, $destination_postal_code)
+    public function getRatesByCoordinates($origin_latitude, $origin_longitude, $destination_latitude, $destination_longitude)
     {
-        $item = [
+        $items = [
             [
-                "name" => "Shoes",
-                "description" => "Black colored size 45",
-                "value" => 199000,
-                "length" => 30,
-                "width" => 15,
-                "height" => 20,
-                "weight" => 200,
-                "quantity" => 2
+                "name" => "Polaris Coffee Cream 330ml isi 3 pcs",
+                "description" => "",
+                "length" => 10,
+                "width" => 10,
+                "height" => 0,
+                "weight" => 1000,
+                "value" => 285600,
+                "quantity" => 1
             ]
         ];
-        $couriers = "gojek,grab";
+        $couriers = "grab,gojek";
         $response = Http::withHeaders([
             'Authorization' => "Bearer {$this->apiKey}",
             'Content-Type' => 'application/json',
         ])->post("{$this->endpoint}/rates/couriers", [
-            'origin_postal_code' => $origin_postal_code,
-            'destination_postal_code' => $destination_postal_code,
+            'origin_latitude' => $origin_latitude,
+            'origin_longitude' => $origin_longitude,
+            'destination_latitude' => $destination_latitude,
+            'destination_longitude' => $destination_longitude,
             'couriers' => $couriers,
-            'items' => $item,
+            'items' => $items,
         ]);
 
         return $response->json();

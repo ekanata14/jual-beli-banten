@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Penjual extends Model
-{ 
+{
     use SoftDeletes;
     protected $table = "tabel_penjual";
     protected $guard = 'penjual';
@@ -14,6 +14,8 @@ class Penjual extends Model
     protected $fillable = [
         'id_user',
         'alamat_penjual',
+        'latitude',
+        'longitude',
         'kode_pos',
         'no_telp',
     ];

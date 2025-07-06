@@ -520,6 +520,9 @@ class LandingPageController extends Controller
         $viewData = [
             'title' => 'Checkout Product | Bhakti E Commerce',
             'snapToken' => null,
+            'product' => Produk::where('id', $pengiriman->order->id_produk)
+                ->orderBy('created_at', 'desc')
+                ->first(),
             'transaksi' => Transaksi::where('id', $id)
                 ->orderBy('created_at', 'desc')
                 ->first(),
@@ -657,13 +660,25 @@ class LandingPageController extends Controller
 
     public function getRates(Request $request, BiteshipService $biteship)
     {
-        $origin_postal_code = $request->input('origin_postal_code');
-        $destination_postal_code = $request->input('destination_postal_code');
-        // $couriers = $request->input('couriers', []);
-        // $itemId = $request->input('item_id');
+        // Get origin latitude and longitude from request
+        $origin_latitude = $request->input('origin_latitude');
+        $origin_longitude = $request->input('origin_longitude');
 
+        // Get destination latitude and longitude from authenticated user
+        $user = auth()->user();
+        $destination_latitude = $user->pelanggan->latitude ?? null;
+        $destination_longitude = $user->pelanggan->longitude ?? null;
 
-        $rates = $biteship->getRates($origin_postal_code, $destination_postal_code);
+        if (is_null($origin_latitude) || is_null($origin_longitude) || is_null($destination_latitude) || is_null($destination_longitude)) {
+            return response()->json(['error' => 'Latitude and longitude are required.'], 400);
+        }
+
+        $rates = $biteship->getRatesByCoordinates(
+            $origin_latitude,
+            $origin_longitude,
+            $destination_latitude,
+            $destination_longitude
+        );
 
         return response()->json($rates);
     }

@@ -21,6 +21,12 @@
                         Alamat
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Latitude
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Longitude
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Kode Pos
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -47,6 +53,12 @@
                             {{ $item->penjual->alamat_penjual }}
                         </td>
                         <td class="px-6 py-4">
+                            {{ $item->penjual->latitude }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ $item->penjual->longitude }}
+                        </td>
+                        <td class="px-6 py-4">
                             {{ $item->penjual->kode_pos }}
                         </td>
                         <td class="px-6 py-4">
@@ -57,7 +69,8 @@
                             <form action="{{ route('admin.penjual.destroy', $item->id) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
-                                <button type="button" class="btn-danger" onclick="confirmInactive(this)">Nonaktifkan</button>
+                                <button type="button" class="btn-danger"
+                                    onclick="confirmInactive(this)">Nonaktifkan</button>
                                 <script>
                                     function confirmInactive(button) {
                                         Swal.fire({

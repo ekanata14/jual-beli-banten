@@ -6,7 +6,7 @@
                 <img src="../assets/icons/bhakti_logo.svg" alt="">
             </div>
             <!-- form section -->
-            <div class="flex flex-col gap-15 px-15">
+            <div class="flex flex-col gap-15 px-0 md:px-15">
                 <div class="text-center">
                     <h3 class="text-black">Masuk Ke Akun Anda</h3>
                     <p class="mt-1">Selamat datang kembali di <span class="text-[#FF9D00]">Bhakti👋</span></p>
@@ -48,7 +48,7 @@
                 </form>
             </div>
         </div>
-        <div class="order-1 lg:order-2 flex justify-center items-center w-full">
+        <div class="order-1 lg:order-2 hidden md:flex justify-center items-center w-full">
             <img src="../assets/images/login_img.png" alt="">
         </div>
     </div>

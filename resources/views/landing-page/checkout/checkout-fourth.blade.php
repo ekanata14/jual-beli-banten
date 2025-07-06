@@ -1,7 +1,8 @@
 @extends('layouts.landing')
 @section('content')
-    <div class="flex justify-between main_content py-40 px-36 gap-16">
-        <div class="left_content w-[60%]">
+    <!-- AOS CSS -->
+    <div class="main_content py-20 px-4 md:py-40 md:px-36 gap-8 md:gap-16 flex flex-col md:flex-row justify-between">
+        <div class="left_content w-full md:w-[60%]" data-aos="fade-up">
             <!-- informasi anda -->
             <div class="checkout_container">
                 <h3 class="text-black">Informasi Anda</h3>
@@ -13,7 +14,7 @@
             </div>
 
             <!-- informasi penerima -->
-            <div class="checkout_container">
+            <div class="checkout_container mt-8">
                 <h3 class="text-black">Informasi Penerima</h3>
                 <div class="informasi_data mt-9">
                     <p><strong>Nama Penerima:</strong> {{ $informasiPenerima->nama_penerima ?? '-' }}</p>
@@ -22,11 +23,11 @@
                 </div>
             </div>
             <!-- pembayaran -->
-            <div class="checkout_container">
+            <div class="checkout_container mt-8">
                 <h3 class="text-black">Pembayaran</h3>
             </div>
             <!-- form pembayaran -->
-            <div class="checkout_form informasi_anda_form">
+            <div class="checkout_form informasi_anda_form mt-8">
                 <form action="{{ route('checkout.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="id_transaksi" value="{{ $transaksi->id }}">
@@ -60,28 +61,27 @@
                     </script>
                 </form>
             </div>
-
         </div>
 
-        <div class="right_content bg-white py-6 px-5 w-[40%] rounded-md h-full">
+        <div class="right_content bg-white py-6 px-4 md:px-5 w-full md:w-[40%] rounded-md h-full mt-8 md:mt-0" data-aos="fade-left">
             @php
                 $subtotal = $transaksi->orders->sum('subtotal');
             @endphp
 
             @forelse($transaksi->orders as $item)
-                <div class="product_container flex justify-between pb-9">
+                <div class="product_container flex flex-col sm:flex-row justify-between pb-9">
                     <div class="flex gap-5">
                         <img src="{{ asset('storage/' . ($item->produk->foto ?? 'assets/images/product_img.png')) }}"
-                            alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-50">
+                            alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-24 h-24 object-cover rounded-md">
                         <div class="flex flex-col">
-                            <h4 class="text-black font-bold mb-4">{{ $item->produk->nama_produk ?? '-' }}</h4>
+                            <h4 class="text-black font-bold mb-2">{{ $item->produk->nama_produk ?? '-' }}</h4>
                             <p>Jumlah : {{ $item->jumlah ?? 1 }}</p>
                             <p class="text-black font-bold">
                                 Total : Rp. {{ number_format($item->subtotal, 0, ',', '.') }}
                             </p>
                         </div>
                     </div>
-                    <h4 class="text-black font-bold">Rp. {{ number_format($item->produk->harga ?? 0, 0, ',', '.') }}</h4>
+                    <h4 class="text-black font-bold mt-4 sm:mt-0">Rp. {{ number_format($item->produk->harga ?? 0, 0, ',', '.') }}</h4>
                 </div>
             @empty
                 <div class="text-gray-500 text-center py-8">Tidak ada produk dalam transaksi ini.</div>
@@ -121,4 +121,26 @@
                 });
             </script>
         @endif
-    @endsection
+    </div>
+    <style>
+        @media (max-width: 768px) {
+            .main_content {
+                flex-direction: column;
+                gap: 2rem;
+                padding: 2rem 1rem;
+            }
+            .left_content, .right_content {
+                width: 100% !important;
+            }
+            .right_content {
+                margin-top: 2rem;
+            }
+        }
+        .checkout_container {
+            background: #f9f9f9;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+@endsection

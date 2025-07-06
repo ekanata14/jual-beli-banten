@@ -524,9 +524,9 @@ class LandingPageController extends Controller
         $signatureKey = hash(
             'sha512',
             $request->order_id .
-            $request->status_code .
-            $request->gross_amount .
-            $serverKey
+                $request->status_code .
+                $request->gross_amount .
+                $serverKey
         );
 
         if ($signatureKey !== $request->signature_key) {

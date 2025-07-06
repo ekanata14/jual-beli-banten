@@ -54,7 +54,7 @@
                         </td>
                         <td class="px-6 py-4 flex gap-2">
                             <a href="{{ route('admin.penjual.edit', $item->id) }}" class="btn-yellow">Edit</a>
-                            <form action="{{ route('admin.penjual.inactive', $item->id) }}" method="POST">
+                            <form action="{{ route('admin.penjual.destroy', $item->id) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
                                 <button type="button" class="btn-danger" onclick="confirmInactive(this)">Nonaktifkan</button>

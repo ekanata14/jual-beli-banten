@@ -1,14 +1,15 @@
 @extends('layouts.landing')
 @section('content')
-    <section class="product_hero flex w-full justify-between pt-52 pb-14 gap-14 px-14">
-        <div class="product_heading flex flex-col w-full">
-            <h2 class="text-black flex flex-col">Semua Produk</h2>
-            <p class="mt-3">E-Banten adalah platform e-commerce pertama di Bali yang dikhususkan untuk memenuhi</p>
+    <!-- Add AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <section class="product_hero flex flex-col md:flex-row w-full justify-between pt-32 md:pt-52 pb-10 md:pb-14 gap-8 md:gap-14 px-4 md:px-14" data-aos="fade-down">
+        <div class="product_heading flex flex-col w-full md:w-1/2">
+            <h2 class="text-black text-2xl md:text-3xl font-bold flex flex-col">Semua Produk</h2>
+            <p class="mt-3 text-base md:text-lg">E-Banten adalah platform e-commerce pertama di Bali yang dikhususkan untuk memenuhi</p>
         </div>
-        <div class="product_search w-full flex flex-col gap-3 items-end">
-            <!-- <p class="mb-3">Cari Produk</p> -->
-            <!-- input search -->
-            <form class="w-1/2">
+        <div class="product_search w-full md:w-1/2 flex flex-col gap-3 items-end">
+            <form class="w-full md:w-1/2">
                 <label for="default-search"
                     class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Cari</label>
                 <div class="relative">
@@ -29,34 +30,45 @@
             </form>
         </div>
     </section>
-    <section class="product_filter w-full mb-10 flex">
-        <div class="product_category flex py-6 px-10 gap-6">
-            <p>Semua kategori</p>
-            <p>Persembahyangan</p>
-            <p>Banten</p>
+    <section class="product_filter w-full mb-8 md:mb-10 flex flex-col md:flex-row gap-4 md:gap-0" data-aos="fade-up">
+        <div class="product_category flex flex-wrap py-4 md:py-6 px-4 md:px-10 gap-4 md:gap-6">
+            <p class="cursor-pointer hover:underline">Semua kategori</p>
+            <p class="cursor-pointer hover:underline">Persembahyangan</p>
+            <p class="cursor-pointer hover:underline">Banten</p>
         </div>
-        <div class="product_category flex py-6 px-10 gap-6">
-            <p>Urutkan Berdasarkan</p>
-            <p>(A-Z)</p>
-            <p>(Harga Terendah)</p>
-            <p>(Harga Tertinggi)</p>
+        <div class="product_category flex flex-wrap py-4 md:py-6 px-4 md:px-10 gap-4 md:gap-6">
+            <p class="font-semibold">Urutkan Berdasarkan</p>
+            <p class="cursor-pointer hover:underline">(A-Z)</p>
+            <p class="cursor-pointer hover:underline">(Harga Terendah)</p>
+            <p class="cursor-pointer hover:underline">(Harga Tertinggi)</p>
         </div>
     </section>
-    <section class="product_products_wrapper w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 items-center self-stretch gap-6 px-10 mb-14">
+    <section class="product_products_wrapper w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center self-stretch gap-6 px-4 md:px-10 mb-10 md:mb-14">
         @foreach ($products as $product)
-            @include('components.product-card', [
-                'name' => $product->nama_produk ?? 'Nama Produk',
-                'price' => $product->harga
-                    ? 'Rp. ' . number_format($product->harga, 0, ',', '.') . '/PCS'
-                    : 'Rp. 2,000/PCS',
-                'image' => $product->foto ?? 'assets/images/product_img.png',
-                'rating' => $product->rating ?? 5,
-                'reviews' => $product->reviews ?? 'Jumlah Review',
-                'link' => route('product.detail', ['id' => $product->id ?? 1]),
-            ])
+            <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
+                @include('components.product-card', [
+                    'name' => $product->nama_produk ?? 'Nama Produk',
+                    'price' => $product->harga
+                        ? 'Rp. ' . number_format($product->harga, 0, ',', '.') . '/PCS'
+                        : 'Rp. 2,000/PCS',
+                    'image' => $product->foto ?? 'assets/images/product_img.png',
+                    'rating' => $product->rating ?? 5,
+                    'reviews' => $product->reviews ?? 'Jumlah Review',
+                    'link' => route('product.detail', ['id' => $product->id ?? 1]),
+                ])
+            </div>
         @endforeach
     </section>
-    <section class="flex items-center justify-center w-full mb-10">
+    <section class="flex items-center justify-center w-full mb-10" data-aos="fade-up">
         {{ $products->links() }}
     </section>
+
+    <!-- Add AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            duration: 800,
+        });
+    </script>
 @endsection

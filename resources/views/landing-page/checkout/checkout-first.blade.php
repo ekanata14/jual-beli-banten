@@ -1,7 +1,8 @@
 @extends('layouts.landing')
 @section('content')
-    <div class="flex justify-between main_content py-40 px-36 gap-16">
-        <div class="left_content w-[60%]">
+    <div
+        class="main_content flex flex-col lg:flex-row justify-between py-16 lg:py-40 px-4 md:px-12 lg:px-36 gap-8 lg:gap-16">
+        <div class="left_content w-full lg:w-[60%]" data-aos="fade-up" data-aos-delay="100">
             <!-- informasi anda -->
             <div class="checkout_container">
                 <h3 class="text-black">Informasi Anda</h3>
@@ -12,7 +13,7 @@
                 </div>
             </div>
             <!-- form informasi user -->
-            <div class="checkout_form informasi_anda_form">
+            <div class="checkout_form informasi_anda_form mt-8">
                 <form action="#" method="GET">
                     <!-- input nama -->
                     <div>
@@ -37,31 +38,33 @@
                             value="{{ auth()->user()->pelanggan->no_telp }}" />
                     </div>
                     <x-button href="{{ route('checkout.second', $transaksi->id) }}" type="submit"
-                        icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-15">
+                        icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-10 w-full md:w-auto">
                         Lanjut Ke Informasi Penerima
                     </x-button>
                 </form>
             </div>
         </div>
-        <div class="right_content bg-white py-6 px-5 w-[40%] rounded-md h-full">
+        <div class="right_content bg-white py-6 px-4 md:px-5 w-full lg:w-[40%] rounded-md h-full" data-aos="fade-left"
+            data-aos-delay="200">
             @php
                 $subtotal = $transaksi->orders->sum('subtotal');
             @endphp
 
             @forelse($transaksi->orders as $item)
-                <div class="product_container flex justify-between pb-9">
+                <div class="product_container flex flex-col sm:flex-row justify-between pb-9">
                     <div class="flex gap-5">
                         <img src="{{ asset('storage/' . ($item->produk->foto ?? 'assets/images/product_img.png')) }}"
-                            alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-50">
+                            alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-24 h-24 object-cover rounded-md">
                         <div class="flex flex-col">
-                            <h4 class="text-black font-bold mb-4">{{ $item->produk->nama_produk ?? '-' }}</h4>
+                            <h4 class="text-black font-bold mb-2">{{ $item->produk->nama_produk ?? '-' }}</h4>
                             <p>Jumlah : {{ $item->jumlah ?? 1 }}</p>
                             <p class="text-black font-bold">
                                 Total : Rp. {{ number_format($item->subtotal, 0, ',', '.') }}
                             </p>
                         </div>
                     </div>
-                    <h4 class="text-black font-bold">Rp. {{ number_format($item->produk->harga ?? 0, 0, ',', '.') }}</h4>
+                    <h4 class="text-black font-bold mt-4 sm:mt-0">Rp.
+                        {{ number_format($item->produk->harga ?? 0, 0, ',', '.') }}</h4>
                 </div>
             @empty
                 <div class="text-gray-500 text-center py-8">Tidak ada produk dalam transaksi ini.</div>
@@ -80,6 +83,5 @@
                 <p class="text-black">Rp. {{ number_format($subtotal, 0, ',', '.') }}</p>
             </div>
         </div>
-
     </div>
 @endsection

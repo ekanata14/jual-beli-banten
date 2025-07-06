@@ -54,7 +54,11 @@ class LandingPageController extends Controller
         $viewData = [
             'title' => 'Produk Detail | Bhakti E Commerce',
             'activePage' => 'product/product_detail',
-            'product' => Produk::find(request()->query('id')) ?: null
+            'product' => Produk::find(request()->query('id')) ?: null,
+            'relatedProducts' => Produk::where('id', '!=', request()->query('id'))
+                ->orderBy('created_at', 'desc')
+                ->take(4)
+                ->get()
         ];
         return view('landing-page.productDetail', $viewData);
     }

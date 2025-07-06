@@ -101,6 +101,36 @@
             </div>
         </div>
     </section>
+    <section class="related_products_wrapper w-full mt-16">
+        <div class="flex items-center justify-between px-4 md:px-10 mb-6">
+            <div>
+                <p class="text-sm text-gray-500">🟧 Produk</p>
+                <h3 class="text-2xl md:text-3xl font-semibold text-[#1C1917]">Produk Terkait</h3>
+            </div>
+            <a href="{{ route('product') }}"
+                class="flex items-center gap-2 bg-[#4B3621] text-white px-4 py-2 rounded-md hover:bg-[#3a2a19] transition">
+                Lihat Semua Produk
+                <span class="text-lg">→</span>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 md:px-10">
+            @foreach ($relatedProducts as $related)
+                <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
+                    @include('components.product-card', [
+                        'name' => $related->nama_produk ?? 'Nama Produk',
+                        'price' => $related->harga
+                            ? 'Rp. ' . number_format($related->harga, 0, ',', '.') . '/PCS'
+                            : 'Rp. 2,000/PCS',
+                        'image' => $related->foto ?? 'assets/images/product_img.png',
+                        'rating' => $related->rating ?? 5,
+                        'reviews' => $related->reviews ?? 'Jumlah Review',
+                        'link' => route('product.detail', ['id' => $related->id ?? 1]),
+                    ])
+                </div>
+            @endforeach
+        </div>
+    </section>
 
     {{-- SweetAlert2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

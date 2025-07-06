@@ -281,7 +281,7 @@
         </div>
     </section>
     <footer class="w-full bg-[#36302c] text-white h-full">
-        <div class="footer_content max-w-7xl mx-auto px-6 py-10 flex flex-col gap-10">
+        <div class="footer_content max-w-7xl mx-auto py-10 flex flex-col gap-10">
             <div class="footer_contentTop flex flex-col md:flex-row md:justify-between md:items-start gap-8">
                 <div class="footer_logo mb-6 md:mb-0 flex-shrink-0 flex justify-center md:justify-start"
                     data-aos="fade-right" data-aos-delay="200">
@@ -333,21 +333,21 @@
                     </p>
                 </div>
             </div>
-        </div>
-        <div class="w-full px-6 pb-10 container" data-aos="fade-up" data-aos-delay="800">
-            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener"
-                class="flex justify-between items-center w-full bg-[#2D2723] text-white font-normal text-base rounded-xl py-6 px-6 hover:opacity-90 transition-all duration-200 shadow-lg">
-                <div class="text-left">
-                    <p class="text-sm md:text-base leading-tight">Hubungi</p>
-                    <p class="text-sm md:text-base font-semibold">Customer Service</p>
-                </div>
-                <div class="text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 7l-10 10m10 0V7H7" />
-                    </svg>
-                </div>
-            </a>
+            <div class="w-full pb-10" data-aos="fade-up" data-aos-delay="800">
+                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener"
+                    class="flex justify-between items-center w-full bg-[#2D2723] text-white font-normal text-base rounded-xl py-6 px-6 hover:opacity-90 transition-all duration-200 shadow-lg">
+                    <div class="text-left">
+                        <p class="text-sm md:text-base leading-tight">Hubungi</p>
+                        <p class="text-sm md:text-base font-semibold">Customer Service</p>
+                    </div>
+                    <div class="text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 7l-10 10m10 0V7H7" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>

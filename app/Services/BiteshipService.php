@@ -30,7 +30,7 @@ class BiteshipService
                 "quantity" => 2
             ]
         ];
-        $couriers = "ninja,sap,gojek,grab,deliveree,jne,tiki,ninja,lion,rara,sicepat,jnt,idexpress,rpx,jdl,wahana,pos,anteraja,sap,paxel,borzo,lalamove";
+        $couriers = "gojek,grab";
         $response = Http::withHeaders([
             'Authorization' => "Bearer {$this->apiKey}",
             'Content-Type' => 'application/json',

@@ -2,7 +2,7 @@
 @section('content')
     <script src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key="{{ config('services.midtrans.clientKey') }}"></script>
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         window.onload = function() {
             snap.pay('{{ $snapToken }}', {
                 onSuccess: function(result) {
@@ -17,5 +17,5 @@
                 }
             });
         }
-    </script>
+    </script> --}}
 @endsection

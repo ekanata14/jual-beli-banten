@@ -737,6 +737,7 @@ class LandingPageController extends Controller
 
     public function midtransCallback(Request $request)
     {
+        \Log::info('Midtrans Callback Request:', $request->all());
         $serverKey = config('services.midtrans.serverKey');
         $signatureKey = hash(
             'sha512',

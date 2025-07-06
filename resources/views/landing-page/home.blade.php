@@ -1,15 +1,15 @@
 @extends('layouts.landing')
 @section('content')
     <section class="home_hero hero flex w-full justify-start items-end h-[100vh]" data-aos="fade-up" data-aos-delay="100"
-            style="background-image: url('{{ asset('assets/images/Hero_bg.jpg') }}');">
-        <div class="home_hero_content py-9 px-10"
-        data-aos="fade-right" data-aos-delay="300">
-        <p class="sub-heading text-white" data-aos="fade-down" data-aos-delay="500">Harmoni Tradisi dan Teknologi</p>
-        <h1 class="text-white" data-aos="zoom-in" data-aos-delay="700">Sarana Upacara Hindu yang<br> Mudah & Praktis</h1>
-        <x-button href="{{ route("product") }}" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" data-aos="fade-up"
-            data-aos-delay="900">
-            Lihat Semua Produk
-        </x-button>
+        style="background-image: url('{{ asset('assets/images/Hero_bg.jpg') }}');">
+        <div class="home_hero_content py-9 px-10" data-aos="fade-right" data-aos-delay="300">
+            <p class="sub-heading text-white" data-aos="fade-down" data-aos-delay="500">Harmoni Tradisi dan Teknologi</p>
+            <h1 class="text-white" data-aos="zoom-in" data-aos-delay="700">Sarana Upacara Hindu yang<br> Mudah & Praktis
+            </h1>
+            <x-button href="{{ route('product') }}" icon="{{ asset('assets/icons/arrow_right_white.svg') }}"
+                data-aos="fade-up" data-aos-delay="900">
+                Lihat Semua Produk
+            </x-button>
         </div>
     </section>
 

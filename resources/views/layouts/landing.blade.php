@@ -413,13 +413,13 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             AOS.init({
-                duration: 900, // longer for smoother effect
-                once: false, // animate every time you scroll
-                easing: 'cubic-bezier(.77,0,.18,1)', // custom easing for a fancy feel
-                delay: 200, // base delay
-                offset: 80, // trigger a bit earlier
-                mirror: true, // animate out while scrolling past
-                anchorPlacement: 'top-bottom', // more natural trigger
+                duration: 900,
+                once: true, // animate only once
+                easing: 'cubic-bezier(.77,0,.18,1)',
+                delay: 200,
+                offset: 80,
+                mirror: true,
+                anchorPlacement: 'top-bottom',
             });
         });
     </script>

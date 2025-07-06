@@ -50,7 +50,6 @@ class BiteshipService
     {
         // Fetch transaction with orders, each order with produk and pengiriman
         $transaction = Transaksi::with(['orders.produk', 'orders.pengiriman'])->findOrFail($transactionId);
-        return $transaction;
 
         // Group orders by id_pengiriman to avoid duplicate courier orders
         $groupedOrders = [];

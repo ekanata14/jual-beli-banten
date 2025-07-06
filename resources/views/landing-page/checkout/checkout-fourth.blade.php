@@ -16,12 +16,36 @@
             <!-- informasi penerima -->
             <div class="checkout_container mt-8">
                 <h3 class="text-black">Informasi Penerima</h3>
-                <div class="informasi_data mt-9">
-                    <p><strong>Nama Penerima:</strong> {{ $informasiPenerima->nama_penerima ?? '-' }}</p>
-                    <p><strong>Alamat Penerima:</strong> {{ $informasiPenerima->alamat_penerima ?? '-' }}</p>
-                    <p><strong>Telepon Penerima:</strong> {{ $informasiPenerima->telp_penerima ?? '-' }}</p>
-                </div>
+                @foreach($informasiPenerima as $info)
+                    <div class="informasi_data mt-6 mb-6 border-b pb-4">
+                        <p><strong>Nama Penerima:</strong> {{ $info->nama_penerima ?? '-' }}</p>
+                        <p><strong>Alamat Penerima:</strong> {{ $info->alamat_penerima ?? '-' }}</p>
+                        <p><strong>Kode Pos Penerima:</strong> {{ $info->kode_pos_penerima ?? '-' }}</p>
+                        <p><strong>Telepon Penerima:</strong> {{ $info->telp_penerima ?? '-' }}</p>
+                        <p><strong>Latitude Penerima:</strong> {{ $info->latitude_penerima ?? '-' }}</p>
+                        <p><strong>Longitude Penerima:</strong> {{ $info->longitude_penerima ?? '-' }}</p>
+                    </div>
+                @endforeach
             </div>
+
+            <!-- detail pengiriman -->
+            <div class="checkout_container mt-8">
+                <h3 class="text-black">Detail Pengiriman</h3>
+                @foreach($pengiriman as $kirim)
+                    <div class="informasi_data mt-6 mb-6 border-b pb-4">
+                        <p><strong>Kurir:</strong> {{ $kirim->kurir->nama_kurir }}</p>
+                        <p><strong>Status Pengiriman:</strong> {{ ucfirst($kirim->status_pengiriman) }}</p>
+                        <p><strong>Waktu Pengiriman:</strong> {{ $kirim->waktu_pengiriman }}</p>
+                        <p><strong>Biaya Pengiriman:</strong> Rp. {{ number_format($kirim->biaya_pengiriman, 0, ',', '.') }}</p>
+                        <p><strong>Penjual:</strong> {{ $kirim->alamat_penjual }}</p>
+                        <p><strong>Kode Pos Penjual:</strong> {{ $kirim->kode_pos_penjual }}</p>
+                        <p><strong>Latitude Penjual:</strong> {{ $kirim->latitude_penjual }}</p>
+                        <p><strong>Longitude Penjual:</strong> {{ $kirim->longitude_penjual }}</p>
+                        <p><strong>No. Resi:</strong> {{ $kirim->no_resi ?? '-' }}</p>
+                    </div>
+                @endforeach
+            </div>
+
             <!-- pembayaran -->
             <div class="checkout_container mt-8">
                 <h3 class="text-black">Pembayaran</h3>
@@ -31,11 +55,13 @@
                 <form action="{{ route('checkout.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="id_transaksi" value="{{ $transaksi->id }}">
-                    <input type="hidden" name="id_order" value="{{ $transaksi->Orders[0]->id }}">
-                    <input type="hidden" name="id_pengiriman" value="{{ $pengiriman->id }}">
+                    <input type="hidden" name="id_order" value="{{ $transaksi->Orders[0]->id ?? '' }}">
+                    {{-- Pengiriman bisa lebih dari satu, kirim array id_pengiriman --}}
+                    @foreach($pengiriman as $kirim)
+                        <input type="hidden" name="id_pengiriman[]" value="{{ $kirim->id }}">
+                    @endforeach
                     <input type="hidden" name="total_harga"
-                        value="{{ $transaksi->Orders->sum('subtotal') + $pengiriman->biaya_pengiriman }}">
-                    <!-- input nama_penerima -->
+                        value="{{ $transaksi->orders->sum('subtotal') + $pengiriman->sum('biaya_pengiriman') }}">
                     <button type="button" id="confirm-payment" class="w-full">
                         <x-button href="#" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-15">
                             Lanjut Ke Pembayaran
@@ -66,6 +92,7 @@
         <div class="right_content bg-white py-6 px-4 md:px-5 w-full md:w-[40%] rounded-md h-full mt-8 md:mt-0" data-aos="fade-left">
             @php
                 $subtotal = $transaksi->orders->sum('subtotal');
+                $totalBiayaPengiriman = $pengiriman->sum('biaya_pengiriman');
             @endphp
 
             @forelse($transaksi->orders as $item)
@@ -92,12 +119,12 @@
             </div>
             <div class="product_sub flex justify-between mt-4">
                 <p>Biaya Pengiriman</p>
-                <p id="biaya-pengiriman">Rp. {{ number_format($pengiriman->biaya_pengiriman, 0, ',', '.') }}</p>
+                <p id="biaya-pengiriman">Rp. {{ number_format($totalBiayaPengiriman, 0, ',', '.') }}</p>
             </div>
             <div class="product_sub flex justify-between mt-4">
                 <p class="text-black">Total</p>
                 <p class="text-black" id="total-harga">Rp.
-                    {{ number_format($subtotal + $pengiriman->biaya_pengiriman, 0, ',', '.') }}</p>
+                    {{ number_format($subtotal + $totalBiayaPengiriman, 0, ',', '.') }}</p>
             </div>
         </div>
         @if ($snapToken)

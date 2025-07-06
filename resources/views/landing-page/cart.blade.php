@@ -1,6 +1,7 @@
 @extends('layouts.landing')
 @section('content')
-    <div class="main_content flex flex-col lg:flex-row justify-between py-20 lg:py-40 px-4 md:px-12 lg:px-36 gap-8 lg:gap-16">
+    <div
+        class="main_content flex flex-col lg:flex-row justify-between py-20 lg:py-40 px-4 md:px-12 lg:px-36 gap-8 lg:gap-16">
         <div class="left_content w-full lg:w-[60%]" data-aos="fade-up">
             <h3 class="text-black text-xl md:text-2xl font-bold">Keranjang Belanja</h3>
             <p class="text-base md:text-lg">{{ $datas->sum('jumlah') }} Produk</p>
@@ -12,15 +13,22 @@
                     $itemTotal = $keranjang->jumlah * $keranjang->produk->harga;
                     $totalPrice += $itemTotal;
                 @endphp
-                <div class="product_container flex flex-col md:flex-row w-full mt-8 pb-10 border-b border-gray-200" data-id="{{ $keranjang->id }}" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
+                <div class="product_container flex flex-col md:flex-row w-full mt-8 pb-10 border-b border-gray-200"
+                    data-id="{{ $keranjang->id }}" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                     <img src="{{ asset('storage/' . $keranjang->produk->foto) }}" alt="{{ $keranjang->produk->nama_produk }}"
                         class="w-32 h-32 object-cover rounded-md mx-auto md:mx-0">
                     <div class="product_desc flex flex-col justify-between md:ml-10 w-full mt-4 md:mt-0">
-                        <div class="product_heading flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-                            <h4 class="text-black font-bold text-lg">{{ $keranjang->produk->nama_produk }}</h4>
-                            <h4 class="text-black font-bold text-base">Rp. {{ number_format($keranjang->produk->harga, 0, ',', '.') }}</h4>
+                        <div
+                            class="product_heading flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                            <div class="flex flex-col gap-2">
+                                <h4 class="text-black font-bold text-lg">{{ $keranjang->produk->nama_produk }}</h4>
+                                <h5 class="text-black font-bold text-md">{{ $keranjang->produk->user->name }}</h5>
+                            </div>
+                            <h4 class="text-black font-bold text-base">Rp.
+                                {{ number_format($keranjang->produk->harga, 0, ',', '.') }}</h4>
                         </div>
-                        <div class="product_action flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-4">
+                        <div
+                            class="product_action flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-4">
                             <div class="flex h-10">
                                 <button type="button"
                                     class="decrement-btn flex justify-center items-center w-8 h-full rounded-s-sm text-black focus:outline-none bg-[#F0E5DA] hover:bg-[#C4B8AD] cursor-pointer"

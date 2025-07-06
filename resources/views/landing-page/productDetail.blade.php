@@ -37,6 +37,10 @@
                         Rp{{ number_format($product['harga'], 0, ',', '.') }}</h2>
                     <p class="text-[#1C1917] ml-2 text-sm md:text-base">/pcs</p>
                 </div>
+                <div class="flex items-end mt-3">
+                    <h3 class="text-[#1C1917] text-2xl md:text-3xl font-semibold">
+                        {{ $product->user->name }}</h3>
+                </div>
             </div>
 
             <div class="product_details_desc flex flex-col gap-4">
@@ -119,6 +123,7 @@
                 <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                     @include('components.product-card', [
                         'name' => $related->nama_produk ?? 'Nama Produk',
+                        'name_penjual' => $related->user->name ?? 'Nama Penjual',
                         'price' => $related->harga
                             ? 'Rp. ' . number_format($related->harga, 0, ',', '.') . '/PCS'
                             : 'Rp. 2,000/PCS',

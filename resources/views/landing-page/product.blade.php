@@ -40,31 +40,41 @@
         @if (($categories ?? collect())->count() > 2)
             <div class="product_category flex flex-wrap py-4 md:py-6 px-4 md:px-10 gap-4 md:gap-6 items-center">
                 <p class="font-semibold mr-2">Kategori:</p>
-                <div class="relative">
-                    <button id="dropdownCategoryButton" data-dropdown-toggle="dropdownCategory"
-                        class="text-gray-700 bg-gray-100 hover:bg-gray-200 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center"
-                        type="button">
-                        {{ $activeCategory ?? 'Pilih Kategori' }}
-                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div id="dropdownCategory"
-                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 absolute">
-                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownCategoryButton">
-                            @foreach ($categories as $category)
-                                <li>
-                                    <a href="{{ route('product.find.category', ['category' => $category]) }}"
-                                        class="block px-4 py-2 hover:bg-gray-100 {{ $activeCategory == $category ? 'bg-gray-200 font-bold text-[#534538]' : '' }}">
-                                        {{ $category ?? 'Kategori' }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
+                <form action="{{ route('product.search') }}" method="GET">
+                    <select name="category" onchange="this.form.submit()"
+                        class="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-[#534538] focus:border-[#534538]">
+                        <option value="">Pilih Kategori</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category }}" {{ $activeCategory == $category ? 'selected' : '' }}>
+                                {{ $category ?? 'Kategori' }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if (request('search'))
+                        <input type="hidden" name="search" value="{{ request('search') }}">
+                    @endif
+                    @if (request('sort'))
+                        <input type="hidden" name="sort" value="{{ request('sort') }}">
+                    @endif
+                </form>
             </div>
+            <style>
+                @keyframes fade-in {
+                    from {
+                        opacity: 0;
+                        transform: translateY(10px);
+                    }
+
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                .animate-fade-in {
+                    animation: fade-in 0.2s ease;
+                }
+            </style>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     const btn = document.getElementById('dropdownCategoryButton');
@@ -112,6 +122,7 @@
             <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                 @include('components.product-card', [
                     'name' => $product->nama_produk ?? 'Nama Produk',
+                    'name_penjual' => $product->user->name ?? 'Nama Penjual',
                     'price' => $product->harga
                         ? 'Rp. ' . number_format($product->harga, 0, ',', '.') . '/PCS'
                         : 'Rp. 2,000/PCS',

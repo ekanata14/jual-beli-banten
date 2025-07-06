@@ -21,7 +21,17 @@ return new class extends Migration {
             $table->string('no_resi', 250)->nullable();
             $table->string('nama_penerima', 250);
             $table->string('alamat_penerima', 250);
+            $table->string('latitude_penerima', 250)->nullable();
+            $table->string('longitude_penerima', 250)->nullable();
+            $table->string('kode_pos_penerima', 20)->nullable();
             $table->string('telp_penerima');
+            $table->unsignedBigInteger('id_penjual')->nullable();
+            $table->foreign('id_penjual')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('alamat_penjual', 250);
+            $table->string('latitude_penjual', 250)->nullable();
+            $table->string('longitude_penjual', 250)->nullable();
+            $table->string('kode_pos_penjual', 20)->nullable();
+            $table->string('telp_penjual', 20)->nullable();
             $table->string('status_pengiriman', 250)->default('pending');
             $table->datetime('waktu_pengiriman')->nullable();
             $table->integer('biaya_pengiriman')->nullable();

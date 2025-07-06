@@ -56,6 +56,7 @@
                     <div data-aos="zoom-in-up" data-aos-delay="{{ 200 + $loop->index * 100 }}">
                         @include('components.product-card', [
                             'name' => $product->nama_produk ?? 'Nama Produk',
+                            'name_penjual' => $product->user->name ?? 'Nama Penjual',
                             'price' => 'Rp. ' . number_format($product->harga ?? 2000, 0, ',', '.') . '/PCS',
                             'image' => $product->foto ?? 'assets/images/product_img.png',
                             'rating' => $product->rating ?? 5,

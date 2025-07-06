@@ -22,9 +22,6 @@ class BiteshipService
             [
                 "name" => "Polaris Coffee Cream 330ml isi 3 pcs",
                 "description" => "",
-                "length" => 10,
-                "width" => 10,
-                "height" => 0,
                 "weight" => 1000,
                 "value" => 285600,
                 "quantity" => 1

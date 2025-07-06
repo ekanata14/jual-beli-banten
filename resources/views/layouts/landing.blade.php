@@ -25,8 +25,8 @@
             style="margin:0;">
             <div class="logo flex-shrink-0">
                 <a href="{{ route('home') }}">
-                    <img src="{{ asset('assets/icons/bhakti_logo.svg') }}" alt="Logo Bhakti" class="h-10 object-contain"
-                        onerror="this.onerror=null;this.src='https://via.placeholder.com/120x40?text=Logo';">
+                    <img src="{{ asset('assets/icons/bhakti_logo.svg') }}" alt="Logo Bhakti"
+                        class="h-10 object-contain">
                 </a>
             </div>
             <!-- Hamburger Button (Mobile) -->
@@ -196,9 +196,6 @@
                     <li>
                         <a href="{{ route('login') }}" class="hover:text-blue-700 transition flex items-center gap-2"
                             onclick="closeFullscreenMenu()">
-                            <img src="{{ asset('assets/icons/login_icon.svg') }}" alt="Masuk"
-                                class="h-6 object-contain"
-                                onerror="this.onerror=null;this.src='https://via.placeholder.com/24?text=Login';">
                             <span>Masuk</span>
                         </a>
                     </li>
@@ -246,35 +243,30 @@
             });
         </script>
     </header>
-    @if (!request()->is('/') && !request()->is('about'))
-        <main>
-        @else
-            <main class="pt-20 md:pt-0">
-    @endif
-    @yield('content')
+    <main>
+        @yield('content')
     </main>
     <section
         class="finalcta flex flex-col items-start w-full px-6 md:px-12 lg:px-24 py-8 md:py-16 lg:py-12 text-white mb-[-1px]"
         data-aos="fade-up" data-aos-delay="200">
         <div class="finalcta_content flex flex-col lg:flex-row py-8 md:py-16 lg:py-20 items-start lg:items-center justify-between w-full gap-10"
             data-aos="fade-up" data-aos-delay="300">
-            <div class="finalcta_contentleft w-full lg:w-1/2 mb-6 lg:mb-0" data-aos="fade-right"
-                data-aos-delay="400">
+            <div class="finalcta_contentleft w-full lg:w-1/2 mb-6 lg:mb-0" data-aos="fade-up" data-aos-delay="400">
                 <p class="text-sm md:text-base lg:text-lg mb-2">Join Our Growing Wellness Community</p>
                 <h1 class="text-white text-xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
                     Mudahnya
                     Memenuhi Kebutuhan Upacara Anda</h1>
             </div>
-            <div class="finalcta_contentright w-full lg:w-1/3" data-aos="fade-left" data-aos-delay="500">
+            <div class="finalcta_contentright w-full lg:w-1/3" data-aos="fade-up" data-aos-delay="500">
                 <p class="mb-6 text-xs md:text-sm lg:text-base">Kami siap membantu Anda mendapatkan banten dan
                     sarana
                     upacara terbaik dengan mudah.</p>
                 <a href="{{ route('product') }}" class="btn btn-primary flex items-center gap-2 mt-6 md:mt-9"
-                    data-aos="zoom-in" data-aos-delay="600">
+                    data-aos="fade-up" data-aos-delay="600">
                     <span
                         class="py-2 px-6 md:py-3 md:px-10 lg:px-12 bg-[#36302c] rounded-md text-white text-center text-xs md:text-sm lg:text-base">Lihat
                         Semua Produk</span>
-                    <img src="../assets/icons/arrow_right_white.svg" alt=""
+                    <img src="{{ asset('assets/icons/arrow_right_white.svg') }}" alt=""
                         class="h-8 w-8 md:h-10 md:w-10 p-2 bg-[#36302c] rounded-md" />
                 </a>
             </div>
@@ -284,8 +276,9 @@
         <div class="footer_content max-w-7xl mx-auto py-10 flex flex-col gap-10">
             <div class="footer_contentTop flex flex-col md:flex-row md:justify-between md:items-start gap-8">
                 <div class="footer_logo mb-6 md:mb-0 flex-shrink-0 flex justify-center md:justify-start"
-                    data-aos="fade-right" data-aos-delay="200">
-                    <img src="../assets/icons/bhakti_logo_footer.svg" alt="Logo Bhakti" class="h-12 w-auto">
+                    data-aos="fade-up" data-aos-delay="200">
+                    <img src="{{ asset('assets/icons/bhakti_logo_footer.svg') }}" alt="Logo Bhakti"
+                        class="h-12 w-auto">
                 </div>
                 <div class="footer_menu flex flex-col sm:flex-row gap-8 md:gap-16 w-full md:w-auto">
                     <ul class="footer_menu_left flex flex-col items-start mb-6 sm:mb-0" data-aos="fade-up"
@@ -324,8 +317,9 @@
                 <div class="footer_contentBottom_1 flex flex-col sm:flex-row justify-between items-center gap-3">
                     <button onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top"
                         class="fixed right-6 bottom-6 z-50 bg-[#36302c] rounded-full shadow-lg p-2 hover:bg-[#222] transition-all"
-                        data-aos="zoom-in" data-aos-delay="600">
-                        <img src="../assets/icons/scroll_top.svg" alt="Scroll Top" class="h-8 w-8 cursor-pointer" />
+                        data-aos="fade-up" data-aos-delay="600">
+                        <img src="{{ asset('assets/icons/scroll_top.svg') }}" alt="Scroll Top"
+                            class="h-8 w-8 cursor-pointer" />
                     </button>
                     <p class="text-xs text-center" data-aos="fade-up" data-aos-delay="700">
                         ©2025 — Copyright — Anak Agung Gede Agung Aditya
@@ -423,6 +417,7 @@
             });
         });
     </script>
+    @stack('modals')
 </body>
 
 </html>

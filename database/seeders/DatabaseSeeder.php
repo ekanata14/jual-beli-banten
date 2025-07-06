@@ -39,24 +39,62 @@ class DatabaseSeeder extends Seeder
             "role" => "penjual"
         ]);
 
+        // Penjual 1
         Penjual::create([
             "id_user" => $penjual->id,
             "alamat_penjual" => "Jl. Penjual 1",
-            'latitude' => -6.123456,
-            'longitude' => 106.123456,
+            'latitude' => -8.650925521554344,
+            'longitude' => 115.2087778064643,
             "kode_pos" => "80226",
             "no_telp" => "081234567890"
         ]);
-        for ($i = 1; $i <= 8; $i++) {
+
+        $categories = ['Pejati', 'Prasista', 'Beakaon', 'Penyeneng', 'Pras Pengambaian'];
+
+        // Produk Penjual 1 (10 items, 2 per category)
+        for ($i = 1; $i <= 10; $i++) {
+            $category = $categories[($i - 1) % count($categories)];
             Produk::create([
                 "id_user" => $penjual->id,
-                "nama_produk" => "Produk $i",
-                "deskripsi_produk" => "Deskripsi Produk $i",
+                "nama_produk" => "Banten $category",
+                "deskripsi_produk" => "Deskripsi Produk Banten $category",
                 "harga" => 100000 * $i,
                 "stok" => 10 * $i,
-                "berat" => 1000,
-                "kategori" => "Upacara",
-                "foto" => "produk/produk.jpg",
+                "berat" => 500 + ($i * 50),
+                "kategori" => $category,
+                "foto" => "produk/produk1_$i.jpg",
+            ]);
+        }
+
+        // Penjual 2
+        $penjual2 = User::create([
+            "name" => "Penjual 2",
+            "email" => "penjual_2@penjual.com",
+            "password" => bcrypt("penjual2"),
+            "role" => "penjual"
+        ]);
+
+        Penjual::create([
+            "id_user" => $penjual2->id,
+            "alamat_penjual" => "Jl. Penjual 2",
+            'latitude' => -8.651000,
+            'longitude' => 115.209000,
+            "kode_pos" => "80228",
+            "no_telp" => "081234567891"
+        ]);
+
+        // Produk Penjual 2 (10 items, 2 per category, nama sesuai permintaan)
+        for ($i = 1; $i <= 10; $i++) {
+            $category = $categories[($i - 1) % count($categories)];
+            Produk::create([
+                "id_user" => $penjual2->id,
+                "nama_produk" => "Banten $category",
+                "deskripsi_produk" => "Deskripsi Produk Banten $category",
+                "harga" => 120000 + ($i * 5000),
+                "stok" => 15 + $i,
+                "berat" => 300 + ($i * 30),
+                "kategori" => $category,
+                "foto" => "produk/produk2_$i.jpg",
             ]);
         }
 

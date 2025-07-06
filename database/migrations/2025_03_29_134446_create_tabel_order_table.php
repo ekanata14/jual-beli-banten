@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_transaksi');
             $table->foreign('id_transaksi')->references('id')->on('tabel_transaksi')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('id_pengiriman')->nullable(); // Nullable because pengiriman is one to many
+            // $table->foreign('id_pengiriman')->references('id')->on('tabel_pengiriman')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('id_produk');
             $table->foreign('id_produk')->references('id')->on('tabel_produk')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('jumlah');

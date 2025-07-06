@@ -12,6 +12,7 @@ class Order extends Model
 
     protected $fillable = [
         'id_transaksi',
+        'id_pengiriman', // ada, karena pengirima one to many terhadap ini -> nullable
         'id_produk',
         'jumlah',
         'subtotal',
@@ -24,5 +25,10 @@ class Order extends Model
     public function Produk()
     {
         return $this->belongsTo(Produk::class, 'id_produk', 'id');
+    }
+
+    public function Pengiriman()
+    {
+        return $this->belongsTo(Pengiriman::class, 'id_pengiriman', 'id');
     }
 }

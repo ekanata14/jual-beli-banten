@@ -18,6 +18,7 @@ use App\Models\Pengiriman;
 use App\Models\Order;
 use App\Models\Produk;
 use App\Models\Keranjang;
+use App\Models\Kurir;
 
 class LandingPageController extends Controller
 {
@@ -323,6 +324,73 @@ class LandingPageController extends Controller
         ];
         return view('landing-page.detail-transaction', $viewData);
     }
+    public function checkout(string $id)
+    {
+        $viewData = [
+            'title' => 'Checkout Product | Bhakti E Commerce',
+            'snapToken' => null,
+            'transaksi' => Transaksi::where('id', $id)
+                ->orderBy('created_at', 'desc')
+                ->first(),
+        ];
+        return view('landing-page.checkout.checkout-first', $viewData);
+    }
+
+    public function checkoutSecond(string $id)
+    {
+        $transaksi = Transaksi::where('id', $id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $order = Order::where('id_transaksi', $transaksi->id)->first();
+        $viewData = [
+            'title' => 'Checkout Product | Bhakti E Commerce',
+            'snapToken' => null,
+            'transaksi' => $transaksi,
+            'product' => $order->Produk
+        ];
+        return view('landing-page.checkout.checkout-second', $viewData);
+    }
+
+    public function checkoutThird(string $id)
+    {
+        $pengiriman = Pengiriman::where('id_transaksi', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $viewData = [
+            'title' => 'Checkout Product | Bhakti E Commerce',
+            'snapToken' => null,
+            'transaksi' => Transaksi::where('id', $id)
+                ->orderBy('created_at', 'desc')
+                ->first(),
+            'pengiriman' => $pengiriman,
+            'product' => Pengiriman::where('id_transaksi', $id)
+                ->orderBy('created_at', 'desc')
+                ->first()->order->Produk,
+            'informasiPenerima' => $pengiriman
+        ];
+        return view('landing-page.checkout.checkout-third', $viewData);
+    }
+
+    public function checkoutFourth(string $id)
+    {
+        $transaksi = Transaksi::where('id', $id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $pengiriman = Pengiriman::where('id_transaksi', $transaksi->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $viewData = [
+            'title' => 'Checkout Product | Bhakti E Commerce',
+            'snapToken' => null,
+            'transaksi' => $transaksi,
+            'pengiriman' => $pengiriman,
+            'informasiPenerima' => $pengiriman
+        ];
+        // return $viewData;
+        return view('landing-page.checkout.checkout-fourth', $viewData);
+    }
 
     public function checkoutItem()
     {
@@ -436,23 +504,73 @@ class LandingPageController extends Controller
                 'id_order' => 'nullable|integer',
                 'nama_penerima' => 'required|string|max:250',
                 'alamat_penerima' => 'required|string|max:250',
+                'latitude_penerima' => 'nullable|string|max:250',
+                'longitude_penerima' => 'nullable|string|max:250',
+                'kode_pos_penerima' => 'nullable|string|max:20',
                 'telp_penerima' => 'required|string|max:255',
             ]);
 
-            $pengiriman = Pengiriman::create([
-                'id_transaksi' => $validatedData['id_transaksi'],
-                'id_order' => $validatedData['id_order'] ?? null,
-                'nama_penerima' => $validatedData['nama_penerima'],
-                'alamat_penerima' => $validatedData['alamat_penerima'],
-                'telp_penerima' => $validatedData['telp_penerima'],
-                'status_pengiriman' => "pending"
-            ]);
+            $order = Order::where('id_transaksi', $validatedData['id_transaksi'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            foreach ($order as $item) {
+                $pengiriman = Pengiriman::where('id_transaksi', $validatedData['id_transaksi'])
+                    ->where('id_penjual', $item->Produk->user->id)
+                    ->first();
+                if (!$pengiriman) {
+                    $penjual = $item->Produk->user;
+                    $pengirimanCreate = Pengiriman::create([
+                        'id_transaksi' => $validatedData['id_transaksi'],
+                        'id_order' => $validatedData['id_order'] ?? null,
+                        'nama_penerima' => $validatedData['nama_penerima'],
+                        'alamat_penerima' => $validatedData['alamat_penerima'],
+                        'latitude_penerima' => $validatedData['latitude_penerima'] ?? null,
+                        'longitude_penerima' => $validatedData['longitude_penerima'] ?? null,
+                        'kode_pos_penerima' => $validatedData['kode_pos_penerima'] ?? null,
+                        'telp_penerima' => $validatedData['telp_penerima'],
+                        'status_pengiriman' => "pending",
+                        // Penjual fields
+                        'id_penjual' => $penjual->id,
+                        'alamat_penjual' => $penjual->Penjual->alamat_penjual ?? null,
+                        'latitude_penjual' => $penjual->Penjual->latitude ?? null,
+                        'longitude_penjual' => $penjual->Penjual->longitude ?? null,
+                        'kode_pos_penjual' => $penjual->Penjual->kode_pos ?? null,
+                        'telp_penjual' => $penjual->Penjual->no_telp ?? null,
+                    ]);
+
+                    $item->id_pengiriman = $pengirimanCreate->id;
+                    $item->save();
+                } else {
+                    $item->id_pengiriman = $pengiriman->id;
+                    $item->save();
+                }
+            }
+
+            /*
+                1. Buat pengiriman based on group dari data penjual produk
+                2. Ketika pengiriman dibuat, update data order dan masukkan id_pengiriman ke order
+            
+                Kalkulasi harga cukup sekali, berarti jika ada pengiriman yang sudah memiliki id penjual maka tidak usah dibuat lagi, hanya update ke tabel order
+            */
+
+            // jika ada 2 item based on penjual, maka buat pegngiriman dengan data tambahan sebagai berikut
+
+            /*
+                id_penjual
+                alamat_penjual
+                latitude_penjual
+                longitude_penjual
+                kode_pos_penjual
+                telp_penjual
+            */
 
             DB::commit();
 
             return redirect()->route('checkout.third', ['id' => $validatedData['id_transaksi']])
                 ->with('success', 'Data pengiriman berhasil disimpan');
         } catch (\Exception $e) {
+            return $e->getMessage();
             DB::rollBack();
             return redirect()->back()->withInput()->withErrors([
                 'error' => 'Gagal menyimpan data pengiriman: ' . $e->getMessage()
@@ -464,90 +582,100 @@ class LandingPageController extends Controller
     {
         $validatedData = $request->validate([
             'id_transaksi' => 'required|integer',
-            'selected_rate' => 'required|string',
-            'id_pengiriman' => 'required|integer',
-            'biaya_pengiriman' => 'required|integer',
+            'id_pengiriman' => 'required|array',
+            'selected_rate' => 'required|array',
         ]);
+        // Convert selected_rate JSON strings to array of objects
+        $selectedRates = array_map(function ($item) {
+            return is_array($item) ? $item : json_decode($item, true);
+        }, $validatedData['selected_rate']);
+
+        $validatedData['selected_rate'] = $selectedRates;
+
+        $pengirimans = Pengiriman::whereIn('id', $validatedData['id_pengiriman'])
+            ->where('id_transaksi', $validatedData['id_transaksi'])
+            ->get();
         try {
             DB::beginTransaction();
 
-            $pengiriman = Pengiriman::findOrFail($validatedData['id_pengiriman']);
-            $pengiriman->biaya_pengiriman = $validatedData['biaya_pengiriman'];
-            $pengiriman->status_pengiriman = 'pending';
-            $pengiriman->save();
+            $totalBiayaPengiriman = 0;
+            $pengirimanDataArray = [];
+
+            foreach ($pengirimans as $index => $pengiriman) {
+                if (!$pengiriman) {
+                    DB::rollBack();
+                    return redirect()->back()->withInput()->withErrors([
+                        'error' => "Pengiriman tidak ditemukan."
+                    ]);
+                }
+
+                $pengirimanId = $pengiriman->id;
+                $selectedRate = $validatedData['selected_rate'][$index] ?? null;
+
+                if (!$selectedRate) {
+                    DB::rollBack();
+                    return redirect()->back()->withInput()->withErrors([
+                        'error' => "Data kurir tidak ditemukan untuk pengiriman ID: {$pengirimanId}"
+                    ]);
+                }
+
+                $biayaPengiriman = $selectedRate['price'] ?? null;
+
+                if (!$biayaPengiriman) {
+                    DB::rollBack();
+                    return redirect()->back()->withInput()->withErrors([
+                        'error' => "Data pengiriman tidak lengkap untuk pengiriman ID: {$pengirimanId}"
+                    ]);
+                }
+
+                // Insert Kurir data only if not exists
+                $kurir = Kurir::firstOrCreate(
+                    [
+                        'kode_kurir' => $selectedRate['courier_code'] ?? '',
+                        'kode_servis' => $selectedRate['courier_service_code'] ?? '',
+                    ],
+                    [
+                        'nama_kurir' => $selectedRate['courier_name'] ?? '',
+                        'nama_servis' => $selectedRate['courier_service_name'] ?? '',
+                        'rentan_durasi' => $selectedRate['shipment_duration_range'] ?? '',
+                        'unit_durasi' => $selectedRate['shipment_duration_unit'] ?? '',
+                    ]
+                );
+
+                $pengiriman->update([
+                    'biaya_pengiriman' => (int)$biayaPengiriman,
+                    'status_pengiriman' => 'pending',
+                    'id_kurir' => $kurir->id,
+                    'waktu_pengiriman' => $selectedRate['duration'] ?? null,
+                ]);
+
+                $totalBiayaPengiriman += (int)$biayaPengiriman;
+
+                $pengirimanDataArray[] = [
+                    'pengiriman_id' => $pengirimanId,
+                    'biaya_pengiriman' => $biayaPengiriman,
+                    'selected_rate' => $selectedRate,
+                    'kurir' => $kurir,
+                ];
+            }
+
+            // Update transaksi.total_harga (add total biaya pengiriman)
+            $transaksi = Transaksi::find($validatedData['id_transaksi']);
+            if ($transaksi) {
+                $transaksi->total_harga += $totalBiayaPengiriman;
+                $transaksi->save();
+            }
 
             DB::commit();
-
             return redirect()->route('checkout.fourth', ['id' => $validatedData['id_transaksi']])
                 ->with('success', 'Data pengiriman berhasil disimpan');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withInput()->withErrors([
-                'error' => 'Gagal menyimpan data pengiriman: ' . $e->getMessage()
-            ]);
+            return back()->with('error', 'Gagal menyimpan data pengiriman: ' . $e->getMessage());
         }
     }
 
-    public function checkout(string $id)
-    {
-        $viewData = [
-            'title' => 'Checkout Product | Bhakti E Commerce',
-            'snapToken' => null,
-            'transaksi' => Transaksi::where('id', $id)
-                ->orderBy('created_at', 'desc')
-                ->first(),
-        ];
-        return view('landing-page.checkout.checkout-first', $viewData);
-    }
 
-    public function checkoutSecond(string $id)
-    {
-        $viewData = [
-            'title' => 'Checkout Product | Bhakti E Commerce',
-            'snapToken' => null,
-            'transaksi' => Transaksi::where('id', $id)
-                ->orderBy('created_at', 'desc')
-                ->first(),
-        ];
-        return view('landing-page.checkout.checkout-second', $viewData);
-    }
-
-    public function checkoutThird(string $id)
-    {
-        $pengiriman = Pengiriman::where('id_transaksi', $id)
-            ->orderBy('created_at', 'desc')
-            ->first();
-        $viewData = [
-            'title' => 'Checkout Product | Bhakti E Commerce',
-            'snapToken' => null,
-            'product' => Produk::where('id', $pengiriman->order->id_produk)
-                ->orderBy('created_at', 'desc')
-                ->first(),
-            'transaksi' => Transaksi::where('id', $id)
-                ->orderBy('created_at', 'desc')
-                ->first(),
-            'pengiriman' => $pengiriman,
-            'informasiPenerima' => $pengiriman
-        ];
-        return view('landing-page.checkout.checkout-third', $viewData);
-    }
-
-    public function checkoutFourth(string $id)
-    {
-        $pengiriman = Pengiriman::where('id_transaksi', $id)
-            ->orderBy('created_at', 'desc')
-            ->first();
-        $viewData = [
-            'title' => 'Checkout Product | Bhakti E Commerce',
-            'snapToken' => null,
-            'transaksi' => Transaksi::where('id', $id)
-                ->orderBy('created_at', 'desc')
-                ->first(),
-            'pengiriman' => $pengiriman,
-            'informasiPenerima' => $pengiriman
-        ];
-        return view('landing-page.checkout.checkout-fourth', $viewData);
-    }
 
     public function checkoutStore(Request $request)
     {
@@ -558,23 +686,20 @@ class LandingPageController extends Controller
             $validated = $request->validate([
                 'id_transaksi' => 'required|integer',
                 'id_order' => 'required|integer',
-                'id_pengiriman' => 'required|integer',
+                'id_pengiriman' => 'required|array',
                 'total_harga' => 'required|integer',
             ]);
 
-            $pengiriman = Pengiriman::where('id_transaksi', $validated['id_transaksi'])
-                ->orderBy('created_at', 'desc')
-                ->first();
-
-            // Ambil data transaksi, order, dan pengiriman berdasarkan id
+            // Ambil data transaksi dan order berdasarkan id
             $transaksi = Transaksi::findOrFail($validated['id_transaksi']);
             $order = Order::findOrFail($validated['id_order']);
-            $pengiriman = Pengiriman::findOrFail($validated['id_pengiriman']);
+
+            // Ambil semua pengiriman berdasarkan array id_pengiriman
+            $pengiriman = Pengiriman::whereIn('id', $validated['id_pengiriman'])->get();
 
             // Update total_harga transaksi
             $transaksi->total_harga = $validated['total_harga'];
             $transaksi->save();
-
             DB::commit();
 
             // Konfigurasi Midtrans
@@ -663,11 +788,9 @@ class LandingPageController extends Controller
         // Get origin latitude and longitude from request
         $origin_latitude = $request->input('origin_latitude');
         $origin_longitude = $request->input('origin_longitude');
-
-        // Get destination latitude and longitude from authenticated user
-        $user = auth()->user();
-        $destination_latitude = $user->pelanggan->latitude ?? null;
-        $destination_longitude = $user->pelanggan->longitude ?? null;
+        // Get destination latitude and longitude from request input
+        $destination_latitude = $request->input('destination_latitude');
+        $destination_longitude = $request->input('destination_longitude');
 
         if (is_null($origin_latitude) || is_null($origin_longitude) || is_null($destination_latitude) || is_null($destination_longitude)) {
             return response()->json(['error' => 'Latitude and longitude are required.'], 400);

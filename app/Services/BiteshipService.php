@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Produk;
 use App\Models\Transaksi;
 
+use Illuminate\Support\Facades\Log;
+
 class BiteshipService
 {
     protected $apiKey;
@@ -48,6 +50,7 @@ class BiteshipService
     {
         // Fetch transaction with orders, each order with produk and pengiriman
         $transaction = Transaksi::with(['orders.produk', 'orders.pengiriman'])->findOrFail($transactionId);
+        return $transaction;
 
         // Group orders by id_pengiriman to avoid duplicate courier orders
         $groupedOrders = [];
@@ -126,6 +129,7 @@ class BiteshipService
             $results[$pengirimanId] = $response->json();
         }
 
+        Log::info('Biteship Order Results:', $results);
         return $results;
     }
 

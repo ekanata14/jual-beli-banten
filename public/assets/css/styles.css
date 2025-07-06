@@ -146,11 +146,10 @@ footer {
 
 .hero {
     background: linear-gradient(
-            180deg,
-            rgba(0, 0, 0, 0) 62.44%,
-            rgba(0, 0, 0, 0.5) 100%
-        ),
-        url("../images/Hero_bg.jpg");
+        180deg,
+        rgba(0, 0, 0, 0) 62.44%,
+        rgba(0, 0, 0, 0.5) 100%
+    );
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

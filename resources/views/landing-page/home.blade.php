@@ -1,12 +1,15 @@
 @extends('layouts.landing')
 @section('content')
-    <section class="home_hero hero flex w-full justify-start items-end h-[100vh]" data-aos="fade-up" data-aos-delay="100">
-        <div class="home_hero_content py-9 px-10" data-aos="fade-right" data-aos-delay="300">
-            <p class="sub-heading text-white" data-aos="fade-down" data-aos-delay="500">Harmoni Tradisi dan Teknologi</p>
-            <h1 class="text-white" data-aos="zoom-in" data-aos-delay="700">Sarana Upacara Hindu yang<br> Mudah & Praktis</h1>
-            <x-button href="/produk" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" data-aos="fade-up" data-aos-delay="900">
-                Lihat Semua Produk
-            </x-button>
+    <section class="home_hero hero flex w-full justify-start items-end h-[100vh]" data-aos="fade-up" data-aos-delay="100"
+            style="background-image: url('{{ asset('assets/images/Hero_bg.jpg') }}');">
+        <div class="home_hero_content py-9 px-10"
+        data-aos="fade-right" data-aos-delay="300">
+        <p class="sub-heading text-white" data-aos="fade-down" data-aos-delay="500">Harmoni Tradisi dan Teknologi</p>
+        <h1 class="text-white" data-aos="zoom-in" data-aos-delay="700">Sarana Upacara Hindu yang<br> Mudah & Praktis</h1>
+        <x-button href="{{ route("product") }}" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" data-aos="fade-up"
+            data-aos-delay="900">
+            Lihat Semua Produk
+        </x-button>
         </div>
     </section>
 
@@ -18,23 +21,28 @@
                     Menghadirkan Sarana Upacara dengan Ketulusan
                 </h2>
             </div>
-            <p class="w-full md:w-1/2 text-center mt-6 md:mt-9 text-base md:text-lg" data-aos="fade-up" data-aos-delay="400">
+            <p class="w-full md:w-1/2 text-center mt-6 md:mt-9 text-base md:text-lg" data-aos="fade-up"
+                data-aos-delay="400">
                 Dengan pengalaman dalam menyediakan banten dan sarana upacara, kami memastikan
                 setiap produk dibuat dengan penuh ketulusan dan mengikuti tradisi yang diwariskan turun-temurun.
             </p>
             <!-- button -->
-            <x-button href="/produk" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-12 md:mt-24" data-aos="zoom-in" data-aos-delay="600">
+            <x-button href="/produk" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-12 md:mt-24"
+                data-aos="zoom-in" data-aos-delay="600">
                 Baca Lebih Lengkap
             </x-button>
             <div class="home_about_images w-full flex justify-center" data-aos="fade-up" data-aos-delay="800">
-                <img class="mt-12 md:mt-24 w-full max-w-md md:max-w-xl rounded-lg shadow-lg object-cover" src="{{ asset('assets/images/about_img.png') }}" alt="">
+                <img class="mt-12 md:mt-24 w-full max-w-md md:max-w-xl rounded-lg shadow-lg object-cover"
+                    src="{{ asset('assets/images/about_img.png') }}" alt="">
             </div>
         </div>
     </section>
 
-    <section class="home_product flex flex-col w-full pt-32 md:pt-[200px] px-4 md:px-10 mb-12" data-aos="fade-up" data-aos-delay="100">
+    <section class="home_product flex flex-col w-full pt-32 md:pt-[200px] px-4 md:px-10 mb-12" data-aos="fade-up"
+        data-aos-delay="100">
         <div class="home_product_content flex flex-col gap-10 md:gap-16">
-            <div class="home_product_heading flex flex-col md:flex-row justify-between items-start md:items-end gap-4" data-aos="fade-down" data-aos-delay="200">
+            <div class="home_product_heading flex flex-col md:flex-row justify-between items-start md:items-end gap-4"
+                data-aos="fade-down" data-aos-delay="200">
                 <div class="home_product_heading_text">
                     <p class="sub-heading">Tentang Kami</p>
                     <h2 class="text-black text-2xl md:text-3xl font-semibold">Produk Terlaris</h2>
@@ -43,10 +51,9 @@
                     Lihat Semua Produk
                 </x-button>
             </div>
-            <div
-                class="home_product_wrapper grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
+            <div class="home_product_wrapper grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
                 @foreach ($products as $product)
-                    <div data-aos="zoom-in-up" data-aos-delay="{{ 200 + ($loop->index * 100) }}">
+                    <div data-aos="zoom-in-up" data-aos-delay="{{ 200 + $loop->index * 100 }}">
                         @include('components.product-card', [
                             'name' => $product->nama_produk ?? 'Nama Produk',
                             'price' => 'Rp. ' . number_format($product->harga ?? 2000, 0, ',', '.') . '/PCS',
@@ -62,7 +69,8 @@
     </section>
     <section class="home_testi py-16 md:py-24 px-0 w-full" data-aos="fade-up" data-aos-delay="100">
         <div class="home_testi_content flex flex-col items-center gap-16 md:gap-24 max-w-7xl mx-auto w-full">
-            <div class="home_testi_content_header flex flex-col items-center justify-center w-full md:w-2/3" data-aos="fade-down" data-aos-delay="200">
+            <div class="home_testi_content_header flex flex-col items-center justify-center w-full md:w-2/3"
+                data-aos="fade-down" data-aos-delay="200">
                 <p class="sub-heading text-center">Pendapat pelanggan tentang produk kami</p>
                 <h2 class="text-center text-black mt-2 text-lg md:text-2xl font-semibold">
                     Setiap banten diproses dengan penuh ketulusan agar sesuai dengan
@@ -137,7 +145,8 @@
                         style="scroll-behavior: smooth;">
                         @foreach ($testimonials as $index => $testi)
                             <div class="testimonial-card flex flex-col flex-shrink-0 w-[90vw] sm:w-[45vw] md:w-[32vw] lg:w-[30vw] xl:w-[25vw] px-5 py-6 bg-white rounded-lg shadow-md gap-6"
-                                data-index="{{ $index }}" data-aos="flip-left" data-aos-delay="{{ 200 + ($index * 100) }}">
+                                data-index="{{ $index }}" data-aos="flip-left"
+                                data-aos-delay="{{ 200 + $index * 100 }}">
                                 <img src="{{ asset('assets/icons/quote.svg') }}" alt="" class="self-end w-8 h-8">
                                 <div class="testimonial-card_content">
                                     <div class="stars flex mb-2">
@@ -164,11 +173,15 @@
                 <style>
                     /* Hide scrollbar for all browsers */
                     #carousel {
-                        scrollbar-width: none; /* Firefox */
-                        -ms-overflow-style: none; /* IE and Edge */
+                        scrollbar-width: none;
+                        /* Firefox */
+                        -ms-overflow-style: none;
+                        /* IE and Edge */
                     }
+
                     #carousel::-webkit-scrollbar {
-                        display: none; /* Chrome, Safari, Opera */
+                        display: none;
+                        /* Chrome, Safari, Opera */
                     }
                 </style>
                 <script>
@@ -180,6 +193,7 @@
                         function getCardWidth() {
                             return cards[0].offsetWidth + parseInt(getComputedStyle(cards[0]).marginRight);
                         }
+
                         function getVisibleCards() {
                             return Math.floor(carousel.offsetWidth / getCardWidth()) || 1;
                         }
@@ -193,7 +207,8 @@
 
                             for (let i = 0; i < totalDots; i++) {
                                 const dot = document.createElement('span');
-                                dot.className = 'dot cursor-pointer bg-stone-400 w-2 h-2 rounded-full mx-1 transition-all duration-200 inline-block';
+                                dot.className =
+                                    'dot cursor-pointer bg-stone-400 w-2 h-2 rounded-full mx-1 transition-all duration-200 inline-block';
                                 dot.dataset.index = i;
                                 dotsContainer.appendChild(dot);
                             }

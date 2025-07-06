@@ -31,7 +31,7 @@
             </div>
             <!-- Hamburger Button (Mobile) -->
             <button id="navbar-toggle"
-                class="lg:hidden flex items-center px-3 py-2 border rounded text-gray-700 border-gray-400 focus:outline-none"
+                class="md:hidden flex items-center px-3 py-2 border rounded text-gray-700 border-gray-400 focus:outline-none"
                 aria-label="Toggle navigation">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -112,9 +112,9 @@
                 <div class="nav-icon hidden md:flex items-center gap-2 ml-4">
                     <a href="{{ route('login') }}"
                         class="flex items-center gap-1 px-3 py-2 rounded hover:bg-gray-100 transition">
-                        <img src="{{ asset('assets/icons/login_icon.svg') }}" alt="Masuk"
+                        {{-- <img src="{{ asset('assets/icons/login_icon.svg') }}" alt="Masuk"
                             class="h-6 object-contain"
-                            onerror="this.onerror=null;this.src='https://via.placeholder.com/24?text=Login';">
+                            onerror="this.onerror=null;this.src='https://via.placeholder.com/24?text=Login';"> --}}
                         <span class="hidden sm:inline">Masuk</span>
                     </a>
                 </div>
@@ -269,8 +269,8 @@
                 <p class="mb-6 text-xs md:text-sm lg:text-base">Kami siap membantu Anda mendapatkan banten dan
                     sarana
                     upacara terbaik dengan mudah.</p>
-                <a href="#" class="btn btn-primary flex items-center gap-2 mt-6 md:mt-9" data-aos="zoom-in"
-                    data-aos-delay="600">
+                <a href="{{ route('product') }}" class="btn btn-primary flex items-center gap-2 mt-6 md:mt-9"
+                    data-aos="zoom-in" data-aos-delay="600">
                     <span
                         class="py-2 px-6 md:py-3 md:px-10 lg:px-12 bg-[#36302c] rounded-md text-white text-center text-xs md:text-sm lg:text-base">Lihat
                         Semua Produk</span>

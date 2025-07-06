@@ -21,6 +21,13 @@ use App\Models\Keranjang;
 
 class LandingPageController extends Controller
 {
+    protected $categories;
+
+    public function __construct()
+    {
+        // You can share categories to all views if needed
+        $this->categories = Produk::select('kategori')->distinct()->pluck('kategori');
+    }
     public function index()
     {
         $viewData = [
@@ -42,13 +49,90 @@ class LandingPageController extends Controller
     public function product()
     {
         $viewData = [
-            'title' => 'Tentang Kami | Bhakti E Commerce',
+            'title' => 'Produk | Bhakti E Commerce',
             'activePage' => 'product',
             'products' => Produk::orderBy('created_at', 'desc')
-                ->paginate(10)
+                ->paginate(10),
+            'categories' => $this->categories
         ];
         return view('landing-page.product', $viewData);
     }
+
+    public function productSearch(Request $request)
+    {
+        $search = $request->query('search', '');
+        $viewData = [
+            'title' => 'Pencarian | Bhakti E Commerce',
+            'activePage' => 'product',
+            'products' => Produk::where('nama_produk', 'like', '%' . $search . '%')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10),
+            'search' => $search,
+            'categories' => $this->categories
+        ];
+        return view('landing-page.product', $viewData);
+    }
+
+    public function productFindByCategory(string $category)
+    {
+        $viewData = [
+            'title' => 'Produk Kategori: ' . $category . ' | Bhakti E Commerce',
+            'activePage' => 'product',
+            'products' => Produk::where('kategori', $category)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10),
+            'categories' => $this->categories
+        ];
+        return view('landing-page.product', $viewData);
+    }
+
+    public function productAtoZ(Request $request)
+    {
+        $search = $request->query('search', '');
+        $viewData = [
+            'title' => 'Produk A-Z | Bhakti E Commerce',
+            'activePage' => 'product',
+            'products' => Produk::where('nama_produk', 'like', '%' . $search . '%')
+                ->orderBy('nama_produk', 'asc')
+                ->paginate(10),
+            'search' => $search,
+            'categories' => $this->categories
+        ];
+        return view('landing-page.product', $viewData);
+    }
+
+    // Produk dengan harga terendah
+    public function productLowestPrice(Request $request)
+    {
+        $search = $request->query('search', '');
+        $viewData = [
+            'title' => 'Produk Harga Terendah | Bhakti E Commerce',
+            'activePage' => 'product',
+            'products' => Produk::where('nama_produk', 'like', '%' . $search . '%')
+                ->orderBy('harga', 'asc')
+                ->paginate(10),
+            'search' => $search,
+            'categories' => $this->categories
+        ];
+        return view('landing-page.product', $viewData);
+    }
+
+    // Produk dengan harga tertinggi
+    public function productHighestPrice(Request $request)
+    {
+        $search = $request->query('search', '');
+        $viewData = [
+            'title' => 'Produk Harga Tertinggi | Bhakti E Commerce',
+            'activePage' => 'product',
+            'products' => Produk::where('nama_produk', 'like', '%' . $search . '%')
+                ->orderBy('harga', 'desc')
+                ->paginate(10),
+            'search' => $search,
+            'categories' => $this->categories
+        ];
+        return view('landing-page.product', $viewData);
+    }
+
     public function productDetail()
     {
         $viewData = [
@@ -56,6 +140,7 @@ class LandingPageController extends Controller
             'activePage' => 'product/product_detail',
             'product' => Produk::find(request()->query('id')) ?: null,
             'relatedProducts' => Produk::where('id', '!=', request()->query('id'))
+                ->where('kategori', optional(Produk::find(request()->query('id')))->kategori)
                 ->orderBy('created_at', 'desc')
                 ->take(4)
                 ->get()

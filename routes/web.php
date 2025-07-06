@@ -29,6 +29,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LandingPageController::class, 'index'])->name('home');
 Route::get('/about', [LandingPageController::class, 'about'])->name('about');
 Route::get('/product', [LandingPageController::class, 'product'])->name('product');
+Route::get('/product/search', [LandingPageController::class, 'productSearch'])->name('product.search');
+Route::get('/product/search/category/{category}', [LandingPageController::class, 'productSearch'])->name('product.find.category');
+Route::get('/product/sort/atoz', [LandingPageController::class, 'productAtoZ'])->name('product.sort.atoz');
+Route::get('/product/sort/price-highest', [LandingPageController::class, 'productHighestPrice'])->name('product.sort.price_highest');
+Route::get('/product/sort/price-lowest', [LandingPageController::class, 'productLowestPrice'])->name('product.sort.price_lowest');
 Route::get('/product/detail', [LandingPageController::class, 'productDetail'])->name('product.detail');
 
 Route::middleware(['auth', 'verified'])->group(function () {

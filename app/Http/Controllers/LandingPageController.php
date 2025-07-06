@@ -580,6 +580,10 @@ class LandingPageController extends Controller
 
     public function checkoutBiayaPengiriman(Request $request)
     {
+        $request->merge([
+            'id_pengiriman' => (array) $request->input('id_pengiriman'),
+            'selected_rate' => (array) $request->input('selected_rate'),
+        ]);
         $validatedData = $request->validate([
             'id_transaksi' => 'required|integer',
             'id_pengiriman' => 'required|array',

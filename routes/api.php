@@ -13,4 +13,4 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('/checkout/callback', [LandingPageController::class, 'midtransCallback'])->name('api.checkout.callback');
+Route::post('/checkout/callback', [LandingPageController::class, 'midtransCallbackAPI'])->name('api.checkout.callback');

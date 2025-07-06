@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
 // Midtrans
 use Midtrans\Snap;
 use Midtrans\Config;
@@ -19,6 +20,7 @@ use App\Models\Order;
 use App\Models\Produk;
 use App\Models\Keranjang;
 use App\Models\Kurir;
+use Illuminate\Support\Facades\Log;
 
 class LandingPageController extends Controller
 {
@@ -774,38 +776,38 @@ class LandingPageController extends Controller
     public function midtransCallbackAPI(Request $request)
     {
         return $request;
-        \Log::info('Midtrans Callback Request:', $request->all());
-        // $serverKey = config('services.midtrans.serverKey');
-        // $signatureKey = hash(
-        //     'sha512',
-        //     $request->order_id .
-        //         $request->status_code .
-        //         $request->gross_amount .
-        //         $serverKey
-        // );
+        Log::info('Midtrans Callback Request:', $request->all());
+        $serverKey = config('services.midtrans.serverKey');
+        $signatureKey = hash(
+            'sha512',
+            $request->order_id .
+                $request->status_code .
+                $request->gross_amount .
+                $serverKey
+        );
 
-        // if ($signatureKey !== $request->signature_key) {
-        //     return response()->json(['message' => 'Invalid signature'], 403);
-        // }
+        if ($signatureKey !== $request->signature_key) {
+            return response()->json(['message' => 'Invalid signature'], 403);
+        }
 
-        // $transaksi = Transaksi::find($request->order_id);
+        $transaksi = Transaksi::find($request->order_id);
 
-        // if ($request->transaction_status === 'settlement') {
-        //     $transaksi->status = 'paid';
-        // } elseif ($request->transaction_status === 'pending') {
-        //     $transaksi->status = 'pending';
-        // } elseif ($request->transaction_status === 'expire') {
-        //     $transaksi->status = 'expired';
-        // }
+        if ($request->transaction_status === 'settlement') {
+            $transaksi->status = 'paid';
+        } elseif ($request->transaction_status === 'pending') {
+            $transaksi->status = 'pending';
+        } elseif ($request->transaction_status === 'expire') {
+            $transaksi->status = 'expired';
+        }
 
-        // $transaksi->save();
+        $transaksi->save();
 
-        // return response()->json([
-        //     'success' => true,
-        //     'code' => 200,
-        //     'message' => 'Transaksi berhasil diproses',
-        //     'transaksi' => $transaksi
-        // ]);
+        return response()->json([
+            'success' => true,
+            'code' => 200,
+            'message' => 'Transaksi berhasil diproses',
+            'transaksi' => $transaksi
+        ]);
     }
 
 

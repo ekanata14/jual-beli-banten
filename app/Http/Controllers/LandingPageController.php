@@ -549,24 +549,6 @@ class LandingPageController extends Controller
                 }
             }
 
-            /*
-                1. Buat pengiriman based on group dari data penjual produk
-                2. Ketika pengiriman dibuat, update data order dan masukkan id_pengiriman ke order
-            
-                Kalkulasi harga cukup sekali, berarti jika ada pengiriman yang sudah memiliki id penjual maka tidak usah dibuat lagi, hanya update ke tabel order
-            */
-
-            // jika ada 2 item based on penjual, maka buat pegngiriman dengan data tambahan sebagai berikut
-
-            /*
-                id_penjual
-                alamat_penjual
-                latitude_penjual
-                longitude_penjual
-                kode_pos_penjual
-                telp_penjual
-            */
-
             DB::commit();
 
             return redirect()->route('checkout.third', ['id' => $validatedData['id_transaksi']])
@@ -741,9 +723,9 @@ class LandingPageController extends Controller
         }
     }
 
-    public function midtransCallback(Request $request)
+    public function midtransCallback(Request $request, BiteshipService $biteship)
     {
-        \Log::info('Midtrans Callback Request:', $request->all());
+        Log::info('Midtrans Callback Request:', $request->all());
         $serverKey = config('services.midtrans.serverKey');
         $signatureKey = hash(
             'sha512',
@@ -769,11 +751,13 @@ class LandingPageController extends Controller
 
         $transaksi->save();
 
+        $biteship->orderCourier($transaksi->id);
+
         return redirect()->route('transaction.success', $transaksi->id)
             ->with('success', 'Transaksi berhasil diproses');
     }
 
-    public function midtransCallbackAPI(Request $request)
+    public function midtransCallbackAPI(Request $request,  BiteshipService $biteship)
     {
         try {
             Log::info('Midtrans Callback Request:', $request->all());
@@ -805,6 +789,8 @@ class LandingPageController extends Controller
             }
 
             $transaksi->save();
+
+            $biteship->orderCourier($transaksi->id);
 
             return response()->json([
                 'success' => true,

@@ -790,7 +790,7 @@ class LandingPageController extends Controller
                 return response()->json(['message' => 'Invalid signature'], 403);
             }
 
-            $transaksi = Transaksi::find($request->order_id);
+            $transaksi = Transaksi::where('invoice_number', $request->order_id)->first();
 
             if (!$transaksi) {
                 return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);

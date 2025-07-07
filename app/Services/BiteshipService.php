@@ -48,10 +48,13 @@ class BiteshipService
 
     public function orderCourier($transactionId)
     {
-        // Fetch transaction with orders, each order with produk and pengiriman
-        $transaction = Transaksi::with(['orders.produk', 'orders.pengiriman'])->findOrFail($transactionId);
+        // Fetch transaction with orders, each order with produk and pengiriman (and pengiriman.kurir, pengiriman.penjual)
+        $transaction = Transaksi::with([
+            'orders.produk',
+            'orders.pengiriman.kurir',
+        ])->findOrFail($transactionId);
 
-        // Group orders by id_pengiriman to avoid duplicate courier orders
+        // Group orders by id_pengiriman to ensure each pengiriman is processed once
         $groupedOrders = [];
         foreach ($transaction->orders as $order) {
             $pengirimanId = $order->id_pengiriman;
@@ -71,8 +74,8 @@ class BiteshipService
 
             // Prepare shipper/origin data (from pengiriman/alamat_penjual)
             $shipper = [
-                "origin_contact_name" => $pengiriman->id_penjual ? ($pengiriman->penjual->name ?? 'Penjual') : 'Penjual',
-                "origin_contact_phone" => $pengiriman->telp_penjual ?? '08123456789',
+                "origin_contact_name" => $pengiriman->order->produk->user->name ?? 'Penjual',
+                "origin_contact_phone" => $pengiriman->order->produk->telp_penjual ?? '08123456789',
                 "origin_address" => $pengiriman->alamat_penjual ?? 'Origin Address',
                 "origin_note" => '',
                 "origin_coordinate" => [
@@ -101,10 +104,9 @@ class BiteshipService
                 $items[] = [
                     "name" => $produk->nama_produk,
                     "description" => $produk->deskripsi_produk ?? '',
-                    "category" => $produk->kategori ?? 'general',
                     "value" => (int) $order->subtotal,
                     "quantity" => (int) $order->jumlah,
-                    "weight" => (int) $produk->berat ?? 200,
+                    "weight" => (int) ($produk->berat ?? 200),
                 ];
             }
 
@@ -126,10 +128,27 @@ class BiteshipService
             ])->post($this->endpoint . '/orders', $body);
 
             $results[$pengirimanId] = $response->json();
+            if (isset($results[$pengirimanId]['id'])) {
+                // Save Biteship order ID to pengiriman
+                $pengiriman->biteship_order_id = $results[$pengirimanId]['id'] ?? null;
+                // Save waybill (no_resi) to pengiriman
+                $pengiriman->no_resi = $results[$pengirimanId]['courier']['waybill_id'] ?? null;
+                $pengiriman->save();
+                Log::info("Biteship order SAVED for pengiriman ID {$pengirimanId}: {$results[$pengirimanId]['id']}");
+            }
         }
 
         Log::info('Biteship Order Results:', $results);
         return $results;
+    }
+
+    public function getOrderById($orderId)
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->apiKey,
+        ])->get("{$this->endpoint}/orders/{$orderId}");
+
+        return $response->json();
     }
 
     public function searchAreas($input)

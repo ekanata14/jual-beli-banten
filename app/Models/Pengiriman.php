@@ -15,6 +15,7 @@ class Pengiriman extends Model
         'id_order', // Hilang
         'id_kurir',
         'no_resi',
+        'biteship_order_id',
         'nama_penerima',
         'alamat_penerima',
         'latitude_penerima',

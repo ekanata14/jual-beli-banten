@@ -808,6 +808,21 @@ class LandingPageController extends Controller
         }
     }
 
+    public function getBiteshipOrderById(string $id, BiteshipService $biteship)
+    {
+        $orderId = $id;
+        if (!$orderId) {
+            return response()->json(['error' => 'Order ID is required'], 400);
+        }
+
+        try {
+            $order = $biteship->getOrderById($orderId);
+            return response()->json($order);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve order: ' . $e->getMessage()], 500);
+        }
+    }
+
 
     public function transaction_success(string $id)
     {
@@ -846,5 +861,26 @@ class LandingPageController extends Controller
         );
 
         return response()->json($rates);
+    }
+
+    public function confirmShipment(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $pengiriman = Pengiriman::find($request->id);
+            if (!$pengiriman) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Pengiriman tidak ditemukan.');
+            }
+
+            $pengiriman->status_pengiriman = 'received';
+            $pengiriman->save();
+
+            DB::commit();
+            return back()->with('success', 'Pengiriman berhasil dikonfirmasi.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal mengkonfirmasi pengiriman: ' . $e->getMessage());
+        }
     }
 }

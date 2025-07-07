@@ -75,6 +75,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route for History
     Route::get('/history', [LandingPageController::class, 'history'])->name('history');
     Route::get('/history/detail/{id}', [LandingPageController::class, 'historyDetail'])->name('history.detail');
+    Route::get('/history/detail/biteship/order/shpping/{id}', [LandingPageController::class, 'getBiteshipOrderById'])->name('history.detail.order.shipping');
+
+    // Confirm Shipment
+    Route::post('/confirm-shipment', [LandingPageController::class, 'confirmShipment'])->name('confirm.shipment');
 });
 
 

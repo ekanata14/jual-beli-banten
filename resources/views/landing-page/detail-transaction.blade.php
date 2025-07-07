@@ -82,57 +82,191 @@
                 @endforelse
             </div>
             <!-- section 3 -->
-            <div class="section_three mt-6 md:mt-9" data-aos="fade-up">
-                <p class="text-base md:text-lg">Informasi Pengiriman</p>
-                @php
-                    $latestIdPengiriman = 0;
-                @endphp
-                @forelse ($data->orders as $item)
-                    @php
-                        $pengiriman = $item->pengiriman;
-                    @endphp
-                    @if ($item->id_pengiriman != $latestIdPengiriman)
-                        <div class="flex flex-col gap-2 mt-4 border-b pb-4 mb-4 last:border-b-0 last:pb-0 last:mb-0">
-                            <p class="text-sm">Kode Kurir: <span
-                                    class="text-black">{{ $pengiriman->kurir->kode_kurir ?? '-' }}</span></p>
-                            <p class="text-sm">Nama Kurir: <span
-                                    class="text-black">{{ $pengiriman->kurir->nama_kurir ?? '-' }}</span></p>
-                            <p class="text-sm">Kode Servis: <span
-                                    class="text-black">{{ $pengiriman->kurir->kode_servis ?? '-' }}</span></p>
-                            <p class="text-sm">Nama Servis: <span
-                                    class="text-black">{{ $pengiriman->kurir->nama_servis ?? '-' }}</span></p>
-                            <p class="text-sm">Rentan Durasi: <span
-                                    class="text-black">{{ $pengiriman->kurir->rentan_durasi ?? '-' }}</span></p>
-                            <p class="text-sm">Unit Durasi: <span
-                                    class="text-black">{{ $pengiriman->kurir->unit_durasi ?? '-' }}</span></p>
-                            <p class="text-sm">Nama Penerima: <span
-                                    class="text-black">{{ $pengiriman->nama_penerima ?? '-' }}</span></p>
-                            <p class="text-sm">Telepon Penerima: <span
-                                    class="text-black">{{ $pengiriman->telp_penerima ?? '-' }}</span></p>
-                            <p class="text-sm">Alamat Penerima: <span
-                                    class="text-black">{{ $pengiriman->alamat_penerima ?? '-' }}</span></p>
-                            <p class="text-sm">Kode Pos: <span
-                                    class="text-black">{{ $pengiriman->kode_pos_penerima ?? '-' }}</span></p>
-                            <p class="text-sm">Latitude: <span
-                                    class="text-black">{{ $pengiriman->latitude_penerima ?? '-' }}</span></p>
-                            <p class="text-sm">Longitude: <span
-                                    class="text-black">{{ $pengiriman->longitude_penerima ?? '-' }}</span></p>
-                            <p class="text-sm">Biaya Pengiriman: <span class="text-black">Rp.
-                                    {{ number_format($pengiriman->biaya_pengiriman ?? 0, 0, ',', '.') }}</span></p>
-                            <p class="text-sm">Status Pengiriman: <span
-                                    class="text-black">{{ $pengiriman->status_pengiriman ?? '-' }}</span></p>
-                            <p class="text-sm">Catatan: <span class="text-black">{{ $pengiriman->catatan ?? '-' }}</span>
+            @php
+                // Get all unique pengiriman from orders (in case of multiple shipping data)
+                $pengirimanList = $data->orders->pluck('pengiriman')->filter()->unique('id');
+            @endphp
+            @foreach ($pengirimanList as $pengiriman)
+                <div class="section_three mt-8 md:mt-12" data-aos="fade-up"
+                    id="biteship-shipping-info-{{ $pengiriman->id }}">
+                    <div
+                        class="bg-gradient-to-br from-blue-50 via-white to-blue-100 border border-blue-200 rounded-2xl p-6 md:p-10 mb-8 shadow-lg transition-all duration-300 hover:shadow-2xl">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="bg-blue-100 rounded-full p-2">
+                                <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 8l7.89-5.26a2 2 0 012.22 0L21 8m-9 13V10m0 0L3 8m9 2l9-2m-9 2v11"></path>
+                                </svg>
+                            </div>
+                            <p class="text-lg md:text-xl font-bold text-blue-700 tracking-wide">Informasi Pengiriman
+                                (Biteship)
                             </p>
                         </div>
-                    @endif
-                    @php
-
-                        $latestIdPengiriman = $item->id_pengiriman;
-                    @endphp
-                @empty
-                    <div class="text-gray-500 text-center py-4">Informasi pengiriman tidak tersedia.</div>
-                @endforelse
-            </div>
+                        <div id="biteship-loading-{{ $pengiriman->id }}"
+                            class="flex items-center gap-2 text-gray-500 text-sm py-4 px-3 bg-blue-50 rounded-lg mb-2">
+                            <svg class="animate-spin h-4 w-4 text-blue-400" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4" fill="none"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                            </svg>
+                            Memuat Data Pengiriman...
+                        </div>
+                        <div id="biteship-error-{{ $pengiriman->id }}" class="text-red-500 text-sm hidden mt-2 px-3">Gagal
+                            Memuat Data Pengiriman.</div>
+                        <div id="biteship-data-{{ $pengiriman->id }}" class="hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2 pb-2">
+                                <div class="space-y-2">
+                                    <p class="text-xs text-gray-500">Order ID</p>
+                                    <p class="text-black font-semibold text-base"
+                                        id="biteship-order-id-{{ $pengiriman->id }}"></p>
+                                </div>
+                                <div class="space-y-2">
+                                    <p class="text-xs text-gray-500">Status</p>
+                                    <span
+                                        class="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold shadow-sm"
+                                        id="biteship-status-{{ $pengiriman->id }}"></span>
+                                </div>
+                                <div class="space-y-2">
+                                    <p class="text-xs text-gray-500">Kurir</p>
+                                    <p class="text-black font-medium" id="biteship-courier-{{ $pengiriman->id }}"></p>
+                                </div>
+                                <div class="space-y-2">
+                                    <p class="text-xs text-gray-500">Waybill ID</p>
+                                    <p class="text-black" id="biteship-waybill-{{ $pengiriman->id }}"></p>
+                                </div>
+                                <div class="space-y-2">
+                                    <p class="text-xs text-gray-500">Tracking Link</p>
+                                    <a href="#" target="_blank"
+                                        class="text-blue-600 underline font-medium hover:text-blue-800 transition"
+                                        id="biteship-link-{{ $pengiriman->id }}">Lihat Tracking</a>
+                                </div>
+                                <div class="space-y-2">
+                                    <p class="text-xs text-gray-500">Biaya Pengiriman</p>
+                                    <p class="text-black font-bold" id="biteship-fee-{{ $pengiriman->id }}"></p>
+                                </div>
+                            </div>
+                            <div class="border-t border-blue-100 my-6"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <p class="text-xs text-gray-500">Nama Pengirim</p>
+                                    <p class="text-black font-medium" id="biteship-shipper-name-{{ $pengiriman->id }}">
+                                    </p>
+                                    <p class="text-xs text-gray-500 mt-1">Telepon Pengirim</p>
+                                    <p class="text-black" id="biteship-shipper-phone-{{ $pengiriman->id }}"></p>
+                                    <p class="text-xs text-gray-500 mt-1">Alamat Asal</p>
+                                    <p class="text-black" id="biteship-origin-address-{{ $pengiriman->id }}"></p>
+                                </div>
+                                <div class="space-y-2">
+                                    <p class="text-xs text-gray-500">Nama Penerima</p>
+                                    <p class="text-black font-medium" id="biteship-dest-name-{{ $pengiriman->id }}"></p>
+                                    <p class="text-xs text-gray-500 mt-1">Telepon Penerima</p>
+                                    <p class="text-black" id="biteship-dest-phone-{{ $pengiriman->id }}"></p>
+                                    <p class="text-xs text-gray-500 mt-1">Alamat Tujuan</p>
+                                    <p class="text-black" id="biteship-dest-address-{{ $pengiriman->id }}"></p>
+                                </div>
+                            </div>
+                            @if ($pengiriman->status_pengiriman !== 'received')
+                                <form action="{{ route('confirm.shipment', $pengiriman->id) }}" method="POST"
+                                    class="mt-8 flex justify-center" onsubmit="return confirmShipment(event, this)">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $pengiriman->id }}">
+                                    <button type="submit"
+                                        class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2">
+                                        <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7">
+                                            </path>
+                                        </svg>
+                                        Konfirmasi Diterima
+                                    </button>
+                                </form>
+                            @else
+                                <div class="mt-8 flex justify-center">
+                                    <span
+                                        class="inline-flex items-center px-6 py-3 bg-gray-300 text-gray-700 font-semibold rounded-lg shadow">
+                                        <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7">
+                                            </path>
+                                        </svg>
+                                        Sudah Dikonfirmasi
+                                    </span>
+                                </div>
+                            @endif
+                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                            <script>
+                                function confirmShipment(event, form) {
+                                    event.preventDefault();
+                                    Swal.fire({
+                                        title: 'Konfirmasi Diterima?',
+                                        text: "Pastikan Anda sudah menerima barang dengan baik.",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#16a34a',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Ya, sudah diterima!',
+                                        cancelButtonText: 'Batal'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            form.submit();
+                                        }
+                                    });
+                                    return false;
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const orderId = '{{ $pengiriman->biteship_order_id ?? '' }}';
+                        const id = '{{ $pengiriman->id }}';
+                        if (!orderId) {
+                            document.getElementById('biteship-loading-' + id).classList.add('hidden');
+                            document.getElementById('biteship-error-' + id).classList.remove('hidden');
+                            document.getElementById('biteship-error-' + id).textContent = 'Order ID Biteship Tidak Ditemukan.';
+                            return;
+                        }
+                        fetch(`/history/detail/biteship/order/shpping/${orderId}`)
+                            .then(res => res.json())
+                            .then(res => {
+                                if (!res.success) throw new Error('API Gagal');
+                                const o = res;
+                                document.getElementById('biteship-order-id-' + id).textContent = o.id || '-';
+                                document.getElementById('biteship-status-' + id).textContent = o.status ? o.status.replace(
+                                    /\b\w/g, c => c.toUpperCase()) : '-';
+                                document.getElementById('biteship-courier-' + id).textContent = ((o.courier?.company || '-')
+                                    .replace(/\b\w/g, c => c.toUpperCase())) + ' (' + ((o.courier?.type || '-').replace(
+                                    /\b\w/g, c => c.toUpperCase())) + ')';
+                                document.getElementById('biteship-waybill-' + id).textContent = o.courier?.waybill_id ||
+                                    '-';
+                                document.getElementById('biteship-link-' + id).href = o.courier?.link || '#';
+                                document.getElementById('biteship-shipper-name-' + id).textContent = o.shipper?.name ? o
+                                    .shipper.name.replace(/\b\w/g, c => c.toUpperCase()) : '-';
+                                document.getElementById('biteship-shipper-phone-' + id).textContent = o.shipper?.phone ||
+                                    '-';
+                                document.getElementById('biteship-origin-address-' + id).textContent = o.origin?.address ? o
+                                    .origin.address.replace(/\b\w/g, c => c.toUpperCase()) : '-';
+                                document.getElementById('biteship-dest-name-' + id).textContent = o.destination
+                                    ?.contact_name ? o.destination.contact_name.replace(/\b\w/g, c => c.toUpperCase()) :
+                                    '-';
+                                document.getElementById('biteship-dest-phone-' + id).textContent = o.destination
+                                    ?.contact_phone || '-';
+                                document.getElementById('biteship-dest-address-' + id).textContent = o.destination
+                                    ?.address ? o.destination.address.replace(/\b\w/g, c => c.toUpperCase()) : '-';
+                                document.getElementById('biteship-fee-' + id).textContent = 'Rp. ' + (o.courier
+                                    ?.shipment_fee ? o.courier.shipment_fee.toLocaleString('id-ID') : '0');
+                                document.getElementById('biteship-loading-' + id).classList.add('hidden');
+                                document.getElementById('biteship-data-' + id).classList.remove('hidden');
+                            })
+                            .catch(() => {
+                                document.getElementById('biteship-loading-' + id).classList.add('hidden');
+                                document.getElementById('biteship-error-' + id).classList.remove('hidden');
+                            });
+                    });
+                </script>
+            @endforeach
             <!-- section 4 -->
             <div class="section_four mt-6 md:mt-9" data-aos="fade-up">
                 <div class="subtotal flex justify-between text-sm md:text-base">
@@ -153,7 +287,6 @@
                 </div>
             </div>
             <div class="action_button self-center mt-6 md:mt-9" data-aos="fade-up">
-                <x-primary-button type="submit" class="w-full md:w-auto">Konfirmasi Diterima</x-primary-button>
             </div>
         </div>
     </div>

@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('id_kurir')->nullable();
             $table->foreign('id_kurir')->references('id')->on('tabel_kurir')->onUpdate('cascade')->onDelete('cascade');
             $table->string('no_resi', 250)->nullable();
+            $table->string('biteship_order_id', 250)->nullable();
             $table->string('nama_penerima', 250);
             $table->string('alamat_penerima', 250);
             $table->string('latitude_penerima', 250)->nullable();

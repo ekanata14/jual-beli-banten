@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Hash;
 
 // Midtrans
 use Midtrans\Snap;
@@ -14,12 +14,15 @@ use Midtrans\Config;
 use App\Services\BiteshipService;
 
 // Models
+use App\Models\User;
 use App\Models\Transaksi;
 use App\Models\Pengiriman;
 use App\Models\Order;
 use App\Models\Produk;
 use App\Models\Keranjang;
 use App\Models\Kurir;
+use App\Models\Ulasan;
+
 use Illuminate\Support\Facades\Log;
 
 class LandingPageController extends Controller
@@ -37,7 +40,9 @@ class LandingPageController extends Controller
             'title' => 'Beranda | Bhakti E Commerce',
             'activePage' => '/',
             'products' => Produk::orderBy('created_at', 'desc')
-                ->get()
+                ->take(4)
+                ->get(),
+            'ulasans' => Ulasan::with('produk')->take(10)->get()
         ];
         return view('landing-page.home', $viewData);
     }
@@ -882,5 +887,118 @@ class LandingPageController extends Controller
             DB::rollBack();
             return back()->with('error', 'Gagal mengkonfirmasi pengiriman: ' . $e->getMessage());
         }
+    }
+
+    public function storeRating(Request $request)
+    {
+        $validated = $request->validate([
+            'id_transaksi' => 'required|integer',
+            'id_produk' => 'required|integer',
+            'id_order' => 'required|integer',
+            'deskripsi_ulasan' => 'nullable|string|max:500',
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $transaksi = Transaksi::find($validated['id_transaksi']);
+            if (!$transaksi) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Transaksi tidak ditemukan.');
+            }
+
+            $produk = Produk::find($validated['id_produk']);
+            if (!$produk) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Produk tidak ditemukan.');
+            }
+
+            $order = Order::find($validated['id_order']);
+            if (!$order) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Order tidak ditemukan.');
+            }
+
+            // Cek apakah user sudah pernah memberi ulasan untuk produk ini di transaksi dan order ini
+            $existingUlasan = Ulasan::where('id_transaksi', $validated['id_transaksi'])
+                ->where('id_produk', $validated['id_produk'])
+                ->where('id_order', $validated['id_order'])
+                ->where('id_user', auth()->user()->id)
+                ->first();
+
+            if ($existingUlasan) {
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Anda sudah memberikan ulasan untuk produk ini.');
+            }
+
+            Ulasan::create([
+                'id_transaksi' => $validated['id_transaksi'],
+                'id_produk' => $validated['id_produk'],
+                'id_order' => $validated['id_order'],
+                'id_user' => auth()->user()->id,
+                'deskripsi_ulasan' => $validated['deskripsi_ulasan'],
+                'rating' => $validated['rating'],
+            ]);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Ulasan berhasil dikirim.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal mengirim ulasan: ' . $e->getMessage());
+        }
+    }
+
+    public function forgotPassword()
+    {
+        $viewData = [
+            'title' => 'Lupa Password | Bhakti E Commerce',
+            'activePage' => 'forgot-password',
+        ];
+        return view('auth.forgot-password.index', $viewData);
+    }
+
+    public function forgotPasswordFindEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return redirect()->back()->with('error', 'Email tidak ditemukan.');
+        }
+        // Redirect to the change password page route
+        return redirect()->route('forgot.password.change.password', $user->id);
+    }
+
+    public function forgotPasswordChangePassword(string $Id)
+    {
+        $user = User::find($Id);
+        // Redirect to the change password page
+        return view('auth.forgot-password.change', [
+            'title' => 'Ubah Password | Bhakti E Commerce',
+            'activePage' => 'forgot-password',
+            'email' => $user->email,
+        ]);
+    }
+
+    public function forgotPasswordStore(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return redirect()->back()->with('error', 'Email tidak ditemukan.');
+        }
+
+        // Update the user's password
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect()->route('login')->with('success', 'Password berhasil diubah. Silakan masuk dengan password baru Anda.');
     }
 }

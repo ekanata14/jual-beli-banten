@@ -44,7 +44,16 @@ class TransaksiController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $transaksi = Transaksi::with(['orders', 'user'])->findOrFail($id);
+
+        $viewData = [
+            'title' => 'Detail Transaksi',
+            'data' => $transaksi,
+            'orders' => $transaksi->orders,
+            'user' => $transaksi->user,
+        ];
+
+        return view('admin.transaksi.detail', $viewData);
     }
 
     /**

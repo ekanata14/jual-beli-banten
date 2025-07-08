@@ -119,6 +119,11 @@
     <section
         class="product_products_wrapper w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center self-stretch gap-6 px-4 md:px-10 mb-10 md:mb-14">
         @foreach ($products as $product)
+            @php
+                $ulasans = $product->ulasans ?? collect();
+                $rating = $ulasans->count() > 0 ? round($ulasans->avg('rating'), 1) : 0;
+                $reviews = $ulasans->count();
+            @endphp
             <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                 @include('components.product-card', [
                     'name' => $product->nama_produk ?? 'Nama Produk',
@@ -127,8 +132,8 @@
                         ? 'Rp. ' . number_format($product->harga, 0, ',', '.') . '/PCS'
                         : 'Rp. 2,000/PCS',
                     'image' => $product->foto ?? 'assets/images/product_img.png',
-                    'rating' => $product->rating ?? 5,
-                    'reviews' => $product->reviews ?? 'Jumlah Review',
+                    'rating' => $rating,
+                    'reviews' => $reviews,
                     'link' => route('product.detail', ['id' => $product->id ?? 1]),
                 ])
             </div>

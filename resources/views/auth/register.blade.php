@@ -82,7 +82,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <!-- Kode Pos -->
-                        <div class="flex flex-col">
+                        <div class="flex flex-col col-span-2">
                             <label for="kode_pos">Kode Pos</label>
                             <input type="text" id="kode_pos" name="kode_pos"
                                 class="block w-full p-4 text-sm border rounded-lg bg-gray-50 mt-3"
@@ -93,26 +93,26 @@
                         </div>
 
                         <!-- Latitude -->
-                        <div class="flex flex-col">
-                            <label for="latitude">Latitude</label>
-                            <input type="text" id="latitude" name="latitude"
-                                class="block w-full p-4 text-sm border rounded-lg bg-gray-50 mt-3" placeholder="Latitude"
-                                readonly required value="{{ old('latitude') }}" />
-                            @error('latitude')
-                                <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
+                        {{-- <div class="flex flex-col">
+                            <label for="latitude">Latitude</label> --}}
+                        <input type="hidden" id="latitude" name="latitude"
+                            class="block w-full p-4 text-sm border rounded-lg bg-gray-50 mt-3" placeholder="Latitude"
+                            readonly required value="{{ old('latitude') }}" />
+                        @error('latitude')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
+                        {{-- </div> --}}
 
                         <!-- Longitude -->
-                        <div class="flex flex-col">
-                            <label for="longitude">Longitude</label>
-                            <input type="text" id="longitude" name="longitude"
-                                class="block w-full p-4 text-sm border rounded-lg bg-gray-50 mt-3" placeholder="Longitude"
-                                readonly required value="{{ old('longitude') }}" />
-                            @error('longitude')
-                                <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
+                        {{-- <div class="flex flex-col">
+                            <label for="longitude">Longitude</label> --}}
+                        <input type="hidden" id="longitude" name="longitude"
+                            class="block w-full p-4 text-sm border rounded-lg bg-gray-50 mt-3" placeholder="Longitude"
+                            readonly required value="{{ old('longitude') }}" />
+                        @error('longitude')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
+                        {{-- </div> --}}
                     </div>
 
                     <!-- Password -->
@@ -140,13 +140,13 @@
 
                     <!-- Submit -->
                     <div class="flex flex-col md:items-center md:justify-between gap-2 w-full">
-                        <a href="#" class="text-[#FF9D00] self-end md:self-auto">Lupa Password?</a>
-                        <button type="submit" class="w-full bg-[#FF9D00] text-white py-3 rounded font-semibold">
-                            Masuk Sekarang
+                        <button type="submit" class="w-full bg-[#36302c] text-white py-3 rounded font-semibold">
+                            Daftar Sekarang
                         </button>
                     </div>
                     <p class="text-center">Sudah memiliki akun? <a href="{{ route('login') }}"
                             class="text-[#FF9D00]">Masuk Disini</a></p>
+                    <a href="{{ route('forgot.password') }}" class="text-[#FF9D00] text-center self-end md:self-auto">Lupa Password?</a>
                 </form>
             </div>
         </div>

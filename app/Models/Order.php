@@ -31,4 +31,9 @@ class Order extends Model
     {
         return $this->belongsTo(Pengiriman::class, 'id_pengiriman', 'id');
     }
+
+    public function Ulasan()
+    {
+        return $this->hasOne(Ulasan::class, 'id_order', 'id');
+    }
 }

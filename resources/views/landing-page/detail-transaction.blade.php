@@ -19,8 +19,23 @@
                     </div>
                     <div class="status_transaksi">
                         <p class="mb-2 md:mb-4 text-sm">Status</p>
-                        <span
-                            class="py-2 px-4 md:py-3 md:px-5 bg-[#DAEAFD] text-[#1D4ED8] rounded-md text-sm md:text-base">{{ $data->status }}</span>
+
+                        @if ($data->status === 'pending')
+                            <span
+                                class="py-2 px-4 md:py-3 md:px-5 bg-yellow-100 text-yellow-800 rounded-md text-sm md:text-base">Pending</span>
+                        @elseif ($data->status === 'denied')
+                            <span
+                                class="py-2 px-4 md:py-3 md:px-5 bg-red-100 text-red-800 rounded-md text-sm md:text-base">Denied</span>
+                        @elseif ($data->status === 'waiting')
+                            <span
+                                class="py-2 px-4 md:py-3 md:px-5 bg-blue-100 text-blue-800 rounded-md text-sm md:text-base">Waiting</span>
+                        @elseif ($data->status === 'paid')
+                            <span
+                                class="py-2 px-4 md:py-3 md:px-5 bg-green-100 text-green-800 rounded-md text-sm md:text-base">Paid</span>
+                        @else
+                            <span
+                                class="py-2 px-4 md:py-3 md:px-5 bg-gray-100 text-gray-800 rounded-md text-sm md:text-base">{{ ucfirst($data->status ?? 'Unknown') }}</span>
+                        @endif
                     </div>
                 </div>
                 <p class="text-sm">No Resi</p>
@@ -193,6 +208,156 @@
                                         Sudah Dikonfirmasi
                                     </span>
                                 </div>
+                                <div class="mt-8">
+                                    <h4 class="text-base font-semibold mb-2 text-center text-gray-700">Beri Ulasan Produk
+                                    </h4>
+                                    <div class="flex flex-col gap-4">
+                                        @foreach ($pengiriman->orders as $order)
+                                            <div
+                                                class="flex flex-col md:flex-row md:items-center md:justify-between bg-blue-50 border border-blue-100 rounded-lg px-4 py-3 shadow-sm">
+                                                <div class="flex items-center gap-3">
+                                                    <img src="{{ asset('storage/' . ($order->produk->foto ?? 'assets/images/product_img.png')) }}"
+                                                        alt="{{ $order->produk->nama_produk ?? 'Produk' }}"
+                                                        class="w-12 h-12 object-cover rounded">
+                                                    <div>
+                                                        <p class="text-sm font-medium text-black">
+                                                            {{ $order->produk->nama_produk ?? '-' }}</p>
+                                                        <p class="text-xs text-gray-500">Penjual:
+                                                            {{ $order->produk->user->name ?? '-' }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-3 md:mt-0 flex items-center gap-2">
+                                                    @if ($order->ulasan)
+                                                        <span
+                                                            class="inline-flex items-center px-4 py-2 bg-green-100 text-green-700 text-xs rounded shadow">
+                                                            <svg class="w-4 h-4 mr-1 text-green-500" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M5 13l4 4L19 7"></path>
+                                                            </svg>
+                                                            Sudah Diulas
+                                                        </span>
+                                                    @else
+                                                        <button type="button"
+                                                            class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-xs rounded shadow transition"
+                                                            onclick="openRatingModal({{ $order->id }})">
+                                                            Beri Ulasan
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal -->
+                                            <div id="rating-modal-{{ $order->id }}"
+                                                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+                                                <div
+                                                    class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative animate-fade-in">
+                                                    <button
+                                                        class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl"
+                                                        onclick="closeRatingModal({{ $order->id }})"
+                                                        aria-label="Tutup">
+                                                        &times;
+                                                    </button>
+                                                    <h3 class="text-lg font-semibold mb-4 text-center">Beri Ulasan untuk
+                                                        <span
+                                                            class="text-blue-700">{{ $order->produk->nama_produk ?? '-' }}</span>
+                                                    </h3>
+                                                    <form action="{{ route('rating.store') }}" method="POST"
+                                                        class="space-y-4">
+                                                        @csrf
+                                                        <input type="hidden" name="id_transaksi"
+                                                            value="{{ $data->id }}">
+                                                        <input type="hidden" name="id_produk"
+                                                            value="{{ $order->produk->id }}">
+                                                        <input type="hidden" name="id_order"
+                                                            value="{{ $order->id }}">
+                                                        <div class="flex items-center justify-center gap-2">
+                                                            <label class="text-sm mr-2">Rating:</label>
+                                                            <div class="flex items-center gap-1">
+                                                                @for ($i = 1; $i <= 5; $i++)
+                                                                    <svg class="w-7 h-7 cursor-pointer transition text-gray-300"
+                                                                        fill="currentColor" viewBox="0 0 20 20"
+                                                                        onclick="setStarRating({{ $order->id }}, {{ $i }})"
+                                                                        id="star-{{ $order->id }}-{{ $i }}">
+                                                                        <path
+                                                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.388 2.462a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.388-2.462a1 1 0 00-1.176 0l-3.388 2.462c-.784.57-1.838-.196-1.539-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.967z" />
+                                                                    </svg>
+                                                                @endfor
+                                                                <input type="hidden" name="rating"
+                                                                    id="rating-input-{{ $order->id }}" value="5">
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block text-sm mb-1">Ulasan:</label>
+                                                            <textarea name="deskripsi_ulasan" rows="3"
+                                                                class="w-full border rounded px-2 py-1 focus:ring focus:ring-blue-100" placeholder="Tulis ulasan Anda..."
+                                                                required></textarea>
+                                                        </div>
+                                                        <div class="flex justify-end gap-2">
+                                                            <button type="button"
+                                                                onclick="closeRatingModal({{ $order->id }})"
+                                                                class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">Batal</button>
+                                                            <button type="submit"
+                                                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition cursor-pointer">
+                                                                Kirim
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <script>
+                                    function openRatingModal(orderId) {
+                                        document.getElementById('rating-modal-' + orderId).classList.remove('hidden');
+                                        setStarRating(orderId, 5); // default to 5 stars
+                                        document.body.classList.add('overflow-hidden');
+                                    }
+
+                                    function closeRatingModal(orderId) {
+                                        document.getElementById('rating-modal-' + orderId).classList.add('hidden');
+                                        document.body.classList.remove('overflow-hidden');
+                                    }
+
+                                    function setStarRating(orderId, rating) {
+                                        document.getElementById('rating-input-' + orderId).value = rating;
+                                        for (let i = 1; i <= 5; i++) {
+                                            const star = document.getElementById('star-' + orderId + '-' + i);
+                                            if (star) {
+                                                star.classList.toggle('text-yellow-400', i <= rating);
+                                                star.classList.toggle('text-gray-300', i > rating);
+                                            }
+                                        }
+                                    }
+                                    // Optional: close modal on ESC
+                                    document.addEventListener('keydown', function(e) {
+                                        if (e.key === "Escape") {
+                                            document.querySelectorAll('[id^="rating-modal-"]').forEach(function(modal) {
+                                                modal.classList.add('hidden');
+                                            });
+                                            document.body.classList.remove('overflow-hidden');
+                                        }
+                                    });
+                                </script>
+                                <style>
+                                    .animate-fade-in {
+                                        animation: fadeIn .2s ease;
+                                    }
+
+                                    @keyframes fadeIn {
+                                        from {
+                                            opacity: 0;
+                                            transform: scale(.95);
+                                        }
+
+                                        to {
+                                            opacity: 1;
+                                            transform: scale(1);
+                                        }
+                                    }
+                                </style>
                             @endif
                             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                             <script>

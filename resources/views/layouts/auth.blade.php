@@ -16,7 +16,7 @@
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet"> -->
-    {{-- <!-- <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}"> --> --}}
+    <!-- <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}"> -->
 </head>
 
 <body>
@@ -55,6 +55,32 @@
         updateDots(); // Initialize dots
     </script>
     @stack('scripts')
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '{{ session('success') }}',
+                showConfirmButton: true,
+                confirmButtonColor: '#1C4ED8',
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('error') }}',
+                showConfirmButton: true,
+                confirmButtonColor: '#E02423',
+            });
+        </script>
+    @endif
 </body>
 
 </html>

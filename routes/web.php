@@ -36,6 +36,11 @@ Route::get('/product/sort/price-highest', [LandingPageController::class, 'produc
 Route::get('/product/sort/price-lowest', [LandingPageController::class, 'productLowestPrice'])->name('product.sort.price_lowest');
 Route::get('/product/detail', [LandingPageController::class, 'productDetail'])->name('product.detail');
 
+Route::get('/forgot-password', [LandingPageController::class, 'forgotPassword'])->name('forgot.password');
+Route::post('/forgot-password/find/email', [LandingPageController::class, 'forgotPasswordFindEmail'])->name('forgot.password.find.email');
+Route::get('/forgot-password/change/password/{id}', [LandingPageController::class, 'forgotPasswordChangePassword'])->name('forgot.password.change.password');
+Route::post('/forgot-password/store', [LandingPageController::class, 'forgotPasswordStore'])->name('forgot.password.store');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/cart', [LandingPageController::class, 'cart'])->name('cart');
     Route::post('/cart/add', [LandingPageController::class, 'addToCart'])->name('cart.add');
@@ -79,6 +84,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Confirm Shipment
     Route::post('/confirm-shipment', [LandingPageController::class, 'confirmShipment'])->name('confirm.shipment');
+
+    // Rating
+    Route::post('/rating/store', [LandingPageController::class, 'storeRating'])->name('rating.store');
 });
 
 
@@ -105,59 +113,60 @@ Route::middleware('authCheck')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Admin Dashboard Controller
-    Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/owner-dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     // Admin Admin Controller
-    Route::get('/admin-dashboard/admin', [AdminAdminController::class, 'index'])->name('admin.admin.index');
-    Route::get('/admin-dashboard/admin/create', [AdminAdminController::class, 'create'])->name('admin.admin.create');
-    Route::get('/admin-dashboard/admin/edit/{id}', [AdminAdminController::class, 'edit'])->name('admin.admin.edit');
-    Route::post('/admin-dashboard/admin/store', [AdminAdminController::class, 'store'])->name('admin.admin.store');
-    Route::put('/admin-dashboard/admin/update', [AdminAdminController::class, 'update'])->name('admin.admin.update');
-    Route::delete('/admin-dashboard/admin/delete', [AdminAdminController::class, 'destroy'])->name('admin.admin.destroy');
+    Route::get('/owner-dashboard/admin', [AdminAdminController::class, 'index'])->name('admin.admin.index');
+    Route::get('/owner-dashboard/admin/create', [AdminAdminController::class, 'create'])->name('admin.admin.create');
+    Route::get('/owner-dashboard/admin/edit/{id}', [AdminAdminController::class, 'edit'])->name('admin.admin.edit');
+    Route::post('/owner-dashboard/admin/store', [AdminAdminController::class, 'store'])->name('admin.admin.store');
+    Route::put('/owner-dashboard/admin/update', [AdminAdminController::class, 'update'])->name('admin.admin.update');
+    Route::delete('/owner-dashboard/admin/delete', [AdminAdminController::class, 'destroy'])->name('admin.admin.destroy');
 
     // Admin Penjual Controller
-    Route::get('/admin-dashboard/penjual', [AdminPenjualController::class, 'index'])->name('admin.penjual.index');
-    Route::get('/admin-dashboard/penjual/create', [AdminPenjualController::class, 'create'])->name('admin.penjual.create');
-    Route::get('/admin-dashboard/penjual/edit/{id}', [AdminPenjualController::class, 'edit'])->name('admin.penjual.edit');
-    Route::post('/admin-dashboard/penjual/store', [AdminPenjualController::class, 'store'])->name('admin.penjual.store');
-    Route::put('/admin-dashboard/penjual/update', [AdminPenjualController::class, 'update'])->name('admin.penjual.update');
-    Route::delete('/admin-dashboard/penjual/delete', [AdminPenjualController::class, 'destroy'])->name('admin.penjual.destroy');
+    Route::get('/owner-dashboard/penjual', [AdminPenjualController::class, 'index'])->name('admin.penjual.index');
+    Route::get('/owner-dashboard/penjual/create', [AdminPenjualController::class, 'create'])->name('admin.penjual.create');
+    Route::get('/owner-dashboard/penjual/edit/{id}', [AdminPenjualController::class, 'edit'])->name('admin.penjual.edit');
+    Route::post('/owner-dashboard/penjual/store', [AdminPenjualController::class, 'store'])->name('admin.penjual.store');
+    Route::put('/owner-dashboard/penjual/update', [AdminPenjualController::class, 'update'])->name('admin.penjual.update');
+    Route::delete('/owner-dashboard/penjual/delete', [AdminPenjualController::class, 'destroy'])->name('admin.penjual.destroy');
 
     // Admin Pelanggan Controller
-    Route::get('/admin-dashboard/pelanggan', [AdminPelangganController::class, 'index'])->name('admin.pelanggan.index');
-    Route::get('/admin-dashboard/pelanggan/create', [AdminPelangganController::class, 'create'])->name('admin.pelanggan.create');
-    Route::get('/admin-dashboard/pelanggan/edit/{id}', [AdminPelangganController::class, 'edit'])->name('admin.pelanggan.edit');
-    Route::post('/admin-dashboard/pelanggan/store', [AdminPelangganController::class, 'store'])->name('admin.pelanggan.store');
-    Route::put('/admin-dashboard/pelanggan/update', [AdminPelangganController::class, 'update'])->name('admin.pelanggan.update');
-    Route::delete('/admin-dashboard/pelanggan/delete', [AdminPelangganController::class, 'destroy'])->name('admin.pelanggan.destroy');
+    Route::get('/owner-dashboard/pelanggan', [AdminPelangganController::class, 'index'])->name('admin.pelanggan.index');
+    Route::get('/owner-dashboard/pelanggan/create', [AdminPelangganController::class, 'create'])->name('admin.pelanggan.create');
+    Route::get('/owner-dashboard/pelanggan/edit/{id}', [AdminPelangganController::class, 'edit'])->name('admin.pelanggan.edit');
+    Route::post('/owner-dashboard/pelanggan/store', [AdminPelangganController::class, 'store'])->name('admin.pelanggan.store');
+    Route::put('/owner-dashboard/pelanggan/update', [AdminPelangganController::class, 'update'])->name('admin.pelanggan.update');
+    Route::delete('/owner-dashboard/pelanggan/delete', [AdminPelangganController::class, 'destroy'])->name('admin.pelanggan.destroy');
 
     // Admin Produk Controller
-    Route::get('/admin-dashboard/produk', [AdminProductController::class, 'index'])->name('admin.produk.index');
-    Route::get('/admin-dashboard/produk/create', [AdminProductController::class, 'create'])->name('admin.produk.create');
-    Route::get('/admin-dashboard/produk/penjual/{id}', [AdminProductController::class, 'show'])->name('admin.produk.detail');
-    Route::get('/admin-dashboard/produk/edit/{id}', [AdminProductController::class, 'edit'])->name('admin.produk.edit');
-    Route::post('/admin-dashboard/produk/store', [AdminProductController::class, 'store'])->name('admin.produk.store');
-    Route::put('/admin-dashboard/produk/update', [AdminProductController::class, 'update'])->name('admin.produk.update');
-    Route::delete('/admin-dashboard/produk/delete', [AdminProductController::class, 'destroy'])->name('admin.produk.destroy');
+    Route::get('/owner-dashboard/produk', [AdminProductController::class, 'index'])->name('admin.produk.index');
+    Route::get('/owner-dashboard/produk/create', [AdminProductController::class, 'create'])->name('admin.produk.create');
+    Route::get('/owner-dashboard/produk/penjual/{id}', [AdminProductController::class, 'show'])->name('admin.produk.detail');
+    Route::get('/owner-dashboard/produk/edit/{id}', [AdminProductController::class, 'edit'])->name('admin.produk.edit');
+    Route::post('/owner-dashboard/produk/store', [AdminProductController::class, 'store'])->name('admin.produk.store');
+    Route::put('/owner-dashboard/produk/update', [AdminProductController::class, 'update'])->name('admin.produk.update');
+    Route::delete('/owner-dashboard/produk/delete', [AdminProductController::class, 'destroy'])->name('admin.produk.destroy');
 
     // Admin Kurir Controller
-    Route::get('/admin-dashboard/kurir', [AdminKurirController::class, 'index'])->name('admin.kurir.index');
-    Route::get('/admin-dashboard/kurir/create', [AdminKurirController::class, 'create'])->name('admin.kurir.create');
-    Route::get('/admin-dashboard/kurir/edit/{id}', [AdminKurirController::class, 'edit'])->name('admin.kurir.edit');
-    Route::post('/admin-dashboard/kurir/store', [AdminKurirController::class, 'store'])->name('admin.kurir.store');
-    Route::put('/admin-dashboard/kurir/update', [AdminKurirController::class, 'update'])->name('admin.kurir.update');
-    Route::delete('/admin-dashboard/kurir/delete', [AdminKurirController::class, 'destroy'])->name('admin.kurir.destroy');
+    Route::get('/owner-dashboard/kurir', [AdminKurirController::class, 'index'])->name('admin.kurir.index');
+    Route::get('/owner-dashboard/kurir/create', [AdminKurirController::class, 'create'])->name('admin.kurir.create');
+    Route::get('/owner-dashboard/kurir/edit/{id}', [AdminKurirController::class, 'edit'])->name('admin.kurir.edit');
+    Route::post('/owner-dashboard/kurir/store', [AdminKurirController::class, 'store'])->name('admin.kurir.store');
+    Route::put('/owner-dashboard/kurir/update', [AdminKurirController::class, 'update'])->name('admin.kurir.update');
+    Route::delete('/owner-dashboard/kurir/delete', [AdminKurirController::class, 'destroy'])->name('admin.kurir.destroy');
 
     // Admin Metode Pembayaran Controller
-    Route::get('/admin-dashboard/metode-pembayaran', [AdminMetodePembayaranController::class, 'index'])->name('admin.metode-pembayaran.index');
-    Route::get('/admin-dashboard/metode-pembayaran/create', [AdminMetodePembayaranController::class, 'create'])->name('admin.metode-pembayaran.create');
-    Route::get('/admin-dashboard/metode-pembayaran/edit/{id}', [AdminMetodePembayaranController::class, 'edit'])->name('admin.metode-pembayaran.edit');
-    Route::post('/admin-dashboard/metode-pembayaran/store', [AdminMetodePembayaranController::class, 'store'])->name('admin.metode-pembayaran.store');
-    Route::put('/admin-dashboard/metode-pembayaran/update', [AdminMetodePembayaranController::class, 'update'])->name('admin.metode-pembayaran.update');
-    Route::delete('/admin-dashboard/metode-pembayaran/delete', [AdminMetodePembayaranController::class, 'destroy'])->name('admin.metode-pembayaran.destroy');
+    Route::get('/owner-dashboard/metode-pembayaran', [AdminMetodePembayaranController::class, 'index'])->name('admin.metode-pembayaran.index');
+    Route::get('/owner-dashboard/metode-pembayaran/create', [AdminMetodePembayaranController::class, 'create'])->name('admin.metode-pembayaran.create');
+    Route::get('/owner-dashboard/metode-pembayaran/edit/{id}', [AdminMetodePembayaranController::class, 'edit'])->name('admin.metode-pembayaran.edit');
+    Route::post('/owner-dashboard/metode-pembayaran/store', [AdminMetodePembayaranController::class, 'store'])->name('admin.metode-pembayaran.store');
+    Route::put('/owner-dashboard/metode-pembayaran/update', [AdminMetodePembayaranController::class, 'update'])->name('admin.metode-pembayaran.update');
+    Route::delete('/owner-dashboard/metode-pembayaran/delete', [AdminMetodePembayaranController::class, 'destroy'])->name('admin.metode-pembayaran.destroy');
 
     // Admin Transaksi Controller
-    Route::get('/admin-dashboard/transaksi', [AdminTransaksiController::class, 'index'])->name('admin.transaksi.index');
+    Route::get('/owner-dashboard/transaksi', [AdminTransaksiController::class, 'index'])->name('admin.transaksi.index');
+    Route::get('/owner-dashboard/transaksi/detail/{id}', [AdminTransaksiController::class, 'show'])->name('admin.transaksi.detail');
 
     // Penjual Dashboard Controller
     Route::get('/penjual-dashboard', [PenjualDashboardController::class, 'index'])->name('penjual.dashboard');

@@ -11,15 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        
-        Schema::create('tabel_ulasan', function (Blueprint $table) { 
+
+        Schema::create('tabel_ulasan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_transaksi');
             $table->foreign('id_transaksi')->references('id')->on('tabel_transaksi')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('id_produk');
             $table->foreign('id_produk')->references('id')->on('tabel_produk')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('id_order');
+            $table->foreign('id_order')->references('id')->on('tabel_order')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->text('deskripsi_ulasan');
             $table->integer('rating');
+            $table->softDeletesTz('deleted_at', precision: 0);
             $table->timestamps();
         });
     }

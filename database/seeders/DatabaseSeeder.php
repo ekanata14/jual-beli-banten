@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             "role" => "admin"
         ]);
 
-        $penjual = User::create([
+        $penjual1 = User::create([
             "name" => "Penjual 1",
             "email" => "penjual_1@penjual.com",
             "password" => bcrypt("penjual"),
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
 
         // Penjual 1
         Penjual::create([
-            "id_user" => $penjual->id,
+            "id_user" => $penjual1->id,
             "alamat_penjual" => "Jl. Penjual 1",
             'latitude' => -8.650925521554344,
             'longitude' => 115.2087778064643,
@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
         for ($i = 1; $i <= 10; $i++) {
             $category = $categories[($i - 1) % count($categories)];
             Produk::create([
-                "id_user" => $penjual->id,
+                "id_user" => $penjual1->id,
                 "nama_produk" => "Banten $category",
                 "deskripsi_produk" => "Deskripsi Produk Banten $category",
                 "harga" => 100000 * $i,

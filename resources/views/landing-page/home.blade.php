@@ -47,20 +47,27 @@
                     <p class="sub-heading">Tentang Kami</p>
                     <h2 class="text-black text-2xl md:text-3xl font-semibold">Produk Terlaris</h2>
                 </div>
-                <x-button href="/produk" icon="{{ asset('assets/icons/arrow_right_white.svg') }}">
+                <x-button href="{{ route('product') }}" icon="{{ asset('assets/icons/arrow_right_white.svg') }}">
                     Lihat Semua Produk
                 </x-button>
             </div>
             <div class="home_product_wrapper grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
                 @foreach ($products as $product)
-                    <div data-aos="zoom-in-up" data-aos-delay="{{ 200 + $loop->index * 100 }}">
+                    @php
+                        $ulasans = $product->ulasans ?? collect();
+                        $rating = $ulasans->count() > 0 ? round($ulasans->avg('rating'), 1) : 0;
+                        $reviews = $ulasans->count();
+                    @endphp
+                    <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                         @include('components.product-card', [
                             'name' => $product->nama_produk ?? 'Nama Produk',
                             'name_penjual' => $product->user->name ?? 'Nama Penjual',
-                            'price' => 'Rp. ' . number_format($product->harga ?? 2000, 0, ',', '.') . '/PCS',
+                            'price' => $product->harga
+                                ? 'Rp. ' . number_format($product->harga, 0, ',', '.') . '/PCS'
+                                : 'Rp. 2,000/PCS',
                             'image' => $product->foto ?? 'assets/images/product_img.png',
-                            'rating' => $product->rating ?? 5,
-                            'reviews' => $product->jumlah_review ?? 'Jumlah Review',
+                            'rating' => $rating,
+                            'reviews' => $reviews,
                             'link' => route('product.detail', ['id' => $product->id ?? 1]),
                         ])
                     </div>
@@ -79,90 +86,34 @@
                 </h2>
             </div>
             <div class="home_testi_content_footer w-full" data-aos="zoom-in" data-aos-delay="400">
-                @php
-                    $testimonials = [
-                        [
-                            'name' => 'I Gusti Ayu Raka Suryani',
-                            'rating' => 5,
-                            'text' =>
-                                'Saya langganan beli banten di sini karena selalu lengkap dan rapi. Bungkusannya bersih, susunan bantennya tertata bagus, dan semua sarana upacara yang saya pesan selalu datang tepat waktu. Sangat membantu untuk persiapan upacara di rumah.',
-                        ],
-                        [
-                            'name' => 'Made Putra Wijaya',
-                            'rating' => 4,
-                            'text' =>
-                                'Pelayanan ramah dan produk berkualitas. Pengiriman cepat dan banten yang diterima sesuai pesanan. Sangat direkomendasikan!',
-                        ],
-                        [
-                            'name' => 'Ni Luh Komang Dewi',
-                            'rating' => 5,
-                            'text' =>
-                                'Banten yang saya terima sangat bagus dan lengkap. Proses pemesanan mudah dan admin sangat membantu.',
-                        ],
-                        [
-                            'name' => 'Kadek Arta',
-                            'rating' => 5,
-                            'text' =>
-                                'Produk sangat berkualitas dan harga terjangkau. Saya sangat puas dengan pelayanannya.',
-                        ],
-                        [
-                            'name' => 'Putu Eka Yasa',
-                            'rating' => 4,
-                            'text' =>
-                                'Banten dikirim dengan cepat dan sesuai pesanan. Akan order lagi untuk upacara berikutnya.',
-                        ],
-                        [
-                            'name' => 'Komang Sari Dewi',
-                            'rating' => 5,
-                            'text' => 'Sangat membantu untuk persiapan upacara keluarga. Produk lengkap dan rapi.',
-                        ],
-                        [
-                            'name' => 'Wayan Sudarma',
-                            'rating' => 5,
-                            'text' => 'Saya sangat merekomendasikan toko ini. Pelayanan ramah dan produk selalu fresh.',
-                        ],
-                        [
-                            'name' => 'Dewa Gede Putra',
-                            'rating' => 4,
-                            'text' =>
-                                'Banten yang diterima sangat bagus dan sesuai tradisi. Terima kasih atas pelayanannya.',
-                        ],
-                        [
-                            'name' => 'Ayu Lestari',
-                            'rating' => 5,
-                            'text' => 'Pesanan datang tepat waktu dan kualitasnya sangat baik. Terima kasih banyak!',
-                        ],
-                        [
-                            'name' => 'Ketut Suardika',
-                            'rating' => 5,
-                            'text' => 'Sarana upacara lengkap dan mudah dipesan. Sangat membantu untuk keluarga kami.',
-                        ],
-                    ];
-                @endphp
-
                 <div class="relative w-full">
                     <div id="carousel"
                         class="carousel flex gap-6 md:gap-8 overflow-x-auto scrollbar-none py-4 md:py-6 px-4 md:px-0 w-full"
                         style="scroll-behavior: smooth;">
-                        @foreach ($testimonials as $index => $testi)
+                        @foreach ($ulasans as $index => $testi)
                             <div class="testimonial-card flex flex-col flex-shrink-0 w-[90vw] sm:w-[45vw] md:w-[32vw] lg:w-[30vw] xl:w-[25vw] px-5 py-6 bg-white rounded-lg shadow-md gap-6"
                                 data-index="{{ $index }}" data-aos="flip-left"
                                 data-aos-delay="{{ 200 + $index * 100 }}">
                                 <img src="{{ asset('assets/icons/quote.svg') }}" alt="" class="self-end w-8 h-8">
                                 <div class="testimonial-card_content">
                                     <div class="stars flex mb-2">
-                                        @for ($i = 0; $i < 5; $i++)
-                                            @if ($i < $testi['rating'])
-                                                <img src="{{ asset('assets/icons/star-full.svg') }}" alt="Star"
-                                                    class="w-5 h-5">
-                                            @else
-                                                <img src="{{ asset('assets/icons/star-empty.svg') }}" alt="Star"
-                                                    class="w-5 h-5">
-                                            @endif
+                                        @php
+                                            $rating = intval($testi->rating ?? 0);
+                                            $fullStars = min(5, max(0, $rating));
+                                            $emptyStars = 5 - $fullStars;
+                                        @endphp
+                                        @for ($i = 0; $i < $fullStars; $i++)
+                                            <img src="{{ asset('assets/icons/star-full.svg') }}" alt="Star"
+                                                class="w-5 h-5">
+                                        @endfor
+                                        @for ($i = 0; $i < $emptyStars; $i++)
+                                            <img src="{{ asset('assets/icons/star-empty.svg') }}" alt="Star"
+                                                class="w-5 h-5">
                                         @endfor
                                     </div>
-                                    <p class="text-black font-semibold">{{ $testi['name'] }}</p>
-                                    <p class="text-gray-700 mt-4 text-sm md:text-base">"{{ $testi['text'] }}"</p>
+                                    <p class="text-black font-semibold">{{ $testi->user->name }}</p>
+                                    <p class="text-gray-700 mt-4 text-sm md:text-base">"{{ $testi->deskripsi_ulasan }}"
+                                    </p>
                                 </div>
                             </div>
                         @endforeach

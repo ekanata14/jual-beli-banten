@@ -13,10 +13,12 @@ class DashboardController extends Controller
     public function index()
     {
         $viewData = [
-            "title" => "Dashboard Admin",
+            "title" => "Dashboard Owner",
             "totalPelanggan" => Pelanggan::count(),
             "totalPenjual" => Penjual::count(),
             "totalTransaksi" => Transaksi::count(),
+            'totalPemasukan' => Transaksi::where('status', 'paid')->sum('total_harga'),
+            "transaksis" => Transaksi::latest()->paginate(10),
         ];
 
         return view("admin.dashboard", $viewData);

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 // Models
 use App\Models\Admin;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -18,7 +19,7 @@ class AdminController extends Controller
     {
         $viewData = [
             "title" => "Data Admin",
-            "datas" => Admin::where('role', 'admin')->paginate(10),
+            "datas" => User::where('role', 'admin')->paginate(10),
         ];
 
         return view("admin.admin.index", $viewData);
@@ -42,7 +43,7 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:8|confirmed',
         ]);
@@ -50,8 +51,8 @@ class AdminController extends Controller
         DB::beginTransaction();
 
         try {
-            Admin::create([
-                'nama' => $validatedData['nama'],
+            User::create([
+                'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'password' => bcrypt($validatedData['password']),
                 'role' => 'admin',
@@ -79,7 +80,7 @@ class AdminController extends Controller
     {
         $viewData = [
             "title" => "Edit Admin",
-            "data" => Admin::where('id_admin', $id)->first(),
+            "data" => User::where('id', $id)->first(),
         ];
 
         return view('admin.admin.edit', $viewData);
@@ -91,8 +92,8 @@ class AdminController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'id_admin' => 'required',
-            'nama' => 'required|string|max:255',
+            'id' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
@@ -100,8 +101,8 @@ class AdminController extends Controller
         DB::beginTransaction();
 
         try {
-            $admin = Admin::where('id_admin', $validatedData['id_admin'])->first();
-            $admin->nama = $validatedData['nama'];
+            $admin = User::where('id', $validatedData['id'])->first();
+            $admin->name = $validatedData['name'];
             $admin->email = $validatedData['email'];
             if (!empty($validatedData['password'])) {
                 $admin->password = bcrypt($validatedData['password']);
@@ -123,7 +124,7 @@ class AdminController extends Controller
     {
         DB::beginTransaction();
         try {
-            $admin = Admin::where('id_admin', $request->id_admin)->first();
+            $admin = User::where('id', $request->id)->first();
             $admin->delete();
             DB::commit();
             return redirect()->route('admin.admin.index')->with('success', 'Admin deleted successfully');

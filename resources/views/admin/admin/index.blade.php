@@ -29,18 +29,19 @@
                             {{ $loop->iteration }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ $item->nama }}
+                            {{ $item->name }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->email }}
                         </td>
                         <td class="px-6 py-4 flex gap-2">
-                            <a href="{{ route('admin.admin.edit', $item->id_admin) }}" class="btn-yellow">Edit</a>
+                            <a href="{{ route('admin.admin.edit', $item->id) }}" class="btn-yellow">Edit</a>
                             <form action="{{ route('admin.admin.destroy') }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <input type="hidden" name="id_admin" value="{{ $item->id_admin }}">
-                                <button type="button" class="btn-danger" onclick="confirmInactive(this)">Nonaktifkan</button>
+                                <input type="hidden" name="id" value="{{ $item->id }}">
+                                <button type="button" class="btn-danger"
+                                    onclick="confirmInactive(this)">Nonaktifkan</button>
                                 <script>
                                     function confirmInactive(button) {
                                         Swal.fire({

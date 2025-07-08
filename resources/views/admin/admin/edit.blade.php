@@ -4,13 +4,22 @@
     <form class="bg-white p-8 rounded-xl" method="POST" action="{{ route('admin.admin.update') }}">
         @csrf
         @method('PUT')
-        <input type="hidden" name="id_admin" value="{{ $data->id_admin }}">
+        <input type="hidden" name="id" value="{{ $data->id }}">
         <div class="mb-6">
             <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-            <input type="text" id="nama" name="nama"
+            <input type="text" id="name" name="name"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="John Doe" value="{{ old('nama', $data->nama) }}" required />
-            @error('nama')
+                placeholder="John Doe" value="{{ old('nama', $data->name) }}" required />
+            @error('name')
+                <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="mb-6">
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+            <input type="email" id="email" name="email"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="email@example.com" value="{{ old('email', $data->email) }}" required />
+            @error('email')
                 <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
             @enderror
         </div>

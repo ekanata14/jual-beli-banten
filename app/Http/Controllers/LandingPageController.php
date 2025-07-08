@@ -370,9 +370,6 @@ class LandingPageController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->first(),
             'pengiriman' => $pengiriman,
-            'product' => Pengiriman::where('id_transaksi', $id)
-                ->orderBy('created_at', 'desc')
-                ->first()->order->Produk,
             'informasiPenerima' => $pengiriman
         ];
         return view('landing-page.checkout.checkout-third', $viewData);

@@ -12,7 +12,6 @@ class Pengiriman extends Model
 
     protected $fillable = [
         'id_transaksi',
-        'id_order', // Hilang
         'id_kurir',
         'no_resi',
         'biteship_order_id',
@@ -31,11 +30,6 @@ class Pengiriman extends Model
         'waktu_pengiriman',
         'biaya_pengiriman',
     ];
-
-    public function order()
-    {
-        return $this->belongsTo(Order::class, 'id_order', 'id');
-    }
 
     public function orders()
     {

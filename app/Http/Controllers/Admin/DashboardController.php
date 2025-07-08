@@ -12,8 +12,17 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $title = null;
+        if (auth()->user()->role === 'owner') {
+            $title = "Dashboard Owner";
+        } elseif (auth()->user()->role === 'admin') {
+            $title = "Dashboard Admin";
+        } else {
+            abort(403, 'Unauthorized action.');
+        }
+
         $viewData = [
-            "title" => "Dashboard Owner",
+            "title" => $title,
             "totalPelanggan" => Pelanggan::count(),
             "totalPenjual" => Penjual::count(),
             "totalTransaksi" => Transaksi::count(),

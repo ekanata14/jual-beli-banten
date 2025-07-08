@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('id_transaksi');
             $table->foreign('id_transaksi')->references('id')->on('tabel_transaksi')->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('id_order');
-            $table->foreign('id_order')->references('id')->on('tabel_order')->onUpdate('cascade')->onDelete('cascade');
+            // $table->unsignedBigInteger('id_order');
+            // $table->foreign('id_order')->references('id')->on('tabel_order')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('id_kurir')->nullable();
             $table->foreign('id_kurir')->references('id')->on('tabel_kurir')->onUpdate('cascade')->onDelete('cascade');
             $table->string('no_resi', 250)->nullable();

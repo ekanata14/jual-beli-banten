@@ -15,7 +15,7 @@
                 @endphp
                 <div class="product_container flex flex-col md:flex-row w-full mt-8 pb-10 border-b border-gray-200"
                     data-id="{{ $keranjang->id }}" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-                    <img src="{{ asset('storage/' . $keranjang->produk->foto) }}" alt="{{ $keranjang->produk->nama_produk }}"
+                    <img src="{{ asset($keranjang->produk->foto) }}" alt="{{ $keranjang->produk->nama_produk }}"
                         class="w-32 h-32 object-cover rounded-md mx-auto md:mx-0">
                     <div class="product_desc flex flex-col justify-between md:ml-10 w-full mt-4 md:mt-0">
                         <div

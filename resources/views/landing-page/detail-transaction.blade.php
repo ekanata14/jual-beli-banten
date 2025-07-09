@@ -81,7 +81,7 @@
                 @forelse($data->orders as $item)
                     <div class="informasi_produk mt-4 mb-4 flex flex-col md:flex-row md:justify-between gap-4 items-center bg-gray-50 p-4 rounded"
                         data-aos="fade-up">
-                        <img src="{{ asset('storage/' . ($item->produk->foto ?? 'assets/images/product_img.png')) }}"
+                        <img src="{{ asset($item->produk->foto ?? 'assets/images/product_img.png') }}"
                             alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-24 h-24 object-cover rounded">
                         <div class="informasi_produk flex flex-col gap-2 flex-1">
                             <h4 class="text-black text-base">{{ $item->produk->nama_produk ?? '-' }}</h4>
@@ -216,7 +216,7 @@
                                             <div
                                                 class="flex flex-col md:flex-row md:items-center md:justify-between bg-blue-50 border border-blue-100 rounded-lg px-4 py-3 shadow-sm">
                                                 <div class="flex items-center gap-3">
-                                                    <img src="{{ asset('storage/' . ($order->produk->foto ?? 'assets/images/product_img.png')) }}"
+                                                    <img src="{{ asset($order->produk->foto ?? 'assets/images/product_img.png') }}"
                                                         alt="{{ $order->produk->nama_produk ?? 'Produk' }}"
                                                         class="w-12 h-12 object-cover rounded">
                                                     <div>

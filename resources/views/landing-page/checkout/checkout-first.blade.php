@@ -53,7 +53,7 @@
             @forelse($transaksi->orders as $item)
                 <div class="product_container flex flex-col sm:flex-row justify-between pb-9">
                     <div class="flex gap-5">
-                        <img src="{{ asset('storage/' . ($item->produk->foto ?? 'assets/images/product_img.png')) }}"
+                        <img src="{{ asset($item->produk->foto ?? 'assets/images/product_img.png') }}"
                             alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-24 h-24 object-cover rounded-md">
                         <div class="flex flex-col">
                             <h4 class="text-black font-bold mb-2">{{ $item->produk->nama_produk ?? '-' }}</h4>

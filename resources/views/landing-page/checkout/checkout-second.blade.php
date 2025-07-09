@@ -100,7 +100,8 @@
                             const lng = document.getElementById('longitude').value.trim();
                             if (!lat || !lng) {
                                 alert(
-                                    'Silakan pilih lokasi penerima dengan tombol "Dapatkan Lokasi Otomatis" atau "Pilih di Peta".');
+                                    'Silakan pilih lokasi penerima dengan tombol "Dapatkan Lokasi Otomatis" atau "Pilih di Peta".'
+                                    );
                                 e.preventDefault();
                             }
                         });
@@ -285,7 +286,8 @@
                     const lng = document.getElementById('longitude').value.trim();
                     if (!lat || !lng) {
                         alert(
-                            'Silakan pilih lokasi penerima dengan tombol "Dapatkan Lokasi Otomatis" atau "Pilih di Peta".');
+                            'Silakan pilih lokasi penerima dengan tombol "Dapatkan Lokasi Otomatis" atau "Pilih di Peta".'
+                            );
                         e.preventDefault();
                     }
                 });
@@ -302,7 +304,7 @@
                 <div class="product_container flex flex-col sm:flex-row justify-between pb-6 md:pb-9 gap-4"
                     data-aos="fade-up">
                     <div class="flex gap-4 md:gap-5">
-                        <img src="{{ asset('storage/' . ($item->produk->foto ?? 'assets/images/product_img.png')) }}"
+                        <img src="{{ asset($item->produk->foto ?? 'assets/images/product_img.png') }}"
                             alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-24 h-24 object-cover rounded-md">
                         <div class="flex flex-col">
                             <h4 class="text-black font-bold mb-2 md:mb-4">{{ $item->produk->nama_produk ?? '-' }}</h4>

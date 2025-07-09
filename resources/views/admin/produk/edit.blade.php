@@ -24,7 +24,8 @@
                 required>
                 <option value="" disabled selected>Pilih Penjual</option>
                 @foreach ($penjuals as $penjual)
-                    <option value="{{ $penjual->id }}" {{ old('id_user', $data->id_user) == $penjual->id ? 'selected' : '' }}>
+                    <option value="{{ $penjual->id }}"
+                        {{ old('id_user', $data->id_user) == $penjual->id ? 'selected' : '' }}>
                         {{ $penjual->name }}
                     </option>
                 @endforeach
@@ -91,7 +92,7 @@
             <input type="file" id="foto" name="foto"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
             @if ($data->foto)
-                <img src="{{ asset('storage/' . $data->foto) }}" alt="foto" class="mt-4 w-96">
+                <img src="{{ asset($data->foto) }}" alt="foto" class="mt-4 w-96">
             @endif
             @error('foto')
                 <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>

@@ -76,7 +76,8 @@
                 @endif
                 <input type="hidden" name="id_transaksi" value="{{ $transaksi->id }}">
                 @for ($i = 0; $i < $jumlahPengiriman; $i++)
-                    <input type="hidden" name="selected_rate[{{ $i }}]" id="selected_rate_{{ $i + 1 }}">
+                    <input type="hidden" name="selected_rate[{{ $i }}]"
+                        id="selected_rate_{{ $i + 1 }}">
                     <input type="hidden" name="biaya_pengiriman_{{ $i + 1 }}"
                         id="shipping_price_{{ $i + 1 }}">
                 @endfor
@@ -241,7 +242,7 @@
             @forelse($transaksi->orders as $item)
                 <div class="product_container flex flex-col sm:flex-row justify-between pb-6 sm:pb-9 gap-4 sm:gap-0">
                     <div class="flex gap-4 sm:gap-5">
-                        <img src="{{ asset('storage/' . ($item->produk->foto ?? 'assets/images/product_img.png')) }}"
+                        <img src="{{ asset($item->produk->foto ?? 'assets/images/product_img.png') }}"
                             alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-24 h-24 object-cover rounded">
                         <div class="flex flex-col">
                             <h4 class="text-black font-bold mb-2 sm:mb-4">{{ $item->produk->nama_produk ?? '-' }}</h4>

@@ -16,7 +16,7 @@
             <!-- informasi penerima -->
             <div class="checkout_container mt-8">
                 <h3 class="text-black">Informasi Penerima</h3>
-                @foreach($informasiPenerima as $info)
+                @foreach ($informasiPenerima as $info)
                     <div class="informasi_data mt-6 mb-6 border-b pb-4">
                         <p><strong>Nama Penerima:</strong> {{ $info->nama_penerima ?? '-' }}</p>
                         <p><strong>Alamat Penerima:</strong> {{ $info->alamat_penerima ?? '-' }}</p>
@@ -31,12 +31,13 @@
             <!-- detail pengiriman -->
             <div class="checkout_container mt-8">
                 <h3 class="text-black">Detail Pengiriman</h3>
-                @foreach($pengiriman as $kirim)
+                @foreach ($pengiriman as $kirim)
                     <div class="informasi_data mt-6 mb-6 border-b pb-4">
                         <p><strong>Kurir:</strong> {{ $kirim->kurir->nama_kurir }}</p>
                         <p><strong>Status Pengiriman:</strong> {{ ucfirst($kirim->status_pengiriman) }}</p>
                         <p><strong>Waktu Pengiriman:</strong> {{ $kirim->waktu_pengiriman }}</p>
-                        <p><strong>Biaya Pengiriman:</strong> Rp. {{ number_format($kirim->biaya_pengiriman, 0, ',', '.') }}</p>
+                        <p><strong>Biaya Pengiriman:</strong> Rp.
+                            {{ number_format($kirim->biaya_pengiriman, 0, ',', '.') }}</p>
                         <p><strong>Penjual:</strong> {{ $kirim->alamat_penjual }}</p>
                         <p><strong>Kode Pos Penjual:</strong> {{ $kirim->kode_pos_penjual }}</p>
                         <p><strong>Latitude Penjual:</strong> {{ $kirim->latitude_penjual }}</p>
@@ -57,7 +58,7 @@
                     <input type="hidden" name="id_transaksi" value="{{ $transaksi->id }}">
                     <input type="hidden" name="id_order" value="{{ $transaksi->Orders[0]->id ?? '' }}">
                     {{-- Pengiriman bisa lebih dari satu, kirim array id_pengiriman --}}
-                    @foreach($pengiriman as $kirim)
+                    @foreach ($pengiriman as $kirim)
                         <input type="hidden" name="id_pengiriman[]" value="{{ $kirim->id }}">
                     @endforeach
                     <input type="hidden" name="total_harga"
@@ -89,7 +90,8 @@
             </div>
         </div>
 
-        <div class="right_content bg-white py-6 px-4 md:px-5 w-full md:w-[40%] rounded-md h-full mt-8 md:mt-0" data-aos="fade-left">
+        <div class="right_content bg-white py-6 px-4 md:px-5 w-full md:w-[40%] rounded-md h-full mt-8 md:mt-0"
+            data-aos="fade-left">
             @php
                 $subtotal = $transaksi->orders->sum('subtotal');
                 $totalBiayaPengiriman = $pengiriman->sum('biaya_pengiriman');
@@ -98,7 +100,7 @@
             @forelse($transaksi->orders as $item)
                 <div class="product_container flex flex-col sm:flex-row justify-between pb-9">
                     <div class="flex gap-5">
-                        <img src="{{ asset('storage/' . ($item->produk->foto ?? 'assets/images/product_img.png')) }}"
+                        <img src="{{ asset($item->produk->foto ?? 'assets/images/product_img.png') }}"
                             alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-24 h-24 object-cover rounded-md">
                         <div class="flex flex-col">
                             <h4 class="text-black font-bold mb-2">{{ $item->produk->nama_produk ?? '-' }}</h4>
@@ -108,7 +110,8 @@
                             </p>
                         </div>
                     </div>
-                    <h4 class="text-black font-bold mt-4 sm:mt-0">Rp. {{ number_format($item->produk->harga ?? 0, 0, ',', '.') }}</h4>
+                    <h4 class="text-black font-bold mt-4 sm:mt-0">Rp.
+                        {{ number_format($item->produk->harga ?? 0, 0, ',', '.') }}</h4>
                 </div>
             @empty
                 <div class="text-gray-500 text-center py-8">Tidak ada produk dalam transaksi ini.</div>
@@ -156,13 +159,17 @@
                 gap: 2rem;
                 padding: 2rem 1rem;
             }
-            .left_content, .right_content {
+
+            .left_content,
+            .right_content {
                 width: 100% !important;
             }
+
             .right_content {
                 margin-top: 2rem;
             }
         }
+
         .checkout_container {
             background: #f9f9f9;
             border-radius: 0.5rem;

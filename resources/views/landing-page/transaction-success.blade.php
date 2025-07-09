@@ -15,7 +15,7 @@
                 <div class="product_container flex flex-col md:flex-row justify-between pb-6 md:pb-9 border-b last:border-b-0"
                     data-aos="fade-up" data-aos-delay="100">
                     <div class="flex gap-4 md:gap-5">
-                        <img src="{{ asset('storage/' . ($item->produk->foto ?? 'assets/images/product_img.png')) }}"
+                        <img src="{{ asset($item->produk->foto ?? 'assets/images/product_img.png') }}"
                             alt="{{ $item->produk->nama_produk ?? 'Produk' }}"
                             class="w-20 md:w-32 lg:w-50 object-cover rounded">
                         <div class="flex flex-col">

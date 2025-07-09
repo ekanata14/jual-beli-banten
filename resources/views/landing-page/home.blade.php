@@ -90,14 +90,6 @@
                     <div id="carousel"
                         class="carousel flex gap-6 md:gap-8 overflow-x-auto scrollbar-none py-4 md:py-6 px-4 md:px-0 w-full"
                         style="scroll-behavior: smooth;">
-                        @php
-                            // If $ulasans is not set, try to get from products or set as empty collection
-                            $testimonials = isset($ulasans) && $ulasans->count() > 0
-                                ? $ulasans
-                                : (isset($products) && $products->count() > 0
-                                    ? $products->flatMap(fn($p) => $p->ulasans ?? collect())->take(8)
-                                    : collect());
-                        @endphp
                         @forelse ($testimonials as $index => $testi)
                             <div class="testimonial-card flex flex-col flex-shrink-0 w-[90vw] sm:w-[45vw] md:w-[32vw] lg:w-[30vw] xl:w-[25vw] px-5 py-6 bg-white rounded-lg shadow-md gap-6"
                                 data-index="{{ $index }}" data-aos="flip-left"

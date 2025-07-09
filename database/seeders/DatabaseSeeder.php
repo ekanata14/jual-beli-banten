@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Penjual;
 use App\Models\Pelanggan;
 use App\Models\Produk;
+use App\Models\Ulasan;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -258,35 +259,32 @@ class DatabaseSeeder extends Seeder
             "kode_pos" => "80227",
             "no_telp" => "081234567890",
         ]);
-
-        \DB::table('tabel_ulasan')->insert([
-            [
-                'id_transaksi' => null,
-                'id_produk' => 1,
-                'id_order' => null,
-                'id_user' => $pelanggan->id,
-                'deskripsi_ulasan' => 'Produk sangat bagus dan sesuai deskripsi. Pengiriman cepat!',
-                'rating' => 5,
-                'deleted_at' => null,
-            ],
-            [
-                'id_transaksi' => null,
-                'id_produk' => 2,
-                'id_order' => null,
-                'id_user' => $pelanggan->id,
-                'deskripsi_ulasan' => 'Kualitas produk baik, sangat bagus.',
-                'rating' => 4,
-                'deleted_at' => null,
-            ],
-            [
-                'id_transaksi' => null,
-                'id_produk' => 3,
-                'id_order' => null,
-                'id_user' => $pelanggan->id,
-                'deskripsi_ulasan' => 'Produk sesuai pesanan, pelayanan ramah.',
-                'rating' => 5,
-                'deleted_at' => null,
-            ],
+        Ulasan::create([
+            'id_transaksi' => null,
+            'id_produk' => 1,
+            'id_order' => null,
+            'id_user' => $pelanggan->id,
+            'deskripsi_ulasan' => 'Produk sangat bagus dan sesuai deskripsi. Pengiriman cepat!',
+            'rating' => 5,
+            'deleted_at' => null,
+        ]);
+        Ulasan::create([
+            'id_transaksi' => null,
+            'id_produk' => 2,
+            'id_order' => null,
+            'id_user' => $pelanggan->id,
+            'deskripsi_ulasan' => 'Kualitas produk baik, sangat bagus.',
+            'rating' => 4,
+            'deleted_at' => null,
+        ]);
+        Ulasan::create([
+            'id_transaksi' => null,
+            'id_produk' => 3,
+            'id_order' => null,
+            'id_user' => $pelanggan->id,
+            'deskripsi_ulasan' => 'Produk sesuai pesanan, pelayanan ramah.',
+            'rating' => 5,
+            'deleted_at' => null,
         ]);
     }
 }

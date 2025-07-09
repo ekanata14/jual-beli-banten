@@ -87,7 +87,7 @@ class LandingPageController extends Controller
             'products' => Produk::orderBy('created_at', 'desc')
                 ->take(4)
                 ->get(),
-            'testimonials' => Ulasan::with('produk')->take(10)->get()
+            'testimonials' => Ulasan::all()
         ];
         return view('landing-page.home', $viewData);
     }

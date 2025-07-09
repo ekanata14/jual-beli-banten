@@ -5,12 +5,12 @@
         data-aos="fade-up" data-aos-delay="100">
         <div class="product_image w-full lg:w-1/3" data-aos="fade-right" data-aos-delay="200">
             <div class="product_image_primary w-full">
-                <img src="{{ asset('storage/' . $product->foto) }}" alt="{{ $product['nama_produk'] }}"
+                <img src="{{ asset($product->foto) }}" alt="{{ $product['nama_produk'] }}"
                     class="w-full rounded-lg object-cover">
             </div>
             <div class="product_image_list w-full flex justify-between mt-5 gap-2 md:gap-4">
                 @for ($i = 0; $i < 4; $i++)
-                    <img src="{{ asset('storage/' . $product['foto']) }}" alt="{{ $product['nama_produk'] }}"
+                    <img src="{{ asset($product['foto']) }}" alt="{{ $product['nama_produk'] }}"
                         class="flex-1 w-1/4 h-16 md:h-20 object-cover rounded" data-aos="zoom-in"
                         data-aos-delay="{{ 300 + $i * 100 }}">
                 @endfor
@@ -21,15 +21,29 @@
             <div class="product_header">
                 <h2 class="text-[#1C1917] font-serif text-2xl md:text-4xl font-semibold">{{ $product['nama_produk'] }}
                 </h2>
-
-                <div class="flex items-center space-x-2 mt-2">
+                @php
+                    // Calculate average rating from ulasans
+                    $ratings = $product->ulasans()->whereNull('deleted_at')->pluck('rating');
+                    $averageRating = $ratings->count() > 0 ? round($ratings->avg(), 1) : 0;
+                @endphp
+                <div class="mt-4 flex items-center gap-2">
                     <div class="flex">
-                        @for ($i = 0; $i < 5; $i++)
-                            <img src="{{ asset('assets/icons/star-full.svg') }}" alt="Star"
-                                class="w-4 h-4 text-[#FF7006]">
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($averageRating >= $i)
+                                <img src="{{ asset('assets/icons/star-full.svg') }}" alt="Star"
+                                    class="w-4 h-4 text-[#FF7006]">
+                            @elseif ($averageRating >= $i - 0.5)
+                                <img src="{{ asset('assets/icons/star-half.svg') }}" alt="Star"
+                                    class="w-4 h-4 text-[#FF7006]">
+                            @else
+                                {{-- <img src="{{ asset('assets/icons/star-empty.svg') }}" alt="Star"
+                                    class="w-4 h-4 text-[#FF7006]"> --}}
+                            @endif
                         @endfor
                     </div>
-                    <span class="text-sm text-[#1C1917] font-medium">4.9 / 5.0</span>
+                    <span class="text-sm text-[#1C1917] font-medium">
+                        {{ $averageRating }} / 5.0 ({{ $ratings->count() }} ulasan)
+                    </span>
                 </div>
 
                 <div class="flex items-end mt-3">
@@ -127,7 +141,7 @@
                         'price' => $related->harga
                             ? 'Rp. ' . number_format($related->harga, 0, ',', '.') . '/PCS'
                             : 'Rp. 2,000/PCS',
-                        'image' => $related->foto ?? 'assets/images/product_img.png',
+                        'image' => asset($related->foto) ?? 'assets/images/product_img.png',
                         'rating' => $related->rating ?? 5,
                         'reviews' => $related->reviews ?? 'Jumlah Review',
                         'link' => route('product.detail', ['id' => $related->id ?? 1]),
@@ -242,10 +256,12 @@
                                             $emptyStars = 5 - $fullStars;
                                         @endphp
                                         @for ($i = 0; $i < $fullStars; $i++)
-                                            <img src="{{ asset('assets/icons/star-full.svg') }}" alt="Star" class="w-5 h-5">
+                                            <img src="{{ asset('assets/icons/star-full.svg') }}" alt="Star"
+                                                class="w-5 h-5">
                                         @endfor
                                         @for ($i = 0; $i < $emptyStars; $i++)
-                                            <img src="{{ asset('assets/icons/star-empty.svg') }}" alt="Star" class="w-5 h-5">
+                                            {{-- <img src="{{ asset('assets/icons/star-empty.svg') }}" alt="Star"
+                                                class="w-5 h-5"> --}}
                                         @endfor
                                     </div>
                                     <p class="text-black font-semibold">{{ $testi->user->name }}</p>

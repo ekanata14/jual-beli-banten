@@ -9,7 +9,7 @@
 <div class="product_card w-full">
     <a href="{{ $link }}">
         <div class="product_card_header">
-            <img src="{{ Storage::url($image) }}" alt="">
+            <img src="{{ asset($image) }}" alt="">
         </div>
         <div class="product_card_footer mt-3 gap-2 flex flex-col">
             <div class="product_card_footer_title flex justify-between">
@@ -28,8 +28,11 @@
                         <span class="text-gray-400 text-sm">Belum ada Ulasan</span>
                     @else
                         @for ($i = 0; $i < 5; $i++)
-                            <img src="{{ asset('assets/icons/star-' . ($i < $rating ? 'full' : 'empty') . '.svg') }}"
-                                alt="Star" class="w-5 h-5">
+                            @if ($i < $rating)
+                                <img src="{{ asset('assets/icons/star-full.svg') }}" alt="Star" class="w-5 h-5">
+                            @else
+                                {{-- <img src="{{ asset('assets/icons/star-empty.svg') }}" alt="Star" class="w-5 h-5"> --}}
+                            @endif
                         @endfor
                     @endif
                 </div>

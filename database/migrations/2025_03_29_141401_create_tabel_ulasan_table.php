@@ -14,13 +14,13 @@ return new class extends Migration
 
         Schema::create('tabel_ulasan', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_transaksi');
+            $table->unsignedBigInteger('id_transaksi')->nullable();
             $table->foreign('id_transaksi')->references('id')->on('tabel_transaksi')->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('id_produk');
+            $table->unsignedBigInteger('id_produk')->nullable();
             $table->foreign('id_produk')->references('id')->on('tabel_produk')->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('id_order');
+            $table->unsignedBigInteger('id_order')->nullable();
             $table->foreign('id_order')->references('id')->on('tabel_order')->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_user')->nullable();
             $table->foreign('id_user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->text('deskripsi_ulasan');
             $table->integer('rating');

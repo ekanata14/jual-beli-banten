@@ -73,7 +73,7 @@ class ProductController extends Controller
                 $extension = $request->file('foto')->getClientOriginalExtension();
                 $filename = $request->id_user . '_' . str_replace(' ', '_', $validatedData['nama_produk']) . '_' . $timestamp . '.' . $extension;
                 $fotoPath = $request->file('foto')->storeAs('produk', $filename, 'public');
-                $validatedData['foto'] = $fotoPath;
+                $validatedData['foto'] = 'storage/'.$fotoPath;
             }
 
             Produk::create($validatedData);

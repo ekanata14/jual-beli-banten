@@ -259,6 +259,7 @@ class DatabaseSeeder extends Seeder
             "kode_pos" => "80227",
             "no_telp" => "081234567890",
         ]);
+
         Ulasan::create([
             'id_transaksi' => null,
             'id_produk' => 1,

@@ -34,6 +34,51 @@ class LandingPageController extends Controller
         // You can share categories to all views if needed
         $this->categories = Produk::select('kategori')->distinct()->pluck('kategori');
     }
+
+    public function profileUser()
+    {
+        $viewData = [
+            'title' => 'Profile Pengguna | Bhakti E Commerce'
+        ];
+
+        return view('landing-page.profile', $viewData);
+    }
+
+    public function profileUserUpdate(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . auth()->user()->id,
+            'alamat_pelanggan' => 'nullable|string|max:255',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'kode_pos' => 'nullable|string|max:10',
+            'phone_number' => 'nullable|string|max:15',
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        $user = auth()->user();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+        $user->save();
+
+        // Update Pelanggan data
+        $pelanggan = $user->pelanggan;
+        if ($pelanggan) {
+            $pelanggan->alamat_pelanggan = $request->alamat_pelanggan;
+            $pelanggan->latitude = $request->latitude;
+            $pelanggan->longitude = $request->longitude;
+            $pelanggan->kode_pos = $request->kode_pos;
+            $pelanggan->no_telp = $request->phone_number;
+            $pelanggan->save();
+        }
+
+        return redirect()->back()->with('success', 'Profile updated successfully.');
+    }
+
     public function index()
     {
         $viewData = [

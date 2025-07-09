@@ -76,14 +76,18 @@
                             onerror="this.onerror=null;this.src='https://via.placeholder.com/24?text=Cart';">
                     </a>
                     <!-- Profile Dropdown (md and up) -->
-                    <div class="relative group">
-                        <button class="hidden md:flex items-center focus:outline-none" aria-haspopup="true"
-                            aria-expanded="false">
+                    <div class="relative group" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
+                        <button 
+                            class="hidden md:flex items-center focus:outline-none" 
+                            aria-haspopup="true"
+                            :aria-expanded="open"
+                            @click="open = !open"
+                            type="button"
+                        >
                             <img src="{{ asset('assets/icons/profile_icon.svg') }}" alt="Profil"
                                 class="h-6 object-contain"
                                 onerror="this.onerror=null;this.src='https://via.placeholder.com/24?text=User';">
-                            <span
-                                class="ml-2 hidden sm:inline">{{ Str::limit(auth()->user()->name ?? 'Profil', 14) }}</span>
+                            <span class="ml-2 hidden sm:inline">{{ Str::limit(auth()->user()->name ?? 'Profil', 14) }}</span>
                             <svg class="w-4 h-4 ml-1 hidden sm:inline" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -91,8 +95,19 @@
                             </svg>
                         </button>
                         <div
-                            class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity z-50 pointer-events-none group-hover:pointer-events-auto group-focus:pointer-events-auto">
-                            <a href="#"
+                            class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg transition-opacity z-50"
+                            x-show="open"
+                            x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="opacity-0"
+                            x-transition:enter-end="opacity-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="opacity-100"
+                            x-transition:leave-end="opacity-0"
+                            @mouseenter="open = true"
+                            @mouseleave="open = false"
+                            style="display: none;"
+                        >
+                            <a href="{{ route('profile.user') }}"
                                 class="hidden md:block px-4 py-2 text-gray-800 hover:bg-gray-100">Profil</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -101,6 +116,8 @@
                             </form>
                         </div>
                     </div>
+                    <!-- Alpine.js for dropdown -->
+                    <script src="//unpkg.com/alpinejs" defer></script>
                     <!-- Mobile: Only show icons, no dropdown -->
                     <a href="#" class="md:hidden flex items-center" title="Profil">
                         <img src="{{ asset('assets/icons/profile_icon.svg') }}" alt="Profil"

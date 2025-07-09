@@ -42,6 +42,9 @@ Route::get('/forgot-password/change/password/{id}', [LandingPageController::clas
 Route::post('/forgot-password/store', [LandingPageController::class, 'forgotPasswordStore'])->name('forgot.password.store');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/profile/user', [LandingPageController::class, 'profileUser'])->name('profile.user');
+    Route::post('/profile/user/update', [LandingPageController::class, 'profileUserUpdate'])->name('profile.user.update');
+
     Route::get('/cart', [LandingPageController::class, 'cart'])->name('cart');
     Route::post('/cart/add', [LandingPageController::class, 'addToCart'])->name('cart.add');
     Route::post('/cart/update', [LandingPageController::class, 'updateCart'])->name('cart.update');

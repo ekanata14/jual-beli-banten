@@ -63,7 +63,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4" data-aos="fade-up">
                         <!-- input latitude -->
                         <div>
-                            <label for="latitude" class="block text-gray-700 font-medium mb-1">Latitude</label>
+                            <label for="latitude" class="block text-gray-700 font-medium mb-1">Latitude <span
+                                    class="text-red-500">*</span></label>
                             <input type="text" name="latitude_penerima" id="latitude"
                                 class="block w-full p-3 text-sm placeholder-gray-400 text-gray-900 border border-gray-200 rounded-lg bg-gray-50 focus:ring-amber-600 focus:border-amber-600 transition"
                                 placeholder="Latitude"
@@ -72,12 +73,13 @@
                         </div>
                         <!-- input longitude -->
                         <div>
-                            <label for="longitude" class="block text-gray-700 font-medium mb-1">Longitude</label>
+                            <label for="longitude" class="block text-gray-700 font-medium mb-1">Longitude <span
+                                    class="text-red-500">*</span></label>
                             <input type="text" name="longitude_penerima" id="longitude"
                                 class="block w-full p-3 text-sm placeholder-gray-400 text-gray-900 border border-gray-200 rounded-lg bg-gray-50 focus:ring-amber-600 focus:border-amber-600 transition"
                                 placeholder="Longitude"
-                                value="{{ old('longitude', auth()->user()?->pelanggan?->longitude ?? '') }}"
-                                maxlength="30" required readonly autocomplete="off" />
+                                value="{{ old('longitude', auth()->user()?->pelanggan?->longitude ?? '') }}" maxlength="30"
+                                required readonly autocomplete="off" />
                         </div>
                     </div>
                     <!-- tombol lokasi otomatis dan pilih di peta -->
@@ -91,6 +93,18 @@
                             Pilih di Peta
                         </button>
                     </div>
+                    <script>
+                        // Prevent form submit if latitude/longitude is empty
+                        document.querySelector('form').addEventListener('submit', function(e) {
+                            const lat = document.getElementById('latitude').value.trim();
+                            const lng = document.getElementById('longitude').value.trim();
+                            if (!lat || !lng) {
+                                alert(
+                                    'Silakan pilih lokasi penerima dengan tombol "Dapatkan Lokasi Otomatis" atau "Pilih di Peta".');
+                                e.preventDefault();
+                            }
+                        });
+                    </script>
                     <button class="w-full mt-6" data-aos="fade-up">
                         <x-button icon="{{ asset('assets/icons/arrow_right_white.svg') }}">
                             Lanjut Ke Pengiriman
@@ -263,6 +277,17 @@
                 document.getElementById('kode_pos').addEventListener('input', function() {
                     document.getElementById('latitude').value = '';
                     document.getElementById('longitude').value = '';
+                });
+            </script>
+            <script>
+                document.querySelector('form').addEventListener('submit', function(e) {
+                    const lat = document.getElementById('latitude').value.trim();
+                    const lng = document.getElementById('longitude').value.trim();
+                    if (!lat || !lng) {
+                        alert(
+                            'Silakan pilih lokasi penerima dengan tombol "Dapatkan Lokasi Otomatis" atau "Pilih di Peta".');
+                        e.preventDefault();
+                    }
                 });
             </script>
         @endpush

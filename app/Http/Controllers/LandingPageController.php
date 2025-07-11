@@ -223,7 +223,7 @@ class LandingPageController extends Controller
             'data' => Transaksi::where('id', $id)
                 ->with('pengiriman')
                 ->orderBy('created_at', 'desc')
-                ->first()
+                ->first(),
         ];
 
         return view('landing-page.detail-transaction', $viewData);

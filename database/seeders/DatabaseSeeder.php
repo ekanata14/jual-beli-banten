@@ -247,7 +247,7 @@ class DatabaseSeeder extends Seeder
 
         // Pelanggan
         $pelanggan = User::create([
-            "name" => "Pelanggan 1",
+            "name" => "Made Suriasih",
             "email" => "pelanggan_1@pelanggan.com",
             "password" => bcrypt("pelanggan"),
             "role" => "pelanggan"
@@ -255,7 +255,7 @@ class DatabaseSeeder extends Seeder
 
         Pelanggan::create([
             "id_user" => $pelanggan->id,
-            "alamat_pelanggan" => "Jl. Pelanggan 1",
+            "alamat_pelanggan" => "Jl. mawar gg.melati no.20",
             "kode_pos" => "80227",
             "no_telp" => "081234567890",
         ]);
@@ -269,20 +269,51 @@ class DatabaseSeeder extends Seeder
             'rating' => 5,
             'deleted_at' => null,
         ]);
+
+        $pelanggan2 = User::create([
+            "name" => "Agung Suadnyana",
+            "email" => "pelanggan_2@pelanggan.com",
+            "password" => bcrypt("pelanggan"),
+            "role" => "pelanggan"
+        ]);
+
+        Pelanggan::create([
+            "id_user" => $pelanggan2->id,
+            "alamat_pelanggan" => "Jl. mawar gg.melati no.20",
+            "kode_pos" => "80227",
+            "no_telp" => "081234567890",
+        ]);
+
+
         Ulasan::create([
             'id_transaksi' => null,
             'id_produk' => 2,
             'id_order' => null,
-            'id_user' => $pelanggan->id,
+            'id_user' => $pelanggan2->id,
             'deskripsi_ulasan' => 'Kualitas produk baik, sangat bagus.',
             'rating' => 4,
             'deleted_at' => null,
         ]);
+
+        $pelanggan3 = User::create([
+            "name" => "Nyoman Sri Utami",
+            "email" => "pelanggan_3@pelanggan.com",
+            "password" => bcrypt("pelanggan"),
+            "role" => "pelanggan"
+        ]);
+
+        Pelanggan::create([
+            "id_user" => $pelanggan3->id,
+            "alamat_pelanggan" => "Jl. mawar gg.melati no.20",
+            "kode_pos" => "80227",
+            "no_telp" => "081234567890",
+        ]);
+
         Ulasan::create([
             'id_transaksi' => null,
             'id_produk' => 3,
             'id_order' => null,
-            'id_user' => $pelanggan->id,
+            'id_user' => $pelanggan3->id,
             'deskripsi_ulasan' => 'Produk sesuai pesanan, pelayanan ramah.',
             'rating' => 5,
             'deleted_at' => null,

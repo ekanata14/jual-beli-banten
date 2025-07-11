@@ -234,3 +234,7 @@ footer {
 .modal-btn {
     border: 1px solid #d9d9d9;
 }
+
+.invoice_title {
+    border-bottom: 0.1px solid #e7e2e2;
+}

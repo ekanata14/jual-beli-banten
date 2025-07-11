@@ -177,11 +177,11 @@
                                             const rateBtn = document.createElement('button');
                                             rateBtn.type = 'button';
                                             rateBtn.className =
-                                                'block w-full text-left px-4 py-3 mb-2 border rounded hover:bg-gray-100 transition';
+                                                'block w-full text-left px-4 py-3 mb-2 border rounded hover:bg-gray-100 transition cursor-pointer';
                                             rateBtn.innerHTML = `
                             <div class="flex justify-between items-center">
                                 <div>
-                                <div class="font-semibold">${rate.courier_name || '-'} - ${rate.service_name || '-'}</div>
+                                <div class="font-semibold">${rate.courier_name || '-'} - ${rate.courier_service_name || '-'}</div>
                                 <div class="text-xs text-gray-500">${rate.description || ''}</div>
                                 </div>
                                 <div class="font-bold">Rp. ${(rate.price || 0).toLocaleString('id-ID')}</div>
@@ -194,7 +194,7 @@
                                                 prices[i] = rate.price || 0;
                                                 modal.classList.add('hidden');
                                                 btn.textContent =
-                                                    `${rate.courier_name || '-'} - ${rate.service_name || '-'} (Rp. ${(rate.price || 0).toLocaleString('id-ID')})`;
+                                                    `${rate.courier_name || '-'} - ${rate.courier_service_name || '-'} (Rp. ${(rate.price || 0).toLocaleString('id-ID')})`;
                                                 updateBiayaDanTotal();
                                             });
                                             ratesList.appendChild(rateBtn);

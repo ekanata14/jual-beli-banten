@@ -1,15 +1,18 @@
 @extends('layouts.landing')
 @section('content')
-    <div class="flex main_content py-40 px-4 md:px-36 gap-16" data-aos="fade-up">
+    <div class="flex flex-col main_content pt-40 pb-20 px-4 md:px-36 gap-10" data-aos="fade-up">
+        <h3 class="mb-5" data-aos="zoom-in" data-aos-delay="700">
+            Riwayat Transaksi
+        </h3>
         <div class="bg-white py-6 px-5 w-full rounded-md" data-aos="fade-up" data-aos-delay="100">
             <!-- Transaction History Card -->
-            <div class="transaction-history mt-10" data-aos="fade-up" data-aos-delay="200">
-                <h5 class="text-lg font-semibold mb-4" data-aos="fade-up" data-aos-delay="300">Riwayat Transaksi</h5>
+            <div class="transaction-history" data-aos="fade-up" data-aos-delay="200">
+                <!-- <h5 class="text-lg font-semibold mb-4" data-aos="fade-up" data-aos-delay="300">Riwayat Transaksi</h5> -->
                 @if ($datas->count())
-                    <div class="space-y-4">
+                    <div class="space-y-2">
                         @foreach ($datas as $index => $item)
                             <div
-                                class="p-6 bg-white rounded-lg shadow flex flex-col md:flex-row md:items-center md:justify-between"
+                                class="p-6 bg-white rounded-lg flex flex-col md:flex-row md:items-center md:justify-between history_card"
                                 data-aos="fade-up" data-aos-delay="{{ 400 + ($index * 100) }}">
                                 <div class="flex flex-col gap-1" data-aos="fade-up" data-aos-delay="{{ 450 + ($index * 100) }}">
                                     <a href="{{ route('history.detail', $item->id) }}"

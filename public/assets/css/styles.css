@@ -238,3 +238,7 @@ footer {
 .invoice_title {
     border-bottom: 0.1px solid #e7e2e2;
 }
+
+.history_card{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}

@@ -1,7 +1,11 @@
 @extends('layouts.landing')
 @section('content')
-<a href="{{ route('checkout', $transaksi->id) }}">Kembali Ke Halaman Sebelumnya</a>
-<div class="main_content flex flex-col lg:flex-row justify-between py-16 px-4 md:px-10 lg:py-40 lg:px-36 gap-8 lg:gap-16"
+<div class="navigation mt-10 pt-40 px-36 flex items-center">
+    <a href="{{ route('checkout', $transaksi->id) }}" class="text-[#534538]">
+        Informasi Anda</a>/
+    <p class="text-gray-400">Informasi Penerima</p>
+</div>
+<div class="main_content flex flex-col lg:flex-row justify-between py-6 px-4 md:px-10 lg:py-10 lg:px-36 gap-8 lg:gap-16"
     data-aos="fade-up">
     <div class="left_content w-full lg:w-[60%]" data-aos="fade-up">
         <!-- informasi anda -->
@@ -297,21 +301,23 @@
 
     <div class="right_content bg-white py-6 px-4 md:px-5 w-full lg:w-[40%] rounded-md h-fit mt-8 lg:mt-0"
         data-aos="fade-up">
+        <h4 class="text-black font-bold pb-3 invoice_title">{{ $transaksi->invoice_number }}</h4>
         @php
         $subtotal = $transaksi->orders->sum('subtotal');
         @endphp
 
         @forelse($transaksi->orders as $item)
-        <div class="product_container flex flex-col sm:flex-row justify-between pb-6 md:pb-9 gap-4" data-aos="fade-up">
+        <div class="product_container flex flex-col sm:flex-row justify-between pb-6 md:pb-9 gap-4 pt-6"
+            data-aos="fade-up">
             <div class="flex gap-4 md:gap-5">
                 <img src="{{ asset($item->produk->foto ?? 'assets/images/product_img.png') }}"
                     alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-24 h-24 object-cover rounded-md">
                 <div class="flex flex-col">
                     <h4 class="text-black font-bold mb-2 md:mb-4">{{ $item->produk->nama_produk ?? '-' }}</h4>
                     <p>Jumlah : {{ $item->jumlah ?? 1 }}</p>
-                    <p class="text-black font-bold">
+                    <!-- <p class="text-black font-bold">
                         Total : Rp. {{ number_format($item->subtotal, 0, ',', '.') }}
-                    </p>
+                    </p> -->
                 </div>
             </div>
             <h4 class="text-black font-bold mt-2 sm:mt-0">Rp.

@@ -88,7 +88,7 @@
 
         </div>
 
-        <div class="right_content bg-white py-6 px-5 w-full lg:w-[40%] rounded-md shadow-md" data-aos="fade-left">
+        <div class="right_content bg-white py-6 px-5 w-full lg:w-[40%] rounded-md shadow-md h-full" data-aos="fade-left">
             <h4 class="text-black text-lg font-bold">Ringkasan</h4>
             <div class="product_sub flex justify-between mt-8">
                 <p>Subtotal ({{ $datas->sum('jumlah') }} Produk)</p>

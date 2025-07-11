@@ -1,12 +1,18 @@
 @extends('layouts.landing')
 @section('content')
+<div class="navigation mt-10 pt-40 px-36 flex items-center">
+    <a href="{{ route('checkout', $transaksi->id) }}" class="text-[#534538]">Informasi Anda</a>/
+    <a href="{{ route('checkout.second', $transaksi->id) }}" class="text-[#534538]">Informasi Penerima</a>/
+    <a href="{{ route('checkout.third', $transaksi->id) }}" class="text-[#534538]">Informasi Pengiriman</a>/
+    <p class="text-gray-400">Pembayaran</p>
+</div>
     <!-- AOS CSS -->
-    <div class="main_content py-20 px-4 md:py-40 md:px-36 gap-8 md:gap-16 flex flex-col md:flex-row justify-between">
+    <div class="main_content py-20 px-4 md:py-10 md:px-36 gap-8 md:gap-6 flex flex-col md:flex-row justify-between">
         <div class="left_content w-full md:w-[60%]" data-aos="fade-up">
             <!-- informasi anda -->
             <div class="checkout_container">
                 <h3 class="text-black">Informasi Anda</h3>
-                <div class="informasi_data mt-9">
+                <div class="informasi_data mt-8">
                     <p>{{ auth()->user()?->name }}</p>
                     <p>{{ auth()->user()?->email }}</p>
                     <p>{{ auth()->user()?->pelanggan?->no_telp }}</p>
@@ -17,7 +23,7 @@
             <div class="checkout_container mt-8">
                 <h3 class="text-black">Informasi Penerima</h3>
                 @foreach ($informasiPenerima as $info)
-                    <div class="informasi_data mt-6 mb-6 border-b pb-4">
+                    <div class="informasi_data mt-6 mb-6 pb-4">
                         <p><strong>Nama Penerima:</strong> {{ $info->nama_penerima ?? '-' }}</p>
                         <p><strong>Alamat Penerima:</strong> {{ $info->alamat_penerima ?? '-' }}</p>
                         <p><strong>Kode Pos Penerima:</strong> {{ $info->kode_pos_penerima ?? '-' }}</p>
@@ -32,7 +38,7 @@
             <div class="checkout_container mt-8">
                 <h3 class="text-black">Detail Pengiriman</h3>
                 @foreach ($pengiriman as $kirim)
-                    <div class="informasi_data mt-6 mb-6 border-b pb-4">
+                    <div class="informasi_data mt-6 mb-6 pb-4">
                         <p><strong>Kurir:</strong> {{ $kirim->kurir->nama_kurir }}</p>
                         <p><strong>Status Pengiriman:</strong> {{ ucfirst($kirim->status_pengiriman) }}</p>
                         <p><strong>Waktu Pengiriman:</strong> {{ $kirim->waktu_pengiriman }}</p>
@@ -46,13 +52,9 @@
                     </div>
                 @endforeach
             </div>
-
-            <!-- pembayaran -->
-            <div class="checkout_container mt-8">
-                <h3 class="text-black">Pembayaran</h3>
-            </div>
             <!-- form pembayaran -->
             <div class="checkout_form informasi_anda_form mt-8">
+            <h3 class="text-black">Pembayaran</h3>
                 <form action="{{ route('checkout.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="id_transaksi" value="{{ $transaksi->id }}">

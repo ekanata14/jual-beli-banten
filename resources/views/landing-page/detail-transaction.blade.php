@@ -46,10 +46,6 @@
                     <p class="text-sm">Tanggal Order</p>
                     <p class="text-black mt-2 md:mt-4 text-base">{{ $data->tanggal_transaksi }}</p>
                 </div>
-                <div class="berat_order">
-                    <p class="text-sm">Berat</p>
-                    <p class="text-black mt-2 md:mt-4 text-base"></p>
-                </div>
                 <div class="metode_order">
                     <p class="text-sm">Metode Pembayaran</p>
                     <p class="text-black mt-2 md:mt-4 text-base">Midtrans</p>

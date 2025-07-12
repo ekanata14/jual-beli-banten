@@ -51,7 +51,7 @@
                             {{ $item->kategori }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->berat }}
+                            {{ $item->berat }}g
                         </td>
                         <td class="px-6 py-4 flex gap-2">
                             <a href="{{ route('admin.produk.edit', $item->id) }}" class="btn-yellow">Edit</a>

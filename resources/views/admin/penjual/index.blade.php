@@ -15,6 +15,9 @@
                         Nama
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Pendapatan
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Email
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -45,6 +48,9 @@
                         </th>
                         <td class="px-6 py-4">
                             {{ $item->name }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ 'Rp ' . number_format($item->products->flatMap->orders->flatMap->transaksi->where('status', 'paid')->sum('subtotal'), 0, ',', '.') }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->email }}

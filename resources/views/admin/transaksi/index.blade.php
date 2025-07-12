@@ -3,11 +3,71 @@
 @section('content')
     <div class="mb-4">
         {{-- <a href="{{ route('admin.kurir.create') }}" class="btn-primary">Tambah Kurir</a> --}}
-        @if (Route::has('admin.pelanggan.transaksi.detail.show'))
-            <a href="{{ route('admin.pelanggan.index') }}" class="btn-white">Back</a>
+        @if (request()->routeIs('admin.transaksi.index'))
         @else
+            <a href="{{ route('admin.pelanggan.index') }}" class="btn-white">Back</a>
         @endif
     </div>
+    @if (request()->routeIs('admin.transaksi.index'))
+        <form method="GET" action="{{ route('admin.transaksi.filter') }}" class="mb-6 flex flex-wrap gap-4 items-end">
+        @else
+            @if ($user)
+                <form method="GET" action="{{ route('admin.pelanggan.transaksi.detail.filter', $user->id) }}"
+                    class="mb-6 flex flex-wrap gap-4 items-end">
+                @else
+                    <form method="GET" action="{{ route('admin.transaksi.filter') }}"
+                        class="mb-6 flex flex-wrap gap-4 items-end">
+            @endif
+    @endif
+    <div>
+        <label for="penjual_id" class="block text-sm font-medium text-gray-700">Penjual</label>
+        <select name="penjual_id" id="penjual_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            <option value="">-- Semua Penjual --</option>
+            @foreach ($penjuals as $penjual)
+                <option value="{{ $penjual->id }}" {{ request('penjual_id') == $penjual->id ? 'selected' : '' }}>
+                    {{ $penjual->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <div>
+        <label for="produk_id" class="block text-sm font-medium text-gray-700">Produk</label>
+        <select name="produk_id" id="produk_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+            <option value="">-- Semua Produk --</option>
+            @foreach ($produks as $produk)
+                <option value="{{ $produk->id }}" {{ request('produk_id') == $produk->id ? 'selected' : '' }}>
+                    {{ $produk->nama_produk }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <div>
+        <label for="tanggal_dari" class="block text-sm font-medium text-gray-700">Tanggal Dari</label>
+        <input type="date" name="tanggal_dari" id="tanggal_dari" value="{{ request('tanggal_dari') }}"
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+    </div>
+    <div>
+        <label for="tanggal_sampai" class="block text-sm font-medium text-gray-700">Tanggal Sampai</label>
+        <input type="date" name="tanggal_sampai" id="tanggal_sampai" value="{{ request('tanggal_sampai') }}"
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+    </div>
+    <div>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">Filter</button>
+        @if ($user)
+            @if (request()->routeIs('admin.transaksi.index'))
+                <a href="{{ route('admin.transaksi.index') }}"
+                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md ml-2">Reset</a>
+            @else
+                <a href="{{ route('admin.pelanggan.transaksi.detail', $user->id) }}"
+                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md ml-2">Reset</a>
+            @endif
+        @else
+            <a href="{{ route('admin.transaksi.index') }}"
+                class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md ml-2">Reset</a>
+        @endif
+    </div>
+    </form>
+
     <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -104,6 +164,5 @@
         <div class="mt-4">
             {{ $datas->links() }}
         </div>
-        </table>
     </div>
 @endsection

@@ -117,6 +117,7 @@ Route::middleware('authCheck')->group(function () {
 
     // Admin Dashboard Controller
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard/transaksi/filter/home', [AdminDashboardController::class, 'filter'])->name('admin.dashboard.transaksi.filter');
 
     // Admin Admin Controller
     Route::get('/dashboard/admin', [AdminAdminController::class, 'index'])->name('admin.admin.index');
@@ -137,6 +138,7 @@ Route::middleware('authCheck')->group(function () {
     // Admin Pelanggan Controller
     Route::get('/dashboard/pelanggan', [AdminPelangganController::class, 'index'])->name('admin.pelanggan.index');
     Route::get('/dashboard/pelanggan/transaksi/detail/{id}', [AdminPelangganController::class, 'transaksiPelanggan'])->name('admin.pelanggan.transaksi.detail');
+    Route::get('/dashboard/pelanggan/transaksi/detail/filter/{id}', [AdminPelangganController::class, 'transaksiPelangganFilter'])->name('admin.pelanggan.transaksi.detail.filter');
     Route::get('/dashboard/pelanggan/transaksi/detail/show/{id}', [AdminPelangganController::class, 'transaksiPelangganDetail'])->name('admin.pelanggan.transaksi.detail.show');
     Route::get('/dashboard/pelanggan/create', [AdminPelangganController::class, 'create'])->name('admin.pelanggan.create');
     Route::get('/dashboard/pelanggan/edit/{id}', [AdminPelangganController::class, 'edit'])->name('admin.pelanggan.edit');
@@ -171,6 +173,7 @@ Route::middleware('authCheck')->group(function () {
 
     // Admin Transaksi Controller
     Route::get('/dashboard/transaksi', [AdminTransaksiController::class, 'index'])->name('admin.transaksi.index');
+    Route::get('/dashboard/transaksi/filter', [AdminTransaksiController::class, 'filter'])->name('admin.transaksi.filter');
     Route::get('/dashboard/transaksi/detail/{id}', [AdminTransaksiController::class, 'show'])->name('admin.transaksi.detail');
     // Penjual Dashboard Controller
     Route::get('/penjual-dashboard', [PenjualDashboardController::class, 'index'])->name('penjual.dashboard');

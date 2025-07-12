@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Pelanggan;
 use App\Models\User;
 use App\Models\Transaksi;
+use App\Models\Produk;
 
 class PelangganController extends Controller
 {
@@ -31,7 +32,52 @@ class PelangganController extends Controller
         $user = User::where('id', $id)->first();
         $viewData = [
             "title" => "Transaksi | " . $user->name,
+            "user" => $user,
             "datas" => Transaksi::where('id_user', $id)->latest()->paginate(10),
+            "penjuals" => User::where('role', 'penjual')->get(),
+            "produks" => Produk::all(),
+        ];
+
+        return view("admin.transaksi.index", $viewData);
+    }
+
+    public function transaksiPelangganFilter(string $id, Request $request)
+    {
+        $query = Transaksi::where('id_user', $id)->latest();
+
+        // Filter berdasarkan penjual (lewat produk di orders)
+        if ($request->filled('penjual_id')) {
+            $query->whereHas('orders.produk', function ($q) use ($request) {
+                $q->where('id_user', $request->penjual_id);
+            });
+        }
+
+        // Filter berdasarkan produk (lewat orders)
+        if ($request->filled('produk_id')) {
+            $query->whereHas('orders', function ($q) use ($request) {
+                $q->where('id_produk', $request->produk_id);
+            });
+        }
+
+        // Filter berdasarkan rentang tanggal transaksi
+        if ($request->filled('tanggal_dari') && $request->filled('tanggal_sampai')) {
+            $tanggalDari = date('Y-m-d', strtotime($request->tanggal_dari));
+            // Tambahkan satu hari ke tanggalSampai agar tanggal akhir termasuk
+            $tanggalSampai = date('Y-m-d', strtotime($request->tanggal_sampai . ' +1 day'));
+            $query->whereBetween('tanggal_transaksi', [
+                $tanggalDari,
+                $tanggalSampai
+            ]);
+        }
+
+        $user = User::where('id', $id)->first();
+
+        $viewData = [
+            "title" => "Transaksi | " . $user->name,
+            "penjuals" => User::where('role', 'penjual')->get(),
+            "produks" => Produk::all(),
+            "user" => $user,
+            "datas" => $query->paginate(10),
         ];
 
         return view("admin.transaksi.index", $viewData);

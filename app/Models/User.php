@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Pelanggan::class, 'id_user');
     }
+
+    public function products()
+    {
+        return $this->hasMany(Produk::class, 'id_user');
+    }
 }

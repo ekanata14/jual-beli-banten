@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 // Models
 use App\Models\Transaksi;
+use App\Models\User;
+use App\Models\Produk;
 
 class TransaksiController extends Controller
 {
@@ -17,7 +19,50 @@ class TransaksiController extends Controller
     {
         $viewData = [
             "title" => "Transaksi",
+            "penjuals" => User::where('role', 'penjual')->get(),
+            "produks" => Produk::all(),
+            "user" => null,
             "datas" => Transaksi::latest()->paginate(10),
+        ];
+
+        return view("admin.transaksi.index", $viewData);
+    }
+
+    public function filter(Request $request)
+    {
+        $query = Transaksi::query()->latest();
+
+        // Filter berdasarkan penjual (lewat produk di orders)
+        if ($request->filled('penjual_id')) {
+            $query->whereHas('orders.produk', function ($q) use ($request) {
+                $q->where('id_user', $request->penjual_id);
+            });
+        }
+
+        // Filter berdasarkan produk (lewat orders)
+        if ($request->filled('produk_id')) {
+            $query->whereHas('orders', function ($q) use ($request) {
+                $q->where('id_produk', $request->produk_id);
+            });
+        }
+
+        // Filter berdasarkan rentang tanggal transaksi
+        if ($request->filled('tanggal_dari') && $request->filled('tanggal_sampai')) {
+            $tanggalDari = date('Y-m-d', strtotime($request->tanggal_dari));
+            // Tambahkan satu hari ke tanggalSampai agar tanggal akhir termasuk
+            $tanggalSampai = date('Y-m-d', strtotime($request->tanggal_sampai . ' +1 day'));
+            $query->whereBetween('tanggal_transaksi', [
+                $tanggalDari,
+                $tanggalSampai
+            ]);
+        }
+
+        $viewData = [
+            "title" => "Transaksi",
+            "penjuals" => User::where('role', 'penjual')->get(),
+            "produks" => Produk::all(),
+            "user" => null,
+            "datas" => $query->paginate(10),
         ];
 
         return view("admin.transaksi.index", $viewData);

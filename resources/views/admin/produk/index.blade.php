@@ -35,7 +35,7 @@
                             {{ $loop->iteration }}
                         </th>
                         <td class="px-6 py-4">
-                            {{ $item->nama }}
+                            {{ $item->name }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->email }}

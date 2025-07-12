@@ -69,11 +69,15 @@
             </div>
             <div class="product_sub flex justify-between mt-4 text-sm md:text-base" data-aos="fade-up" data-aos-delay="350">
                 <p>Subtotal</p>
-                <p>Rp. {{ number_format($transaksi->orders->sum('subtotal'), 0, ',', '.') }}</p>
+                <p>Rp. {{ number_format($transaksi->orders->sum('subtotal') - 2500, 0, ',', '.') }}</p>
             </div>
             <div class="product_sub flex justify-between mt-4 text-sm md:text-base" data-aos="fade-up" data-aos-delay="400">
                 <p>Biaya Pengiriman</p>
                 <p>Rp. {{ number_format($transaksi->total_harga - $transaksi->orders->sum('subtotal'), 0, ',', '.') }}</p>
+            </div>
+            <div class="product_sub flex justify-between mt-4 text-sm md:text-base" data-aos="fade-up" data-aos-delay="400">
+                <p>Biaya Admin</p>
+                <p>Rp. {{ number_format(2500, 0, ',', '.') }}</p>
             </div>
             <div class="product_sub flex justify-between mt-4 text-base md:text-lg font-bold" data-aos="fade-up"
                 data-aos-delay="450">

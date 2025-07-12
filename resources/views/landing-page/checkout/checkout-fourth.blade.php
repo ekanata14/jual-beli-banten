@@ -1,11 +1,28 @@
 @extends('layouts.landing')
 @section('content')
-<div class="navigation mt-10 pt-40 px-36 flex items-center">
-    <a href="{{ route('checkout', $transaksi->id) }}" class="text-[#534538]">Informasi Anda</a>/
-    <a href="{{ route('checkout.second', $transaksi->id) }}" class="text-[#534538]">Informasi Penerima</a>/
-    <a href="{{ route('checkout.third', $transaksi->id) }}" class="text-[#534538]">Informasi Pengiriman</a>/
-    <p class="text-gray-400">Pembayaran</p>
-</div>
+    <div class="navigation mt-10 pt-40 px-36 flex items-center">
+        <a href="{{ route('checkout', $transaksi->id) }}" class="text-[#534538]">Informasi Anda</a>/
+        <a href="{{ route('checkout.second', $transaksi->id) }}" class="text-[#534538]">Informasi Penerima</a>/
+        <a href="{{ route('checkout.third', $transaksi->id) }}" class="text-[#534538]">Informasi Pengiriman</a>/
+        <p class="text-gray-400">Pembayaran</p>
+    </div>
+    @if ($errors->any())
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Terjadi kesalahan',
+                    html: `<ul style="text-align:left;">{!! implode('', $errors->all('<li>:message</li>')) !!}</ul>`,
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                });
+            });
+        </script>
+    @endif
     <!-- AOS CSS -->
     <div class="main_content py-20 px-4 md:py-10 md:px-36 gap-8 md:gap-6 flex flex-col md:flex-row justify-between">
         <div class="left_content w-full md:w-[60%]" data-aos="fade-up">
@@ -54,7 +71,7 @@
             </div>
             <!-- form pembayaran -->
             <div class="checkout_form informasi_anda_form mt-8">
-            <h3 class="text-black">Pembayaran</h3>
+                <h3 class="text-black">Pembayaran</h3>
                 <form action="{{ route('checkout.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="id_transaksi" value="{{ $transaksi->id }}">
@@ -63,8 +80,7 @@
                     @foreach ($pengiriman as $kirim)
                         <input type="hidden" name="id_pengiriman[]" value="{{ $kirim->id }}">
                     @endforeach
-                    <input type="hidden" name="total_harga"
-                        value="{{ $transaksi->orders->sum('subtotal') + $pengiriman->sum('biaya_pengiriman') }}">
+                    <input type="hidden" name="total_harga" value="{{ (int) $transaksi->total_harga }}">
                     <button type="button" id="confirm-payment" class="w-full">
                         <x-button href="#" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-15">
                             Lanjut Ke Pembayaran
@@ -127,9 +143,13 @@
                 <p id="biaya-pengiriman">Rp. {{ number_format($totalBiayaPengiriman, 0, ',', '.') }}</p>
             </div>
             <div class="product_sub flex justify-between mt-4">
+                <p>Biaya Admin</p>
+                <p>Rp. 2.500</p>
+            </div>
+            <div class="product_sub flex justify-between mt-4">
                 <p class="text-black">Total</p>
                 <p class="text-black" id="total-harga">Rp.
-                    {{ number_format($subtotal + $totalBiayaPengiriman, 0, ',', '.') }}</p>
+                    {{ number_format($transaksi->total_harga, 0, ',', '.') }}</p>
             </div>
         </div>
         @if ($snapToken)

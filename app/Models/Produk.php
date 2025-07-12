@@ -30,4 +30,9 @@ class Produk extends Model
     {
         return $this->hasMany(Ulasan::class, 'id_produk', 'id');
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'id_produk', 'id');
+    }
 }

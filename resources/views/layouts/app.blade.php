@@ -51,7 +51,8 @@
                     @yield('content')
                 </div>
             </div>
-        </main>
+    </div>
+    </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

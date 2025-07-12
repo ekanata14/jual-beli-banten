@@ -420,10 +420,16 @@
                     {{ number_format($data->pengiriman->biaya_pengiriman ?? 0, 0, ',', '.') }}
                 </p>
             </div>
+            <div class="biaya_pengiriman flex justify-between text-sm md:text-base">
+                <p>Biaya Admin</p>
+                <p class="mt-2 md:mt-4">Rp.
+                    {{ number_format(2500 ?? 0, 0, ',', '.') }}
+                </p>
+            </div>
             <div class="total_transaksi flex justify-between">
                 <p class="text-black font-semibold text-base md:text-lg">Total Biaya</p>
                 <p class="text-black mt-2 md:mt-4 font-semibold text-base md:text-lg">
-                    Rp. {{ number_format($subtotal + ($data->pengiriman->biaya_pengiriman ?? 0), 0, ',', '.') }}
+                    Rp. {{ number_format($data->total_harga, 0, ',', '.') }}
                 </p>
             </div>
         </div>

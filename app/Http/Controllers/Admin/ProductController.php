@@ -12,6 +12,7 @@ use App\Models\Produk;
 use App\Models\Admin;
 use App\Models\Penjual;
 use App\Models\User;
+use App\Models\Transaksi;
 
 class ProductController extends Controller
 {
@@ -73,7 +74,7 @@ class ProductController extends Controller
                 $extension = $request->file('foto')->getClientOriginalExtension();
                 $filename = $request->id_user . '_' . str_replace(' ', '_', $validatedData['nama_produk']) . '_' . $timestamp . '.' . $extension;
                 $fotoPath = $request->file('foto')->storeAs('produk', $filename, 'public');
-                $validatedData['foto'] = 'storage/'.$fotoPath;
+                $validatedData['foto'] = 'storage/' . $fotoPath;
             }
 
             Produk::create($validatedData);

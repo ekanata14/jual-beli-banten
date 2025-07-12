@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\Pelanggan;
 use App\Models\Penjual;
+use App\Models\Produk;
 
 class DashboardController extends Controller
 {
@@ -28,6 +29,9 @@ class DashboardController extends Controller
             "totalTransaksi" => Transaksi::count(),
             'totalPemasukan' => Transaksi::where('status', 'paid')->sum('total_harga'),
             "transaksis" => Transaksi::latest()->paginate(10),
+            'produkTerlaris' => Produk::with('orders')
+                ->take(10)
+                ->get()
         ];
 
         return view("admin.dashboard", $viewData);

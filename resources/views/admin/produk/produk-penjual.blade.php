@@ -42,7 +42,7 @@
                             {{ $item->nama_produk }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ $item->harga }}
+                            Rp{{ number_format($item->harga, 0, ',', '.') }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->stok }}
@@ -55,7 +55,7 @@
                         </td>
                         <td class="px-6 py-4 flex gap-2">
                             <a href="{{ route('admin.produk.edit', $item->id) }}" class="btn-yellow">Edit</a>
-                            <form action="{{ route('admin.produk.destroy') }}" method="POST">
+                            {{-- <form action="{{ route('admin.produk.destroy') }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <input type="hidden" name="id" value="{{ $item->id }}">
@@ -78,7 +78,7 @@
                                         });
                                     }
                                 </script>
-                            </form>
+                            </form> --}}
                         </td>
                     </tr>
                 @endforeach

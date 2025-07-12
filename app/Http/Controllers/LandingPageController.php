@@ -465,7 +465,7 @@ class LandingPageController extends Controller
             $transaksi = Transaksi::create([
                 'id_user' => auth()->user()->id,
                 'invoice_number' => $invoiceNumber,
-                'total_harga' => $totalHarga,
+                'total_harga' => $totalHarga + 2500,
                 'status' => 'pending',
                 'metode_pembayaran' => 'transfer',
                 'tanggal_transaksi' => now(),
@@ -517,7 +517,7 @@ class LandingPageController extends Controller
             $transaksi = Transaksi::create([
                 'id_user' => auth()->user()->id,
                 'invoice_number' => $invoiceNumber,
-                'total_harga' => $totalHarga,
+                'total_harga' => $totalHarga + 2500,
                 'status' => 'pending',
                 'metode_pembayaran' => 'transfer',
                 'tanggal_transaksi' => now(),

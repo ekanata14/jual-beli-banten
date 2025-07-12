@@ -3,6 +3,10 @@
 @section('content')
     <div class="mb-4">
         {{-- <a href="{{ route('admin.kurir.create') }}" class="btn-primary">Tambah Kurir</a> --}}
+        @if (Route::has('admin.pelanggan.transaksi.detail.show'))
+            <a href="{{ route('admin.pelanggan.index') }}" class="btn-white">Back</a>
+        @else
+        @endif
     </div>
     <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -81,10 +85,17 @@
                             @endif
                         </td>
                         <td class="px-6 py-4">
-                            <a href="{{ route('admin.transaksi.detail', $item->id) }}"
-                                class="inline-block px-4 py-2 border border-gray-300 text-sm rounded-lg hover:bg-gray-100">
-                                Detail
-                            </a>
+                            @if (Route::has('admin.pelanggan.transaksi.detail.show'))
+                                <a href="{{ route('admin.pelanggan.transaksi.detail.show', $item->id) }}"
+                                    class="inline-block px-4 py-2 border border-gray-300 text-sm rounded-lg hover:bg-gray-100">
+                                    Detail
+                                </a>
+                            @else
+                                <a href="{{ route('admin.transaksi.detail', $item->id) }}"
+                                    class="inline-block px-4 py-2 border border-gray-300 text-sm rounded-lg hover:bg-gray-100">
+                                    Detail
+                                </a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

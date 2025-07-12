@@ -53,7 +53,8 @@
                             {{ $item->pelanggan->no_telp }}
                         </td>
                         <td class="px-6 py-4 flex gap-2">
-                            <a href="{{ route('admin.pelanggan.edit', $item->id) }}" class="btn-yellow">Edit</a>
+                            <a href="{{ route('admin.pelanggan.transaksi.detail', $item->id) }}" class="btn-primary">Data Transaksi</a>
+                            {{-- <a href="{{ route('admin.pelanggan.edit', $item->id) }}" class="btn-yellow">Edit</a>
                             <form action="{{ route('admin.pelanggan.destroy') }}" method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -76,7 +77,7 @@
                                         });
                                     }
                                 </script>
-                            </form>
+                            </form> --}}
                         </td>
                     </tr>
                 @endforeach

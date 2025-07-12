@@ -136,6 +136,8 @@ Route::middleware('authCheck')->group(function () {
 
     // Admin Pelanggan Controller
     Route::get('/dashboard/pelanggan', [AdminPelangganController::class, 'index'])->name('admin.pelanggan.index');
+    Route::get('/dashboard/pelanggan/transaksi/detail/{id}', [AdminPelangganController::class, 'transaksiPelanggan'])->name('admin.pelanggan.transaksi.detail');
+    Route::get('/dashboard/pelanggan/transaksi/detail/show/{id}', [AdminPelangganController::class, 'transaksiPelangganDetail'])->name('admin.pelanggan.transaksi.detail.show');
     Route::get('/dashboard/pelanggan/create', [AdminPelangganController::class, 'create'])->name('admin.pelanggan.create');
     Route::get('/dashboard/pelanggan/edit/{id}', [AdminPelangganController::class, 'edit'])->name('admin.pelanggan.edit');
     Route::post('/dashboard/pelanggan/store', [AdminPelangganController::class, 'store'])->name('admin.pelanggan.store');

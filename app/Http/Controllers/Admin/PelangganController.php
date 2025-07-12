@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 // Models
 use App\Models\Pelanggan;
 use App\Models\User;
+use App\Models\Transaksi;
 
 class PelangganController extends Controller
 {
@@ -23,6 +24,31 @@ class PelangganController extends Controller
         ];
 
         return view("admin.pelanggan.index", $viewData);
+    }
+
+    public function transaksiPelanggan(string $id)
+    {
+        $user = User::where('id', $id)->first();
+        $viewData = [
+            "title" => "Transaksi | " . $user->name,
+            "datas" => Transaksi::where('id_user', $id)->latest()->paginate(10),
+        ];
+
+        return view("admin.transaksi.index", $viewData);
+    }
+
+    public function transaksiPelangganDetail(string $id)
+    {
+        $transaksi = Transaksi::with(['orders', 'user'])->findOrFail($id);
+
+        $viewData = [
+            'title' => 'Detail Transaksi',
+            'data' => $transaksi,
+            'orders' => $transaksi->orders,
+            'user' => $transaksi->user,
+        ];
+
+        return view('admin.transaksi.detail', $viewData);
     }
 
     /**

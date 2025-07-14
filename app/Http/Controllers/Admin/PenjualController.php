@@ -18,10 +18,18 @@ class PenjualController extends Controller
      */
     public function index()
     {
+        $penjual = User::where('role', 'penjual')->paginate(10);
         $viewData = [
             "title" => "Data Penjual",
-            "datas" => User::where('role', 'penjual')->paginate(10),
+            "datas" => $penjual,
         ];
+
+        $subtotal = 0;
+
+        foreach($penjual as $item) {
+        }
+
+        return $subtotal;
 
         return view("admin.penjual.index", $viewData);
     }

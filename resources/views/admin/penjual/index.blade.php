@@ -50,7 +50,8 @@
                             {{ $item->name }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ 'Rp ' . number_format($item->products->flatMap->orders->flatMap->transaksi->where('status', 'paid')->sum('subtotal'), 0, ',', '.') }}
+                            {{-- {{ 'Rp ' . number_format($item->products->flatMap->orders->flatMap->transaksi->where('status', 'paid')->sum('subtotal'), 0, ',', '.') }} --}}
+                            {{-- {{ 'Rp ' . number_format($item->products) }} --}}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->email }}

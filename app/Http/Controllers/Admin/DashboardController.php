@@ -31,7 +31,7 @@ class DashboardController extends Controller
             "totalPenjual" => Penjual::count(),
             "totalTransaksi" => Transaksi::count(),
             'totalPemasukan' => Transaksi::where('status', 'paid')->sum('total_harga'),
-            "transaksis" => Transaksi::latest()->paginate(10),
+            "transaksis" => Transaksi::latest()->get(),
             'produkTerlaris' => Produk::with('orders')
                 ->take(10)
                 ->get()

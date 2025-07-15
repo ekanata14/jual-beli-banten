@@ -22,7 +22,7 @@ class TransaksiController extends Controller
             "penjuals" => User::where('role', 'penjual')->get(),
             "produks" => Produk::all(),
             "user" => null,
-            "datas" => Transaksi::latest()->paginate(10),
+            "datas" => Transaksi::latest()->get(),
         ];
 
         return view("admin.transaksi.index", $viewData);

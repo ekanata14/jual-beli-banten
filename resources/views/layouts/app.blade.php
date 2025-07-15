@@ -79,6 +79,30 @@
             });
         </script>
     @endif
+    {{-- <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script> --}}
+    @stack('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.simpleDatatables && document.querySelector('#default-table')) {
+                new simpleDatatables.DataTable("#default-table", {
+                    searchable: false,
+                    perPage: 10,
+                    perPageSelect: [10, 25, 50, 100]
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.simpleDatatables && document.querySelector('#default-table-2')) {
+                new simpleDatatables.DataTable("#default-table-2", {
+                    searchable: false,
+                    perPage: 10,
+                    perPageSelect: [10, 25, 50, 100]
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

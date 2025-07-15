@@ -9,34 +9,104 @@
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
-                        No
+                        <span class="flex items-center">
+                            No
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                            </svg>
+                        </span>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Nama
+                        <span class="flex items-center">
+                            Nama
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                            </svg>
+                        </span>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Pendapatan
+                        <span class="flex items-center">
+                            Pendapatan
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                            </svg>
+                        </span>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Email
+                        <span class="flex items-center">
+                            Email
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                            </svg>
+                        </span>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Alamat
+                        <span class="flex items-center">
+                            Alamat
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                            </svg>
+                        </span>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Latitude
+                        <span class="flex items-center">
+                            Latitude
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                            </svg>
+                        </span>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Longitude
+                        <span class="flex items-center">
+                            Longitude
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                            </svg>
+                        </span>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Kode Pos
+                        <span class="flex items-center">
+                            Kode Pos
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                            </svg>
+                        </span>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        No Telp.
+                        <span class="flex items-center">
+                            No Telp.
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                            </svg>
+                        </span>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Actions
+                        <span class="flex items-center">
+                            Actions
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                            </svg>
+                        </span>
                     </th>
                 </tr>
             </thead>
@@ -50,8 +120,17 @@
                             {{ $item->name }}
                         </td>
                         <td class="px-6 py-4">
-                            {{-- {{ 'Rp ' . number_format($item->products->flatMap->orders->flatMap->transaksi->where('status', 'paid')->sum('subtotal'), 0, ',', '.') }} --}}
-                            {{-- {{ 'Rp ' . number_format($item->products) }} --}}
+                            @php
+                                $totalPendapatan = 0;
+                                foreach ($item->products as $product) {
+                                    foreach ($product->orders as $order) {
+                                        if ($order->Transaksi && $order->Transaksi->status == 'paid') {
+                                            $totalPendapatan += $order->subtotal;
+                                        }
+                                    }
+                                }
+                            @endphp
+                            Rp. {{ number_format($totalPendapatan, 0, ',', '.') }}
                         </td>
                         <td class="px-6 py-4">
                             {{ $item->email }}

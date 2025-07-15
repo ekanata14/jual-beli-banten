@@ -21,7 +21,7 @@ class PelangganController extends Controller
     {
         $viewData = [
             "title" => "Data Pelanggan",
-            "datas" => User::where('role', 'pelanggan')->paginate(10),
+            "datas" => User::where('role', 'pelanggan')->get(),
         ];
 
         return view("admin.pelanggan.index", $viewData);

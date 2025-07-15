@@ -23,7 +23,7 @@ class ProductController extends Controller
     {
         $viewData = [
             "title" => "Data Produk",
-            "datas" => User::where('role', 'penjual')->paginate(10),
+            "datas" => User::where('role', 'penjual')->get(),
         ];
 
         return view("admin.produk.index", $viewData);
@@ -97,7 +97,7 @@ class ProductController extends Controller
         $viewData = [
             "title" => "Data Produk | " . $penjual->name,
             'idPenjual' => $penjual->id,
-            "datas" => Produk::where('id_user', $penjual->id)->paginate(10),
+            "datas" => Produk::where('id_user', $penjual->id)->get(),
         ];
 
         return view('admin.produk.produk-penjual', $viewData);

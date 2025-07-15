@@ -19,7 +19,7 @@ class AdminController extends Controller
     {
         $viewData = [
             "title" => "Data Admin",
-            "datas" => User::where('role', 'admin')->paginate(10),
+            "datas" => User::where('role', 'admin')->get(),
         ];
 
         return view("admin.admin.index", $viewData);

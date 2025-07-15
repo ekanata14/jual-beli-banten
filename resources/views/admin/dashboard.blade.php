@@ -135,16 +135,79 @@
                     </div>
                 </form>
                 <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
-                    <table class="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <table class="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" id="default-table">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="px-4 py-3">No</th>
-                                <th scope="col" class="px-4 py-3">Nomor Invoice</th>
-                                <th scope="col" class="px-4 py-3">Tanggal Transaksi</th>
-                                <th scope="col" class="px-4 py-3">Jumlah Item</th>
-                                <th scope="col" class="px-4 py-3">Total Harga</th>
-                                <th scope="col" class="px-4 py-3">Status Transaksi</th>
-                                <th scope="col" class="px-4 py-3">Actions</th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="flex items-center">
+                                        No
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </span>
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="flex items-center">
+                                        Nomor Invoice
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </span>
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="flex items-center">
+                                        Tanggal Transaksi
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </span>
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="flex items-center">
+                                        Jumlah Item
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </span>
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="flex items-center">
+                                        Total Harga
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </span>
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="flex items-center">
+                                        Status Transaksi
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </span>
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="flex items-center">
+                                        Actions
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </span>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -199,7 +262,7 @@
                                     </td>
                                     <td class="px-4 py-4">
                                         <a href="{{ route('admin.transaksi.detail', $item->id) }}"
-                                            class="inline-block px-4 py-2 border border-gray-300 text-sm rounded-lg hover:bg-gray-100">
+                                            class="inline-block px-4 py-2 borderborder-gray-300 text-sm rounded-lg hover:bg-gray-100">
                                             Detail
                                         </a>
                                     </td>
@@ -208,29 +271,81 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-4">
-                    {{ $transaksis->links() }}
-                </div>
             </div>
         </div>
         <div id="produk-terlaris-tab-content" class="hidden">
             <div class="relative overflow-x-auto">
                 <h2 class="text-2xl md:text-3xl font-bold mb-4">Produk Terlaris</h2>
                 <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
-                    <table class="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <table class="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" id="default-table-2">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="px-4 py-3">No</th>
-                                <th scope="col" class="px-4 py-3">Nama Produk</th>
-                                <th scope="col" class="px-4 py-3">Nama Penjual</th>
-                                <th scope="col" class="px-4 py-3">Total Terjual</th>
-                                <th scope="col" class="px-4 py-3">Total Pendapatan</th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="flex items-center">
+                                        No
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </span>
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="flex items-center">
+                                        Nama Produk
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </span>
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="flex items-center">
+                                        Nama Penjual
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </span>
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="flex items-center">
+                                        Total Terjual
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </span>
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    <span class="flex items-center">
+                                        Total Pendapatan
+                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                            height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                                        </svg>
+                                    </span>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($produkTerlaris->sortByDesc(function ($produk) {
-                return $produk->orders->sum('jumlah');
-            }) as $index => $produk)
+                            @foreach (
+                                $produkTerlaris
+                                    ->map(function ($produk) {
+                                        $produk->jumlah_terjual = $produk->orders
+                                            ->filter(function ($order) {
+                                                return $order->transaksi && $order->transaksi->status === 'paid';
+                                            })
+                                            ->sum('jumlah');
+                                        return $produk;
+                                    })
+                                    ->sortByDesc('jumlah_terjual')
+                                as $index => $produk
+                            )
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                                     <th scope="row"
                                         class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -243,13 +358,7 @@
                                         {{ $produk->user->name ?? '-' }}
                                     </td>
                                     <td class="px-4 py-4">
-                                        {{
-                                            $produk->orders
-                                                ->filter(function ($order) {
-                                                    return $order->transaksi && $order->transaksi->status === 'paid';
-                                                })
-                                                ->sum('jumlah') ?? 0
-                                        }}
+                                        {{ $produk->jumlah_terjual ?? 0 }}
                                     </td>
                                     <td class="px-4 py-4">
                                         {{

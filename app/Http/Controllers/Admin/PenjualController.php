@@ -24,12 +24,12 @@ class PenjualController extends Controller
             "datas" => $penjual,
         ];
 
-        $subtotal = 0;
-
-        foreach($penjual as $item) {
+        foreach($penjual[3]->products as $item) {
+            foreach($item->orders as $order) {
+                // Process each order related to the product
+                $anjay[] = $order->Transaksi;
+            }
         }
-
-        return $subtotal;
 
         return view("admin.penjual.index", $viewData);
     }
@@ -57,6 +57,8 @@ class PenjualController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'alamat_penjual' => 'required|string',
             'kode_pos' => 'required|string',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
             'no_telp' => 'required|string|max:15',
         ]);
 
@@ -73,8 +75,10 @@ class PenjualController extends Controller
             $penjual = Penjual::create([
                 'id_user' => $user->id,
                 'alamat_penjual' => $validatedData['alamat_penjual'],
+                'kode_pos' => $validatedData['kode_pos'],
+                'latitude' => $validatedData['latitude'],
+                'longitude' => $validatedData['longitude'],
                 'no_telp' => $validatedData['no_telp'],
-                'kode_pos' => $validatedData['kode_pos']
             ]);
 
             DB::commit();
@@ -118,6 +122,8 @@ class PenjualController extends Controller
             'password' => 'nullable|string|min:8|confirmed',
             'alamat_penjual' => 'required|string',
             'kode_pos' => 'required|string',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
             'no_telp' => 'required|string|max:15',
         ]);
 
@@ -136,6 +142,8 @@ class PenjualController extends Controller
             $penjual->alamat_penjual = $validatedData['alamat_penjual'];
             $penjual->no_telp = $validatedData['no_telp'];
             $penjual->kode_pos = $validatedData['kode_pos'];
+            $penjual->latitude = $validatedData['latitude'];
+            $penjual->longitude = $validatedData['longitude'];
             $penjual->save();
 
             DB::commit();

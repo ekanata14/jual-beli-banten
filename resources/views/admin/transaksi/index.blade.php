@@ -3,10 +3,10 @@
 @section('content')
     <div class="flex flex-wrap gap-4 mb-6">
         <!-- Responsive Cards: Total Pemasukan, Paid, Pending -->
-        <div class="w-full flex flex-wrap gap-4 mb-6">
+        <div class="w-full justify-between flex flex-wrap gap-4 mb-6">
             <!-- Total Pemasukan -->
             <div
-                class="flex-1 min-w-[220px] max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
+                class="flex-1 min-w-[220px] max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
                 <a href="{{ route('admin.transaksi.index') }}">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">
                         {{ 'Rp ' . number_format($totalPemasukan ?? 0, 0, ',', '.') }}</h5>
@@ -24,7 +24,7 @@
             </div>
             <!-- Total Paid -->
             <div
-                class="flex-1 min-w-[220px] max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
+                class="flex-1 min-w-[220px] max-w-sull p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-green-700 dark:text-green-400 text-center">
                     {{ 'Rp ' . number_format($totalPaid ?? 0, 0, ',', '.') }}</h5>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center">Total Paid</p>
@@ -40,7 +40,7 @@
             </div>
             <!-- Total Pending -->
             <div
-                class="flex-1 min-w-[220px] max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
+                class="flex-1 min-w-[220px] max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-yellow-700 dark:text-yellow-400 text-center">
                     {{ 'Rp ' . number_format($totalPending ?? 0, 0, ',', '.') }}</h5>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center">Total Pending</p>

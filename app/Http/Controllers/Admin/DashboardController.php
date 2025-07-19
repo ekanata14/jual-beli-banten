@@ -32,9 +32,12 @@ class DashboardController extends Controller
             "totalTransaksi" => Transaksi::count(),
             'totalPemasukan' => Transaksi::where('status', 'paid')->sum('total_harga'),
             "transaksis" => Transaksi::latest()->get(),
-            'produkTerlaris' => Produk::with('orders')
-                ->take(10)
-                ->get()
+            'produkTerlaris' => Produk::withCount(['orders as total_terjual' => function ($query) {
+                $query->select(\DB::raw('COALESCE(SUM(jumlah),0)'));
+            }])
+            ->orderByDesc('total_terjual')
+            ->take(10)
+            ->get()
         ];
 
         return view("admin.dashboard", $viewData);

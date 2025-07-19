@@ -333,43 +333,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (
-                                $produkTerlaris
-                                    ->map(function ($produk) {
-                                        $produk->jumlah_terjual = $produk->orders
-                                            ->filter(function ($order) {
-                                                return $order->transaksi && $order->transaksi->status === 'paid';
-                                            })
-                                            ->sum('jumlah');
-                                        return $produk;
-                                    })
-                                    ->sortByDesc('jumlah_terjual')
-                                as $index => $produk
-                            )
+                            @foreach (collect($produkTerlaris)->sortByDesc('total_terjual') as $index => $produk)
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                                     <th scope="row"
                                         class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ $loop->iteration }}
                                     </th>
                                     <td class="px-4 py-4">
-                                        {{ $produk->nama_produk ?? '-' }}
+                                        {{ $produk['nama_produk'] ?? '-' }}
                                     </td>
                                     <td class="px-4 py-4">
-                                        {{ $produk->user->name ?? '-' }}
+                                        {{-- You may need to fetch user name by id if not available in $produk --}}
+                                        @php
+                                            $penjual = $penjuals->firstWhere('id', $produk['id_user']);
+                                        @endphp
+                                        {{ $penjual ? $penjual->name : '-' }}
                                     </td>
                                     <td class="px-4 py-4">
-                                        {{ $produk->jumlah_terjual ?? 0 }}
+                                        {{ $produk['total_terjual'] ?? 0 }}
                                     </td>
                                     <td class="px-4 py-4">
                                         {{
-                                            'Rp ' . number_format(
-                                                $produk->orders
-                                                    ->filter(function ($order) {
-                                                        return $order->transaksi && $order->transaksi->status === 'paid';
-                                                    })
-                                                    ->sum('subtotal') ?? 0,
-                                                0, ',', '.'
-                                            )
+                                            'Rp ' . number_format((float)($produk['harga'] ?? 0) * (int)($produk['total_terjual'] ?? 0), 0, ',', '.')
                                         }}
                                     </td>
                                 </tr>

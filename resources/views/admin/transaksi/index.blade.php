@@ -5,7 +5,7 @@
         {{-- <a href="{{ route('admin.kurir.create') }}" class="btn-primary">Tambah Kurir</a> --}}
         @if (request()->routeIs('admin.transaksi.index'))
         @else
-            <a href="{{ route('admin.pelanggan.index') }}" class="btn-white">Back</a>
+            <a href="{{ route('admin.transaksi.index') }}" class="btn-white">Back</a>
         @endif
     </div>
     @if (request()->routeIs('admin.transaksi.index'))

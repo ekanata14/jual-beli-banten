@@ -6,7 +6,7 @@
             data-aos="fade-up">
             <h3 class="text-black text-xl md:text-2xl">Detail Transaksi</h3>
             @if (Route::has('admin.pelanggan.transaksi.detail.show'))
-                <a href="{{ route('admin.pelanggan.transaksi.detail', $data->id) }}"
+                <a href="{{ url()->previous() }}"
                     class="text-blue-600 hover:underline text-sm md:text-base">Back</a>
             @else
                 <a href="{{ route('admin.transaksi.index') }}"
@@ -146,7 +146,7 @@
                             </div>
                             @if ($pengiriman->status_pengiriman !== 'received')
                                 <form action="{{ route('confirm.shipment', $pengiriman->id) }}" method="POST"
-                                    class="mt-8 flex justify-center" onsubmit="return confirmShipment(event, this)">
+                                    class="mt-8 flex justify-center hidden" onsubmit="return confirmShipment(event, this)">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $pengiriman->id }}">
                                     <button type="submit"

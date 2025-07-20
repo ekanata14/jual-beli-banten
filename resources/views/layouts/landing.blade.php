@@ -20,13 +20,13 @@
 </head>
 
 <body>
-    <header class="w-full fixed top-0 z-50 flex justify-center pt-4">
-        <nav class="nav flex justify-between items-center bg-white bg-opacity-90 backdrop-blur fixed w-full px-4 md:px-8 lg:px-10 py-3 mt-4 shadow-md"
+    <header class="w-full fixed top-0 z-50 flex justify-center pt-4" data-aos="fade-up" data-aos-delay="100">
+        <nav class="nav flex justify-between items-center bg-white bg-opacity-90 backdrop-blur fixed w-full px-4 md:px-8 lg:px-10 py-3 mt-4"
             style="margin:0;">
             <div class="logo flex-shrink-0">
                 <a href="{{ route('home') }}">
                     <img src="{{ asset('assets/icons/bhakti_logo.svg') }}" alt="Logo Bhakti"
-                        class="h-10 object-contain">
+                        class="h-6 object-contain">
                 </a>
             </div>
             <!-- Hamburger Button (Mobile) -->
@@ -39,7 +39,7 @@
             </button>
             <!-- Nav Links (Desktop & Responsive Centered) -->
             <div id="navbar-menu" class="hidden lg:flex flex-1 justify-center items-center">
-                <ul class="nav-list flex flex-col lg:flex-row gap-6 lg:gap-[53px] bg-white lg:bg-transparent absolute lg:static top-full left-0 w-full lg:w-auto shadow-lg lg:shadow-none z-40 lg:z-auto px-6 py-4 lg:p-0
+                <ul class="nav-list flex flex-col lg:flex-row gap-6 lg:gap-[53px] bg-white lg:bg-transparent absolute lg:static top-full left-0 w-full lg:w-auto z-40 lg:z-auto px-6 py-4 lg:p-0
                     lg:justify-center justify-center items-center text-center">
                     <li class="nav-item {{ request()->is('/') ? 'active' : '' }}">
                         <a href="{{ route('home') }}" class="block py-2 px-2 hover:text-blue-700 transition">
@@ -88,7 +88,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    <div class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg transition-opacity z-50"
+                    <div class="absolute right-0 mt-2 w-40 bg-white rounded-md transition-opacity z-50"
                         x-show="open" x-transition:enter="transition ease-out duration-100"
                         x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                         x-transition:leave="transition ease-in duration-75" x-transition:leave-start="opacity-100"
@@ -250,7 +250,7 @@
         <div class="finalcta_content flex flex-col lg:flex-row py-8 md:py-16 lg:py-20 items-start lg:items-center justify-between w-full gap-10"
             data-aos="fade-up" data-aos-delay="300">
             <div class="finalcta_contentleft w-full lg:w-1/2 mb-6 lg:mb-0" data-aos="fade-up" data-aos-delay="400">
-                <p class="text-sm md:text-base lg:text-lg mb-2">Join Our Growing Wellness Community</p>
+                <p class="text-sm md:text-base lg:text-lg mb-2">Menyediakan sarana upacara terlengkap</p>
                 <h1 class="text-white text-xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
                     Mudahnya
                     Memenuhi Kebutuhan Upacara Anda</h1>
@@ -313,7 +313,7 @@
             <div class="footer_contentBottom flex flex-col gap-4">
                 <div class="footer_contentBottom_1 flex flex-col sm:flex-row justify-between items-center gap-3">
                     <button onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top"
-                        class="fixed right-6 bottom-6 z-50 bg-[#36302c] rounded-full shadow-lg p-2 hover:bg-[#222] transition-all"
+                        class="fixed right-6 bottom-6 z-50 bg-[#36302c] rounded-full p-2 hover:bg-[#222] transition-all"
                         data-aos="fade-up" data-aos-delay="600">
                         <img src="{{ asset('assets/icons/scroll_top.svg') }}" alt="Scroll Top"
                             class="h-8 w-8 cursor-pointer" />
@@ -322,7 +322,7 @@
             </div>
             <div class="w-full pb-10" data-aos="fade-up" data-aos-delay="100">
                 <a href="https://wa.me/6281234567890" target="_blank" rel="noopener"
-                    class="flex justify-between items-center w-full bg-[#2D2723] text-white font-normal text-base rounded-xl py-12 px-12 hover:opacity-90 transition-all duration-200 shadow-lg">
+                    class="flex justify-between items-center w-full bg-[#2D2723] text-white font-normal text-base rounded-xl py-12 px-12 hover:opacity-90 transition-all duration-200">
                     <div class="text-left">
                         <p class="text-sm md:text-base leading-tight">Daftar</p>
                         <p class="text-sm md:text-base font-semibold">Sebagai Mitra</p>

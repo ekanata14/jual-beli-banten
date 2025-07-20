@@ -34,24 +34,24 @@
     <div class="about_services_section w-full max-w-5xl" data-aos="fade-up" data-aos-delay="300">
         <h2 class="w-full md:w-11/12 text-black">Mengapa Memilih Kami?</h2>
         <div class="about_service_card_wrapper flex flex-col md:flex-row gap-5 mt-6 md:mt-9">
-            <div class="about_service_card_item flex flex-col w-full md:w-1/4 p-5 items-start justify-between rounded-md h-48 md:h-64 bg-white shadow"
+            <div class="about_service_card_item flex flex-col w-full md:w-1/4 p-5 items-start justify-between rounded-md h-48 md:h-64 bg-white"
                 data-aos="fade-up" data-aos-delay="400">
                 <p class="font-bold text-lg mb-2">01</p>
                 <p>Beragam Pilihan Banten: Mulai dari banten harian hingga upacara besar tersedia dalam satu platform.
                 </p>
             </div>
-            <div class="about_service_card_item flex flex-col w-full md:w-1/4 p-5 items-start justify-between rounded-md h-48 md:h-64 bg-white shadow"
+            <div class="about_service_card_item flex flex-col w-full md:w-1/4 p-5 items-start justify-between rounded-md h-48 md:h-64 bg-white"
                 data-aos="fade-up" data-aos-delay="500">
                 <p class="font-bold text-lg mb-2">02</p>
                 <p>Kualitas Terbaik: Setiap produk dibuat dengan bahan berkualitas tinggi oleh pengrajin berpengalaman
                 </p>
             </div>
-            <div class="about_service_card_item flex flex-col w-full md:w-1/4 p-5 items-start justify-between rounded-md h-48 md:h-64 bg-white shadow"
+            <div class="about_service_card_item flex flex-col w-full md:w-1/4 p-5 items-start justify-between rounded-md h-48 md:h-64 bg-white"
                 data-aos="fade-up" data-aos-delay="600">
                 <p class="font-bold text-lg mb-2">03</p>
                 <p>Pesan dengan Mudah: Proses pencarian, pemesanan, dan pembayaran yang sederhana dan cepat.</p>
             </div>
-            <div class="about_service_card_item flex flex-col w-full md:w-1/4 p-5 items-start justify-between rounded-md h-48 md:h-64 bg-white shadow"
+            <div class="about_service_card_item flex flex-col w-full md:w-1/4 p-5 items-start justify-between rounded-md h-48 md:h-64 bg-white"
                 data-aos="fade-up" data-aos-delay="700">
                 <p class="font-bold text-lg mb-2">04</p>
                 <p>Pelestarian Budaya: Mendukung tradisi Bali dengan pendekatan modern yang praktis.</p>

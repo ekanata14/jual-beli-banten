@@ -4,9 +4,9 @@
         <h3 class="mb-5" data-aos="zoom-in" data-aos-delay="700">
             Riwayat Transaksi
         </h3>
-        <div class="bg-white py-6 px-5 w-full rounded-md" data-aos="fade-up" data-aos-delay="100">
+        <div class="bg-white py-6 px-5 w-full rounded-md">
             <!-- Transaction History Card -->
-            <div class="transaction-history" data-aos="fade-up" data-aos-delay="200">
+            <div class="transaction-history" data-aos="fade-up" data-aos-delay="50">
                 <!-- <h5 class="text-lg font-semibold mb-4" data-aos="fade-up" data-aos-delay="300">Riwayat Transaksi</h5> -->
                 @if ($datas->count())
                     <div class="space-y-2">

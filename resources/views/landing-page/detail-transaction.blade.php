@@ -7,18 +7,18 @@
         <a href="{{ route('history') }}" class="text-blue-600 hover:underline text-sm md:text-base">Kembali ke halaman
             transaksi</a>
     </div>
-    <div class="transaction_container bg-white py-6 px-4 md:py-9 md:px-14 mt-10 md:mt-20 w-full md:w-10/12 flex flex-col rounded-lg shadow"
+    <div class="transaction_container md:mt-10 md:mt-20 w-full md:w-11/12 flex flex-col rounded-lg"
         data-aos="fade-up">
         <!-- section 1 -->
-        <div class="section_one pb-6 md:pb-9">
-            <div class="flex flex-col md:flex-row md:justify-between mb-6 md:mb-9 gap-4" data-aos="fade-up">
+        <div class="section_one bg-white rounded-md w-full px-10 py-5">
+            <div class="flex flex-col md:flex-row md:justify-between gap-4" data-aos="fade-up">
                 <div class="order_id">
                     <p class="text-sm">Order ID</p>
                     <h4 class="text-black font-semibold mt-2 md:mt-4 text-base md:text-lg">{{ $data->invoice_number }}
                     </h4>
                 </div>
                 <div class="status_transaksi">
-                    <p class="mb-2 md:mb-4 text-sm">Status</p>
+                    <p class="mb-2 md:mb-4 text-sm text-right">Status</p>
 
                     @if ($data->status === 'pending')
                     <span
@@ -40,19 +40,19 @@
             </div>
         </div>
         <!-- section 2 -->
-        <div class="section_two mt-6 md:mt-9">
-            <div class="flex flex-col md:flex-row md:justify-between gap-4" data-aos="fade-up">
+        <div class="section_two mt-2 md:mt-2 bg-white rounded-md w-full px-10 py-10">
+            <div class="flex flex-col md:flex-row md:justify-between gap-4 " data-aos="fade-up">
                 <div class="tanggal_order">
                     <p class="text-sm">Tanggal Order</p>
                     <p class="text-black mt-2 md:mt-4 text-base">{{ $data->tanggal_transaksi }}</p>
                 </div>
                 <div class="metode_order">
-                    <p class="text-sm">Metode Pembayaran</p>
-                    <p class="text-black mt-2 md:mt-4 text-base">Midtrans</p>
+                    <p class="text-sm text-right">Metode Pembayaran</p>
+                    <p class="text-black mt-2 md:mt-4 text-base text-right">Midtrans</p>
                 </div>
             </div>
 
-            <div class="alamat_penerima mt-6 md:mt-9 pb-6 md:pb-9" data-aos="fade-up">
+            <div class="alamat_penerima mt-6 md:mt-9 " data-aos="fade-up">
                 <p class="text-sm">Alamat Penerima</p>
                 <p class="text-black mt-2 md:mt-4 text-base">{{ $data->pengiriman->nama_penerima }}</p>
                 <p class="text-black text-base">{{ $data->pengiriman->telp_penerima }}</p>
@@ -68,10 +68,10 @@
         $pengirimanList = $data->orders->pluck('pengiriman')->filter()->unique('id');
         @endphp
         @foreach ($pengirimanList as $pengiriman)
-        <div class="section_three mt-8 md:mt-12" data-aos="fade-up" id="biteship-shipping-info-{{ $pengiriman->id }}">
+        <div class="section_three mt-2 md:mt-2 bg-white rounded-md w-full px-10 py-10" data-aos="fade-up" id="biteship-shipping-info-{{ $pengiriman->id }}">
             <div class=" rounded-2xl mb-8 transition-all duration-300">
                 <div class="flex items-center gap-3 mb-6">
-                    <h4 class="text-lg md:text-xl font-bold tracking-wide">Informasi Pengiriman</h4>
+                    <p class="text-base md:text-lg tracking-wide">Informasi Pengiriman</p>
                 </div>
                 <div id="biteship-loading-{{ $pengiriman->id }}"
                     class="flex items-center gap-2 text-gray-500 text-sm py-4 px-3 bg-blue-50 rounded-lg mb-2">
@@ -91,12 +91,8 @@
                             <p class="text-black font-semibold text-base" id="biteship-order-id-{{ $pengiriman->id }}">
                             </p>
                         </div>
-                        <div class="space-y-2">
-                            <p class="text-sm text-gray-500">Kurir</p>
-                            <p class="text-black font-medium" id="biteship-courier-{{ $pengiriman->id }}"></p>
-                        </div>
-                        <div class="space-y-2 justify-self-end">
-                            <p class="text-sm text-gray-500">Status</p>
+                        <div class="col-span-2 space-y-2 justify-self-end">
+                            <p class="text-sm text-gray-500 text-right">Status</p>
                             <span
                                 class="inline-block px-4 md:py-3 md:px-5 bg-green-100 text-green-800 rounded-md text-sm md:text-base"
                                 id="biteship-status-{{ $pengiriman->id }}"></span>
@@ -105,8 +101,12 @@
                             <p class="text-sm text-gray-500">No Resi</p>
                             <p class="text-black" id="biteship-waybill-{{ $pengiriman->id }}"></p>
                         </div>
-                        <div class="space-y-2">
-                            <p class="text-sm text-gray-500">Tracking Link</p>
+                        <div class="justify-self-center space-y-2">
+                            <p class="text-sm text-gray-500">Kurir</p>
+                            <p class="text-black font-medium" id="biteship-courier-{{ $pengiriman->id }}"></p>
+                        </div>
+                        <div class="justify-self-end space-y-2">
+                            <p class="text-sm text-gray-500 text-right">Tracking Link</p>
                             <a href="#" target="_blank"
                                 class="text-blue-600 underline font-medium hover:text-blue-800 transition"
                                 id="biteship-link-{{ $pengiriman->id }}">Lihat Tracking</a>
@@ -116,7 +116,7 @@
                             <p class="text-black font-bold" id="biteship-fee-{{ $pengiriman->id }}"></p>
                         </div>
                     </div>
-                    <div class="border-t border-blue-100 my-6"></div>
+                    <!-- <div class="border-t border-blue-100 my-6"></div> -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 hidden">
                         <div class="space-y-2">
                             <p class="text-xs text-gray-500">Nama Pengirim</p>
@@ -136,13 +136,14 @@
                             <p class="text-black" id="biteship-dest-address-{{ $pengiriman->id }}"></p>
                         </div>
                     </div>
+                    
                     @if ($pengiriman->status_pengiriman !== 'received')
                     <form action="{{ route('confirm.shipment', $pengiriman->id) }}" method="POST"
                         class="mt-8 flex justify-center" onsubmit="return confirmShipment(event, this)">
                         @csrf
                         <input type="hidden" name="id" value="{{ $pengiriman->id }}">
                         <button type="submit"
-                            class="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2">
+                            class="w-full justify-center inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg  transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2">
                             <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" stroke-width="2"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7">
@@ -152,24 +153,12 @@
                         </button>
                     </form>
                     @else
-                    <div class="mt-8 flex justify-center">
-                        <span
-                            class="inline-flex items-center px-6 py-3 bg-gray-300 text-gray-700 font-semibold rounded-lg shadow">
-                            <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7">
-                                </path>
-                            </svg>
-                            Sudah Dikonfirmasi
-                        </span>
-                    </div>
                     <div class="mt-8">
-                        <h4 class="text-base font-semibold mb-2 text-center text-gray-700">Beri Ulasan Produk
-                        </h4>
+                        <p class="text-base md:text-lg mb-4">Beri Ulasan Produk</p>
                         <div class="flex flex-col gap-4">
                             @foreach ($pengiriman->orders as $order)
                             <div
-                                class="flex flex-col md:flex-row md:items-center md:justify-between bg-blue-50 border border-blue-100 rounded-lg px-4 py-3 shadow-sm">
+                                class="flex flex-col md:flex-row md:items-center md:justify-between bg-white border border-gray-100 rounded-lg px-4 py-3">
                                 <div class="flex items-center gap-3">
                                     <img src="{{ asset($order->produk->foto ?? 'assets/images/product_img.png') }}"
                                         alt="{{ $order->produk->nama_produk ?? 'Produk' }}"
@@ -184,7 +173,7 @@
                                 <div class="mt-3 md:mt-0 flex items-center gap-2">
                                     @if ($order->ulasan)
                                     <span
-                                        class="inline-flex items-center px-4 py-2 bg-green-100 text-green-700 text-xs rounded shadow">
+                                        class="inline-flex items-center px-4 py-2 bg-green-100 text-green-700 text-xs rounded">
                                         <svg class="w-4 h-4 mr-1 text-green-500" fill="none" stroke="currentColor"
                                             stroke-width="2" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7">
@@ -194,7 +183,7 @@
                                     </span>
                                     @else
                                     <button type="button"
-                                        class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-xs rounded shadow transition"
+                                        class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-xs rounded transition"
                                         onclick="openRatingModal({{ $order->id }})">
                                         Beri Ulasan
                                     </button>
@@ -204,8 +193,8 @@
 
                             <!-- Modal -->
                             <div id="rating-modal-{{ $order->id }}"
-                                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
-                                <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative animate-fade-in">
+                                class="fixed inset-0 z-50 flex items-center justify-center hidden">
+                                <div class="bg-white rounded-lg w-full max-w-md p-6 relative animate-fade-in">
                                     <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl"
                                         onclick="closeRatingModal({{ $order->id }})" aria-label="Tutup">
                                         &times;
@@ -303,6 +292,17 @@
                         }
                     }
                     </style>
+                    <div class="mt-8 flex justify-center w-full">
+                        <span
+                            class="inline-flex w-full justify-center items-center px-6 py-3 bg-gray-300 text-gray-700 font-semibold rounded-lg ">
+                            <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                            Sudah Dikonfirmasi
+                        </span>
+                    </div>
                     @endif
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                     <script>
@@ -385,7 +385,7 @@
         </script>
         @endforeach
         <!-- section 3 -->
-        <div class="section_three mt-6 md:mt-9" data-aos="fade-up">
+        <div class="section_three mt-2 md:mt-2 bg-white rounded-md w-full px-10 py-10" data-aos="fade-up">
             <p class="text-base md:text-lg">Informasi Produk</p>
             @php
             $subtotal = $data->orders->sum('subtotal');
@@ -407,32 +407,35 @@
             @empty
             <div class="text-gray-500 text-center py-8">Tidak ada produk dalam transaksi ini.</div>
             @endforelse
+
+            <!-- kalkukasi produk -->
+            <div class="section_four mt-6 md:mt-9" data-aos="fade-up">
+                <div class="subtotal flex justify-between text-sm md:text-base">
+                    <p>Subtotal</p>
+                    <p class="mt-2 md:mt-4">Rp. {{ number_format($subtotal, 0, ',', '.') }}</p>
+                </div>
+                <div class="biaya_pengiriman flex justify-between text-sm md:text-base">
+                    <p>Biaya Pengiriman</p>
+                    <p class="mt-2 md:mt-4">Rp.
+                        {{ number_format($data->pengiriman->biaya_pengiriman ?? 0, 0, ',', '.') }}
+                    </p>
+                </div>
+                <div class="biaya_pengiriman flex justify-between text-sm md:text-base">
+                    <p>Biaya Admin</p>
+                    <p class="mt-2 md:mt-4">Rp.
+                        {{ number_format(2500 ?? 0, 0, ',', '.') }}
+                    </p>
+                </div>
+                <div class="total_transaksi flex justify-between">
+                    <p class="text-black font-semibold text-base md:text-lg">Total Biaya</p>
+                    <p class="text-black mt-2 md:mt-4 font-semibold text-base md:text-lg">
+                        Rp. {{ number_format($data->total_harga, 0, ',', '.') }}
+                    </p>
+                </div>
+            </div>
         </div>
         <!-- section 4 -->
-        <div class="section_four mt-6 md:mt-9" data-aos="fade-up">
-            <div class="subtotal flex justify-between text-sm md:text-base">
-                <p>Subtotal</p>
-                <p class="mt-2 md:mt-4">Rp. {{ number_format($subtotal, 0, ',', '.') }}</p>
-            </div>
-            <div class="biaya_pengiriman flex justify-between text-sm md:text-base">
-                <p>Biaya Pengiriman</p>
-                <p class="mt-2 md:mt-4">Rp.
-                    {{ number_format($data->pengiriman->biaya_pengiriman ?? 0, 0, ',', '.') }}
-                </p>
-            </div>
-            <div class="biaya_pengiriman flex justify-between text-sm md:text-base">
-                <p>Biaya Admin</p>
-                <p class="mt-2 md:mt-4">Rp.
-                    {{ number_format(2500 ?? 0, 0, ',', '.') }}
-                </p>
-            </div>
-            <div class="total_transaksi flex justify-between">
-                <p class="text-black font-semibold text-base md:text-lg">Total Biaya</p>
-                <p class="text-black mt-2 md:mt-4 font-semibold text-base md:text-lg">
-                    Rp. {{ number_format($data->total_harga, 0, ',', '.') }}
-                </p>
-            </div>
-        </div>
+        
         <div class="action_button self-center mt-6 md:mt-9" data-aos="fade-up">
         </div>
     </div>

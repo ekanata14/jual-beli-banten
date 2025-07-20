@@ -1,14 +1,14 @@
 @extends('layouts.landing')
 @section('content')
-<section class="home_hero hero flex w-full justify-start items-end h-[100vh]" data-aos="fade-up" data-aos-delay="100"
+<section class="home_hero hero flex w-full justify-start items-end h-[100vh]"
     style="background-image: url('{{ asset('assets/images/Hero_bg.jpg') }}');">
-    <div class="home_hero_content py-9 px-10" data-aos="fade-right" data-aos-delay="300">
-        <p class="sub-heading text-white" data-aos="fade-down" data-aos-delay="500">Harmoni Tradisi dan Teknologi</p>
-        <h1 class="text-white mb-5" data-aos="zoom-in" data-aos-delay="700">Sarana Upacara Hindu yang<br> Mudah &
+    <div class="home_hero_content py-9 px-10" data-aos="fade-up" data-aos-delay="300">
+        <p class="sub-heading text-white" data-aos="fade-up" data-aos-delay="500">Harmoni Tradisi dan Teknologi</p>
+        <h1 class="text-white mb-5" data-aos="fade-up" data-aos-delay="700">Sarana Upacara Hindu yang<br> Mudah &
             Praktis
         </h1>
         <x-button class="mt-5" href="{{ route('product') }}" icon="{{ asset('assets/icons/arrow_right_white.svg') }}"
-            data-aos="fade-up" data-aos-delay="900">
+            data-aos="fade-down" data-aos-delay="900">
             Lihat Semua Produk
         </x-button>
     </div>
@@ -29,11 +29,11 @@
         </p>
         <!-- button -->
         <x-button href="/produk" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-12 md:mt-24"
-            data-aos="zoom-in" data-aos-delay="600">
+            data-aos="fade-down" data-aos-delay="600">
             Baca Lebih Lengkap
         </x-button>
         <div class="home_about_images w-full flex justify-center" data-aos="fade-up" data-aos-delay="800">
-            <img class="mt-12 md:mt-24 w-full max-w-md md:max-w-xl rounded-lg shadow-lg object-cover"
+            <img class="mt-12 md:mt-24 w-full max-w-md md:max-w-xl rounded-lg object-cover"
                 src="{{ asset('assets/images/about_img.png') }}" alt="">
         </div>
     </div>
@@ -76,7 +76,7 @@
         </div>
     </div>
 </section>
-<section class="home_testi py-16 md:py-24 px-0 w-full" data-aos="fade-up" data-aos-delay="100">
+<section class="home_testi py-16 md:py-24 px-0 w-full" data-aos="fade-up" data-aos-delay="50">
     <div class="home_testi_content flex flex-col items-center gap-16 md:gap-24 max-w-7xl mx-auto w-full">
         <div class="home_testi_content_header flex flex-col items-center justify-center w-full md:w-2/3"
             data-aos="fade-down" data-aos-delay="200">
@@ -93,7 +93,7 @@
                     style="scroll-behavior: smooth;">
                     @forelse ($testimonials as $index => $testi)
                     <div class="testimonial-card flex flex-col flex-shrink-0 w-[90vw] sm:w-[45vw] md:w-[32vw] lg:w-[30vw] xl:w-[25vw] px-5 py-6 bg-white rounded-lg shadow-md gap-6"
-                        data-index="{{ $index }}" data-aos="flip-left" data-aos-delay="{{ 200 + $index * 100 }}">
+                        data-index="{{ $index }}" data-aos="slide-left" data-aos-delay="{{ 200 + $index * 100 }}">
                         <img src="{{ asset('assets/icons/quote.svg') }}" alt="" class="self-end w-8 h-8">
                         <div class="testimonial-card_content">
                             <div class="stars flex mb-2">

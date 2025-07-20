@@ -9,7 +9,7 @@
 <div class="product_card w-full">
     <a href="{{ $link }}">
         <div class="product_card_header">
-            <img src="{{ asset($image) }}" alt="">
+            <img src="{{ asset($image) }}" alt="" class="rounded-sm">
         </div>
         <div class="product_card_footer mt-3 gap-2 flex flex-col">
             <div class="product_card_footer_title flex justify-between">

@@ -75,26 +75,29 @@
         <div>
             <ul class="flex border-b mb-4" id="dashboardTabs" role="tablist">
                 <li class="mr-2">
-                    <a class="inline-block px-4 py-2 text-blue-600 border-b-2 border-blue-600 font-bold focus:outline-none"
+                    <a class="inline-block px-4 py-2 {{ (request()->routeIs('admin.dashboard') || request()->routeIs('admin.dashboard.*')) && !request()->routeIs('admin.dashboard.best-seller') && !request()->routeIs('admin.dashboard.best-seller.*') ? 'text-blue-600 border-blue-600' : 'text-gray-600 border-transparent' }} border-b-2 font-bold focus:outline-none"
                         id="transaksi-tab" data-tab="transaksi" type="button" role="tab" aria-controls="transaksi"
-                        aria-selected="true" href="{{ route('admin.dashboard') }}">
+                        aria-selected="{{ (request()->routeIs('admin.dashboard') || request()->routeIs('admin.dashboard.*')) && !request()->routeIs('admin.dashboard.best-seller') && !request()->routeIs('admin.dashboard.best-seller.*') ? 'true' : 'false' }}"
+                        href="{{ route('admin.dashboard') }}">
                         Transaksi
                     </a>
                 </li>
                 <li class="mr-2">
-                    <a
-                        class="inline-block px-4 py-2 text-gray-600 border-b-2 border-transparent font-bold focus:outline-none"
+                    <a class="inline-block px-4 py-2 {{ request()->routeIs('admin.dashboard.best-seller') || request()->routeIs('admin.dashboard.best-seller.*') ? 'text-blue-600 border-blue-600' : 'text-gray-600 border-transparent' }} border-b-2 font-bold focus:outline-none"
                         id="produk-terlaris-tab" data-tab="produk-terlaris" type="button" role="tab"
-                        aria-controls="produk-terlaris" aria-selected="false" href="{{ route('admin.dashboard.best-seller') }}">
+                        aria-controls="produk-terlaris"
+                        aria-selected="{{ request()->routeIs('admin.dashboard.best-seller') || request()->routeIs('admin.dashboard.best-seller.*') ? 'true' : 'false' }}"
+                        href="{{ route('admin.dashboard.best-seller') }}">
                         Produk Terlaris
-                </a>
+                    </a>
                 </li>
             </ul>
         </div>
-        <div id="transaksi-tab-content">
+        <div id="produk-terlaris-tab-content">
             <div class="relative overflow-x-auto">
-                <p class="text-2xl md:text-3xl text-black mb-4">Transaksi</p>
-                <form method="GET" action="{{ route('admin.dashboard.transaksi.filter') }}"
+                <p class="text-2xl md:text-3xl text-black mb-4">Produk Terlaris</p>
+
+                <form method="GET" action="{{ route('admin.dashboard.best-seller.filter') }}"
                     class="mb-6 flex flex-wrap gap-4 items-end">
                     <div class="w-full md:w-auto">
                         <label for="penjual_id" class="block text-sm font-medium text-gray-700">Penjual</label>
@@ -136,13 +139,13 @@
                     </div>
                     <div class="flex gap-2 w-full md:w-auto">
                         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">Filter</button>
-                        <a href="{{ route('admin.dashboard') }}"
+                        <a href="{{ route('admin.dashboard.best-seller') }}"
                             class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md">Reset</a>
                     </div>
                 </form>
                 <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
                     <table class="min-w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                        id="default-table">
+                        id="default-table-2">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-4 py-3">
@@ -157,7 +160,7 @@
                                 </th>
                                 <th scope="col" class="px-4 py-3">
                                     <span class="flex items-center">
-                                        Nomor Invoice
+                                        Nama Produk
                                         <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -167,7 +170,7 @@
                                 </th>
                                 <th scope="col" class="px-4 py-3">
                                     <span class="flex items-center">
-                                        Tanggal Transaksi
+                                        Nama Penjual
                                         <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -177,7 +180,7 @@
                                 </th>
                                 <th scope="col" class="px-4 py-3">
                                     <span class="flex items-center">
-                                        Jumlah Item
+                                        Total Terjual
                                         <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -187,27 +190,7 @@
                                 </th>
                                 <th scope="col" class="px-4 py-3">
                                     <span class="flex items-center">
-                                        Total Harga
-                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                            width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
-                                        </svg>
-                                    </span>
-                                </th>
-                                <th scope="col" class="px-4 py-3">
-                                    <span class="flex items-center">
-                                        Status Transaksi
-                                        <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                            width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
-                                        </svg>
-                                    </span>
-                                </th>
-                                <th scope="col" class="px-4 py-3">
-                                    <span class="flex items-center">
-                                        Actions
+                                        Total Pendapatan
                                         <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -218,59 +201,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($transaksis as $index => $item)
+                            @foreach (collect($produkTerlaris)->sortByDesc('total_terjual') as $index => $produk)
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                                     <th scope="row"
                                         class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ $loop->iteration }}
                                     </th>
                                     <td class="px-4 py-4">
-                                        <a href="{{ route('admin.transaksi.detail', $item->id) }}"
-                                            class="text-blue-600 hover:underline">
-                                            {{ $item->invoice_number ?? '-' }}
-                                        </a>
+                                        {{ $produk['nama_produk'] ?? '-' }}
                                     </td>
                                     <td class="px-4 py-4">
-                                        {{ $item->created_at ? $item->created_at->format('d M Y') : '-' }}
+                                        {{-- You may need to fetch user name by id if not available in $produk --}}
+                                        @php
+                                            $penjual = $penjuals->firstWhere('id', $produk['id_user']);
+                                        @endphp
+                                        {{ $penjual ? $penjual->name : '-' }}
                                     </td>
                                     <td class="px-4 py-4">
-                                        {{ $item->orders->sum('jumlah') ?? '-' }}
+                                        {{ $produk['total_terjual'] ?? 0 }}
                                     </td>
                                     <td class="px-4 py-4">
-                                        {{ 'Rp ' . number_format($item->total_harga ?? 0, 0, ',', '.') }}
-                                    </td>
-                                    <td class="px-4 py-4">
-                                        @if ($item->status === 'pending')
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded bg-yellow-100 text-yellow-800 text-xs font-medium">
-                                                Pending
-                                            </span>
-                                        @elseif ($item->status === 'denied')
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded bg-red-100 text-red-800 text-xs font-medium">
-                                                Denied
-                                            </span>
-                                        @elseif ($item->status === 'waiting')
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded bg-blue-100 text-blue-800 text-xs font-medium">
-                                                Waiting
-                                            </span>
-                                        @elseif ($item->status === 'paid')
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded bg-green-100 text-green-800 text-xs font-medium">
-                                                Paid
-                                            </span>
-                                        @else
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded bg-gray-100 text-gray-800 text-xs font-medium">
-                                                {{ ucfirst($item->status_pembayaran ?? 'Unknown') }}
-                                            </span>
-                                        @endif
-                                    </td>
-                                    <td class="px-4 py-4">
-                                        <a href="{{ route('admin.transaksi.detail', $item->id) }}" class="btn-primary">
-                                            Detail
-                                        </a>
+                                        {{ 'Rp ' . number_format((float) ($produk['harga'] ?? 0) * (int) ($produk['total_terjual'] ?? 0), 0, ',', '.') }}
                                     </td>
                                 </tr>
                             @endforeach

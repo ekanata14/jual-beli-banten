@@ -117,6 +117,8 @@ Route::middleware('authCheck')->group(function () {
 
     // Admin Dashboard Controller
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard/best-seller', [AdminDashboardController::class, 'bestSeller'])->name('admin.dashboard.best-seller');
+    Route::get('/dashboard/best-seller/filter', [AdminDashboardController::class, 'bestSellerFilter'])->name('admin.dashboard.best-seller.filter');
     Route::get('/dashboard/transaksi/filter/home', [AdminDashboardController::class, 'filter'])->name('admin.dashboard.transaksi.filter');
 
     // Admin Admin Controller

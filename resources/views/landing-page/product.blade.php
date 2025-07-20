@@ -145,7 +145,7 @@
         @endforeach
     </section>
     <section class="flex flex-col items-center justify-center w-full mb-6">
-        <div class="w-full flex justify-center">
+        <div class="w-full flex flex-col items-center justify-center gap-3">
             @if ($products->hasPages())
                 <nav class="flex items-center gap-2">
                     {{-- Previous Page Link --}}
@@ -187,6 +187,9 @@
                         </span>
                     @endif
                 </nav>
+                <div class="ml-4 flex items-center text-sm text-gray-500">
+                    Menampilkan {{ $products->firstItem() }} - {{ $products->lastItem() }} dari {{ $products->total() }} produk
+                </div>
             @endif
         </div>
     </section>

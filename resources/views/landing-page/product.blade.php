@@ -72,7 +72,7 @@
     }
 
     .animate-fade-in {
-        animation: fade-in 0.2s ease;
+        animation: fade-in 0.2s cubic-bezier(0.12, 0.57, 0.63, 0.21);
     }
     </style>
     <script>
@@ -139,7 +139,7 @@
     </div>
     @endforeach
 </section>
-<section class="flex items-center justify-center w-full mb-10" data-aos="fade-up">
+<section class="flex items-center justify-center w-full mb-10">
     {{ $products->links() }}
 </section>
 

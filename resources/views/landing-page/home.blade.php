@@ -8,15 +8,15 @@
             Praktis
         </h1>
         <x-button class="mt-5" href="{{ route('product') }}" icon="{{ asset('assets/icons/arrow_right_white.svg') }}"
-            data-aos="fade-down" data-aos-delay="900">
+            data-aos="fade-up" data-aos-delay="900">
             Lihat Semua Produk
         </x-button>
     </div>
 </section>
 
 <section class="home_about flex flex-col w-full pt-20 md:pt-40 px-4 md:px-0" data-aos="fade-up" data-aos-delay="100">
-    <div class="home_about_content flex flex-col justify-center items-center max-w-5xl mx-auto">
-        <div class="home_about_heading flex flex-col items-center" data-aos="fade-down" data-aos-delay="200">
+    <div class="home_about_content flex flex-col justify-center items-center max-w-6xl mx-auto">
+        <div class="home_about_heading flex flex-col items-center" data-aos="fade-up" data-aos-delay="200">
             <p class="sub-heading">Tentang Kami</p>
             <h2 class="text-black w-full md:w-[90%] text-center text-2xl md:text-4xl font-semibold">
                 Menghadirkan Sarana Upacara dengan Ketulusan
@@ -29,7 +29,7 @@
         </p>
         <!-- button -->
         <x-button href="/produk" icon="{{ asset('assets/icons/arrow_right_white.svg') }}" class="mt-12 md:mt-24"
-            data-aos="fade-down" data-aos-delay="600">
+            data-aos="fade-up" data-aos-delay="600">
             Baca Lebih Lengkap
         </x-button>
         <div class="home_about_images w-full flex justify-center" data-aos="fade-up" data-aos-delay="800">
@@ -43,7 +43,7 @@
     data-aos-delay="100">
     <div class="home_product_content flex flex-col gap-10 md:gap-16">
         <div class="home_product_heading flex flex-col md:flex-row justify-between items-start md:items-end gap-4"
-            data-aos="fade-down" data-aos-delay="200">
+            data-aos="fade-up" data-aos-delay="200">
             <div class="home_product_heading_text">
                 <p class="sub-heading">Tentang Kami</p>
                 <h2 class="text-black text-2xl md:text-3xl font-semibold">Produk Terlaris</h2>
@@ -76,10 +76,10 @@
         </div>
     </div>
 </section>
-<section class="home_testi py-16 md:py-24 px-0 w-full" data-aos="fade-up" data-aos-delay="50">
-    <div class="home_testi_content flex flex-col items-center gap-16 md:gap-24 max-w-7xl mx-auto w-full">
-        <div class="home_testi_content_header flex flex-col items-center justify-center w-full md:w-2/3"
-            data-aos="fade-down" data-aos-delay="200">
+<section class="home_testi py-20 md:py-40 px-0 w-full" data-aos="fade-up" data-aos-delay="50">
+    <div class="home_testi_content flex flex-col items-center gap-16 md:gap-24  mx-auto w-full">
+        <div class="home_testi_content_header max-w-7xl flex flex-col items-center justify-center w-full md:w-2/3"
+            data-aos="fade-up" data-aos-delay="200">
             <p class="sub-heading text-center">Pendapat pelanggan tentang produk kami</p>
             <h2 class="text-center text-black mt-2 text-lg md:text-2xl font-semibold">
                 Setiap banten diproses dengan penuh ketulusan agar sesuai dengan

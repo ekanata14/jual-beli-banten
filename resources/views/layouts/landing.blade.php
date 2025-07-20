@@ -245,8 +245,7 @@
         @yield('content')
     </main>
     <section
-        class="finalcta flex flex-col items-start w-full px-6 md:px-12 lg:px-24 py-8 md:py-16 lg:py-12 text-white mb-[-1px]"
-        data-aos="fade-up" data-aos-delay="200">
+        class="finalcta flex flex-col items-start w-full px-6 md:px-12 lg:px-24 py-8 md:py-16 lg:py-12 text-white mb-[-1px]">
         <div class="finalcta_content flex flex-col lg:flex-row py-8 md:py-16 lg:py-20 items-start lg:items-center justify-between w-full gap-10"
             data-aos="fade-up" data-aos-delay="300">
             <div class="finalcta_contentleft w-full lg:w-1/2 mb-6 lg:mb-0" data-aos="fade-up" data-aos-delay="400">
@@ -408,7 +407,7 @@
         AOS.init({
             duration: 900,
             once: true, // animate only once
-            easing: 'cubic-bezier(.77,0,.18,1)',
+            easing: 'cubic-bezier(.12, .57, .63, .21)',
             delay: 200,
             offset: 80,
             mirror: true,

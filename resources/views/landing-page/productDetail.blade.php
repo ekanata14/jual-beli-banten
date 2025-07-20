@@ -223,8 +223,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<section class="home_testi py-16 md:py-24 px-0 w-full" data-aos="fade-up" data-aos-delay="100">
-    <div class="home_testi_content flex flex-col items-left gap-2 md:gap-24 max-w-7xl mx-auto w-full">
+<section class="home_testi py-26 md:py-40 px-10 w-full" data-aos="fade-up" data-aos-delay="100">
+    <div class="home_testi_content flex flex-col items-left gap-2 md:gap-10 mx-auto w-full">
         <div class="home_testi_content_header flex flex-col items-left justify-center w-full md:w-2/3"
             data-aos="fade-down" data-aos-delay="200">
             <p class="sub-heading ">Testimoni</p>
@@ -235,10 +235,10 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="home_testi_content_footer w-full" data-aos="zoom-in" data-aos-delay="400">
             <div class="relative w-full">
                 <div id="carousel"
-                    class="carousel flex gap-6 md:gap-8 overflow-x-auto scrollbar-thin scrollbar-thumb-stone-300 scrollbar-track-stone-100 py-4 md:py-6 px-4 md:px-0 w-full"
+                    class="carousel flex gap-6 md:gap-8 overflow-x-auto scrollbar-none py-4 md:py-6 px-4 md:px-0 w-full"
                     style="scroll-behavior: smooth;">
                     @foreach ($product->ulasans as $index => $testi)
-                    <div class="testimonial-card flex flex-col flex-shrink-0 w-[90vw] sm:w-[45vw] md:w-[32vw] lg:w-[30vw] xl:w-[25vw] px-5 py-6 bg-white rounded-lg shadow-md gap-6"
+                    <div class="testimonial-card flex flex-col flex-shrink-0 w-[90vw] sm:w-[45vw] md:w-[32vw] lg:w-[30vw] xl:w-[40vw] px-5 py-6 bg-white rounded-lg shadow-md gap-6"
                         data-index="{{ $index }}" data-aos="flip-left" data-aos-delay="{{ 200 + $index * 100 }}">
                         <img src="{{ asset('assets/icons/quote.svg') }}" alt="" class="self-end w-8 h-8">
                         <div class="testimonial-card_content">

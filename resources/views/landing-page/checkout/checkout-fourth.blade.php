@@ -37,7 +37,7 @@
             </div>
 
             <!-- informasi penerima -->
-            <div class="checkout_container mt-8">
+            <div class="checkout_container">
                 <h3 class="text-black">Informasi Penerima</h3>
                 @foreach ($informasiPenerima as $info)
                     <div class="informasi_data mt-6 mb-6 pb-4">
@@ -52,7 +52,7 @@
             </div>
 
             <!-- detail pengiriman -->
-            <div class="checkout_container mt-8">
+            <div class="checkout_container">
                 <h3 class="text-black">Detail Pengiriman</h3>
                 @foreach ($pengiriman as $kirim)
                     <div class="informasi_data mt-6 mb-6 pb-4">
@@ -70,7 +70,7 @@
                 @endforeach
             </div>
             <!-- form pembayaran -->
-            <div class="checkout_form informasi_anda_form mt-8">
+            <div class="checkout_form informasi_anda_form pt-8">
                 <h3 class="text-black">Pembayaran</h3>
                 <form action="{{ route('checkout.store') }}" method="POST">
                     @csrf
@@ -196,7 +196,7 @@
             background: #f9f9f9;
             border-radius: 0.5rem;
             padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem;
         }
     </style>
 @endsection

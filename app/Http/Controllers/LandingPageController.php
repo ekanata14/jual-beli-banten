@@ -106,22 +106,46 @@ class LandingPageController extends Controller
             'activePage' => 'product',
             'products' => Produk::orderBy('created_at', 'desc')
                 ->paginate(10),
-            'categories' => $this->categories
+            // 'categories' => collect(['Badung', 'Gianyar', 'Klungkung', 'Karangasem']),
+            // 'categories' => $this->categories,
+            'categories' => User::where('role', 'penjual')->pluck('name', 'id')
         ];
         return view('landing-page.product', $viewData);
     }
 
     public function productSearch(Request $request)
     {
+        $category = $request->query('category', '');
         $search = $request->query('search', '');
+        $sort = $request->query('sort', '');
+
+        $productsQuery = Produk::query();
+
+        if ($search) {
+            $productsQuery->where('nama_produk', 'like', '%' . $search . '%');
+        }
+
+        if ($category) {
+            $productsQuery->where('id_user', $category);
+        }
+
+        // Sorting logic
+        if ($sort === 'atoz') {
+            $productsQuery->orderBy('nama_produk', 'asc');
+        } elseif ($sort === 'price_lowest') {
+            $productsQuery->orderBy('harga', 'asc');
+        } elseif ($sort === 'price_highest') {
+            $productsQuery->orderBy('harga', 'desc');
+        } else {
+            $productsQuery->orderBy('created_at', 'desc');
+        }
+
         $viewData = [
             'title' => 'Pencarian | Bhakti E Commerce',
             'activePage' => 'product',
-            'products' => Produk::where('nama_produk', 'like', '%' . $search . '%')
-                ->orderBy('created_at', 'desc')
-                ->paginate(10),
+            'products' => $productsQuery->paginate(10),
             'search' => $search,
-            'categories' => $this->categories
+            'categories' => User::where('role', 'penjual')->pluck('name', 'id')
         ];
         return view('landing-page.product', $viewData);
     }
@@ -131,11 +155,16 @@ class LandingPageController extends Controller
         $viewData = [
             'title' => 'Produk Kategori: ' . $category . ' | Bhakti E Commerce',
             'activePage' => 'product',
-            'products' => Produk::where('kategori', $category)
+            // 'products' => Produk::where('kategori', $category)
+            //     ->orderBy('created_at', 'desc')
+            //     ->paginate(10),
+            'products' => Produk::where('id_user', $category)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10),
-            'categories' => $this->categories
+            // 'categories' => $this->categories
+            'categories' => collect(['Badung', 'Gianyar', 'Klungkung', 'Karangasem'])
         ];
+
         return view('landing-page.product', $viewData);
     }
 
@@ -149,7 +178,8 @@ class LandingPageController extends Controller
                 ->orderBy('nama_produk', 'asc')
                 ->paginate(10),
             'search' => $search,
-            'categories' => $this->categories
+            // 'categories' => $this->categories
+            'categories' => User::where('role', 'penjual')->pluck('name', 'id')
         ];
         return view('landing-page.product', $viewData);
     }
@@ -165,7 +195,8 @@ class LandingPageController extends Controller
                 ->orderBy('harga', 'asc')
                 ->paginate(10),
             'search' => $search,
-            'categories' => $this->categories
+            // 'categories' => $this->categories
+            'categories' => User::where('role', 'penjual')->pluck('name', 'id')
         ];
         return view('landing-page.product', $viewData);
     }
@@ -181,7 +212,8 @@ class LandingPageController extends Controller
                 ->orderBy('harga', 'desc')
                 ->paginate(10),
             'search' => $search,
-            'categories' => $this->categories
+            // 'categories' => $this->categories 
+            'categories' => User::where('role', 'penjual')->pluck('name', 'id')
         ];
         return view('landing-page.product', $viewData);
     }

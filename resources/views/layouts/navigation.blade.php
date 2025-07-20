@@ -12,7 +12,7 @@
                 @if (auth()->user()->role == 'admin' || auth()->user()->role == 'owner')
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard') || request()->routeIs('admin.dashboard.transaksi.filter')">
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard') || request()->routeIs('admin.dashboard.transaksi.filter') || request()->routeIs('admin.dashboard.best-seller') || request()->routeIs('admin.dashboard.best-seller.*')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
                         @if (Auth::user()->role == 'owner')

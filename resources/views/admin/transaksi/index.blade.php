@@ -2,59 +2,117 @@
 
 @section('content')
     <div class="flex flex-wrap gap-4 mb-6">
-        <!-- Responsive Cards: Total Pemasukan, Paid, Pending -->
-        <div class="w-full justify-between flex flex-wrap gap-4 mb-6">
-            <!-- Total Pemasukan -->
-            <div
-                class="flex-1 min-w-[220px] max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
-                <a href="{{ route('admin.transaksi.index') }}">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">
-                        {{ 'Rp ' . number_format($totalPemasukan ?? 0, 0, ',', '.') }}</h5>
-                </a>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center">Total Pemasukan</p>
-                <a href="{{ route('admin.transaksi.index') }}"
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Detail
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                </a>
+
+        @if (request()->routeIs('admin.transaksi.index'))
+            <!-- Responsive Cards: Total Pemasukan, Paid, Pending -->
+            <div class="w-full flex flex-wrap gap-4 mb-6">
+                <!-- Total Pemasukan -->
+                <div
+                    class="flex-1 min-w-[220px] max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
+                    <a href="{{ route('admin.transaksi.index') }}">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">
+                            {{ 'Rp ' . number_format($totalPemasukan ?? 0, 0, ',', '.') }}</h5>
+                    </a>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center">Total Pemasukan</p>
+                    <a href="{{ route('admin.transaksi.index') }}"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Detail
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </a>
+                </div>
+                <!-- Total Paid -->
+                <div
+                    class="flex-1 min-w-[220px] max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-green-700 dark:text-green-400 text-center">
+                        {{ 'Rp ' . number_format($totalPaid ?? 0, 0, ',', '.') }}</h5>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center">Total Paid</p>
+                    <a href="{{ route('admin.transaksi.index', ['status' => 'paid']) }}"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                        Detail
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </a>
+                </div>
+                <!-- Total Pending -->
+                <div
+                    class="flex-1 min-w-[220px] max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-yellow-700 dark:text-yellow-400 text-center">
+                        {{ 'Rp ' . number_format($totalPending ?? 0, 0, ',', '.') }}</h5>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center">Total Pending</p>
+                    <a href="{{ route('admin.transaksi.index', ['status' => 'pending']) }}"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-yellow-500 rounded-lg hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">
+                        Detail
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </a>
+                </div>
             </div>
-            <!-- Total Paid -->
-            <div
-                class="flex-1 min-w-[220px] max-w-sull p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-green-700 dark:text-green-400 text-center">
-                    {{ 'Rp ' . number_format($totalPaid ?? 0, 0, ',', '.') }}</h5>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center">Total Paid</p>
-                <a href="{{ route('admin.transaksi.index', ['status' => 'paid']) }}"
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                    Detail
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                </a>
+        @elseif(request()->routeIs('admin.transaksi.filter'))
+            <!-- Responsive Cards: Total Pemasukan, Paid, Pending -->
+            <div class="w-full flex flex-wrap gap-4 mb-6">
+                <!-- Total Pemasukan -->
+                <div
+                    class="flex-1 min-w-[220px] max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
+                    <a href="{{ route('admin.transaksi.index') }}">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">
+                            {{ 'Rp ' . number_format($totalPemasukan ?? 0, 0, ',', '.') }}</h5>
+                    </a>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center">Total Pemasukan</p>
+                    <a href="{{ route('admin.transaksi.index') }}"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Detail
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </a>
+                </div>
+                <!-- Total Paid -->
+                <div
+                    class="flex-1 min-w-[220px] max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-green-700 dark:text-green-400 text-center">
+                        {{ 'Rp ' . number_format($totalPaid ?? 0, 0, ',', '.') }}</h5>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center">Total Paid</p>
+                    <a href="{{ route('admin.transaksi.index', ['status' => 'paid']) }}"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                        Detail
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </a>
+                </div>
+                <!-- Total Pending -->
+                <div
+                    class="flex-1 min-w-[220px] max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-yellow-700 dark:text-yellow-400 text-center">
+                        {{ 'Rp ' . number_format($totalPending ?? 0, 0, ',', '.') }}</h5>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center">Total Pending</p>
+                    <a href="{{ route('admin.transaksi.index', ['status' => 'pending']) }}"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-yellow-500 rounded-lg hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">
+                        Detail
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </a>
+                </div>
             </div>
-            <!-- Total Pending -->
-            <div
-                class="flex-1 min-w-[220px] max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-yellow-700 dark:text-yellow-400 text-center">
-                    {{ 'Rp ' . number_format($totalPending ?? 0, 0, ',', '.') }}</h5>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center">Total Pending</p>
-                <a href="{{ route('admin.transaksi.index', ['status' => 'pending']) }}"
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-yellow-500 rounded-lg hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">
-                    Detail
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                </a>
-            </div>
-        </div>
+        @else
+        @endif
     </div>
     <div class="mb-4">
         {{-- <a href="{{ route('admin.kurir.create') }}" class="btn-primary">Tambah Kurir</a> --}}
@@ -131,28 +189,28 @@
                     <th scope="col" class="px-6 py-3">
                         <span class="flex items-center">
                             No
-                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
                             </svg>
                         </span>
                     </th>
                     <th scope="col" class="px-6 py-3">
                         <span class="flex items-center">
                             Nomor Invoice
-                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m8 15 4 4 4-4m0-6-4-4-4 4" />
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
                             </svg>
                         </span>
                     </th>
                     <th scope="col" class="px-6 py-3">
                         <span class="flex items-center">
                             Tanggal Transaksi
-                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" fill="none" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="m8 15 4 4 4-4m0-6-4-4-4 4" />
                             </svg>

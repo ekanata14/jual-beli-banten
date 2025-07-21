@@ -48,8 +48,8 @@
                 <p class="font-semibold mr-2">Kategori:</p>
                 <form action="{{ route('product.search') }}" method="GET">
                     <select name="category" onchange="this.form.submit()"
-                        class="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-[#534538] focus:border-[#534538]">
-                        <option value="">Pilih Kategori</option>
+                        class="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-[#534538] focus:border-[#534538] w-[110%]">
+                        <option value="">Pilih Kategori </option>
                         @foreach ([3 => 'Badung', 4 => 'Gianyar', 5 => 'Klungkung', 6 => 'Karangasem'] as $key => $display)
                             <option value="{{ $key }}" {{ $activeCategory == $key ? 'selected' : '' }}>
                                 {{ $display }}

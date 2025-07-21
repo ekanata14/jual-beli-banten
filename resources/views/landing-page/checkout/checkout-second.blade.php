@@ -18,7 +18,7 @@
                 </div>
             </div>
             <!-- form informasi penerima -->
-            <div class="checkout_form informasi_penerima_form mt-8 md:mt-12" data-aos="fade-up">
+            <div class="checkout_form informasi_penerima_form " data-aos="fade-up">
                 <h3 class="text-black mb-4 text-lg font-semibold">Informasi Penerima</h3>
                 <form action="{{ route('cart.checkout.pengiriman.data') }}" method="POST" class="space-y-5"
                     data-aos="fade-up">

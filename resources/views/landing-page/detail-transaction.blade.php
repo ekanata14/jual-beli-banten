@@ -391,19 +391,21 @@
             $subtotal = $data->orders->sum('subtotal');
             @endphp
             @forelse($data->orders as $item)
+            <a href="{{route('product.detail', ['id' => $item->produk->id ?? 1])}}">
             <div class="informasi_produk mt-4 mb-4 flex flex-col md:flex-row md:justify-between gap-4 items-center bg-gray-50 p-4 rounded"
                 data-aos="fade-up">
-                <img src="{{ asset($item->produk->foto ?? 'assets/images/product_img.png') }}"
-                    alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-24 h-24 object-cover rounded">
-                <div class="informasi_produk flex flex-col gap-2 flex-1">
-                    <h4 class="text-black text-base">{{ $item->produk->nama_produk ?? '-' }}</h4>
-                    <p class="text-sm">Penjual : {{ $item->produk->user->name ?? '-' }}</p>
-                    <p class="text-sm">Kuantiti : {{ $item->jumlah ?? 1 }}</p>
-                    <p class="text-sm">Berat Barang : {{ $item->produk->berat ?? '-' }}g</p>
+                    <img src="{{ asset($item->produk->foto ?? 'assets/images/product_img.png') }}"
+                        alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-24 h-24 object-cover rounded">
+                    <div class="informasi_produk flex flex-col gap-2 flex-1">
+                        <h4 class="text-black text-base">{{ $item->produk->nama_produk ?? '-' }}</h4>
+                        <p class="text-sm">Penjual : {{ $item->produk->user->name ?? '-' }}</p>
+                        <p class="text-sm">Kuantiti : {{ $item->jumlah ?? 1 }}</p>
+                        <p class="text-sm">Berat Barang : {{ $item->produk->berat ?? '-' }}g</p>
+                    </div>
+                    <h4 class="text-black text-base md:text-lg">Rp.
+                        {{ number_format($item->produk->harga ?? 0, 0, ',', '.') }}</h4>
                 </div>
-                <h4 class="text-black text-base md:text-lg">Rp.
-                    {{ number_format($item->produk->harga ?? 0, 0, ',', '.') }}</h4>
-            </div>
+            </a>
             @empty
             <div class="text-gray-500 text-center py-8">Tidak ada produk dalam transaksi ini.</div>
             @endforelse

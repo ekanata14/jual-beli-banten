@@ -193,7 +193,7 @@
 
                             <!-- Modal -->
                             <div id="rating-modal-{{ $order->id }}"
-                                class="fixed inset-0 z-50 flex items-center justify-center hidden">
+                                class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black">
                                 <div class="bg-white rounded-lg w-full max-w-md p-6 relative animate-fade-in">
                                     <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl"
                                         onclick="closeRatingModal({{ $order->id }})" aria-label="Tutup">

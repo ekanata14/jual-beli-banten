@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('status', 50);
             $table->enum('metode_pembayaran', ['transfer', 'cod']);
             $table->datetime('tanggal_transaksi');
+            $table->string('step')->nullable();
             $table->timestamps();
             $table->softDeletesTz('deleted_at', precision: 0);
         });

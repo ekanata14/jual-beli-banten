@@ -17,6 +17,7 @@ class Transaksi extends Model
         'status',
         'metode_pembayaran',
         'tanggal_transaksi',
+        'step'
     ];
 
     public function User()

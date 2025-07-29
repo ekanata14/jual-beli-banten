@@ -425,6 +425,9 @@ class LandingPageController extends Controller
         $transaksi = Transaksi::where('id', $id)
             ->orderBy('created_at', 'desc')
             ->first();
+        $transaksi->update([
+            'step' => '2',
+        ]);
         $order = Order::where('id_transaksi', $transaksi->id)->first();
         $viewData = [
             'title' => 'Checkout Product | Bhakti E Commerce',
@@ -440,6 +443,12 @@ class LandingPageController extends Controller
         $pengiriman = Pengiriman::where('id_transaksi', $id)
             ->orderBy('created_at', 'desc')
             ->get();
+        $transaksi = Transaksi::where('id', $id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $transaksi->update([
+            'step' => '3',
+        ]);
         $viewData = [
             'title' => 'Checkout Product | Bhakti E Commerce',
             'snapToken' => null,
@@ -457,6 +466,10 @@ class LandingPageController extends Controller
         $transaksi = Transaksi::where('id', $id)
             ->orderBy('created_at', 'desc')
             ->first();
+
+        $transaksi->update([
+            'step' => '4',
+        ]);
 
         $pengiriman = Pengiriman::where('id_transaksi', $transaksi->id)
             ->orderBy('created_at', 'desc')
@@ -501,6 +514,7 @@ class LandingPageController extends Controller
                 'status' => 'pending',
                 'metode_pembayaran' => 'transfer',
                 'tanggal_transaksi' => now(),
+                'step' => '1',
             ]);
 
             // Simpan setiap item keranjang ke tabel order
@@ -553,6 +567,7 @@ class LandingPageController extends Controller
                 'status' => 'pending',
                 'metode_pembayaran' => 'transfer',
                 'tanggal_transaksi' => now(),
+                'step' => '1',
             ]);
 
             Order::create([
@@ -710,13 +725,13 @@ class LandingPageController extends Controller
                 );
 
                 $pengiriman->update([
-                    'biaya_pengiriman' => (int)$biayaPengiriman,
+                    'biaya_pengiriman' => (int) $biayaPengiriman,
                     'status_pengiriman' => 'pending',
                     'id_kurir' => $kurir->id,
                     'waktu_pengiriman' => $selectedRate['duration'] ?? null,
                 ]);
 
-                $totalBiayaPengiriman += (int)$biayaPengiriman;
+                $totalBiayaPengiriman += (int) $biayaPengiriman;
 
                 $pengirimanDataArray[] = [
                     'pengiriman_id' => $pengirimanId,
@@ -759,6 +774,7 @@ class LandingPageController extends Controller
 
             // Ambil data transaksi dan order berdasarkan id
             $transaksi = Transaksi::findOrFail($validated['id_transaksi']);
+            $transaksi->step = '5';
             $order = Order::findOrFail($validated['id_order']);
 
             // Ambil semua pengiriman berdasarkan array id_pengiriman
@@ -809,9 +825,9 @@ class LandingPageController extends Controller
         $signatureKey = hash(
             'sha512',
             $request->order_id .
-                $request->status_code .
-                $request->gross_amount .
-                $serverKey
+            $request->status_code .
+            $request->gross_amount .
+            $serverKey
         );
 
         if ($signatureKey !== $request->signature_key) {
@@ -822,6 +838,8 @@ class LandingPageController extends Controller
 
         if ($request->transaction_status === 'settlement') {
             $transaksi->status = 'paid';
+            $transaksi->step = 'paid';
+
         } elseif ($request->transaction_status === 'pending') {
             $transaksi->status = 'pending';
         } elseif ($request->transaction_status === 'expire') {
@@ -836,7 +854,7 @@ class LandingPageController extends Controller
             ->with('success', 'Transaksi berhasil diproses');
     }
 
-    public function midtransCallbackAPI(Request $request,  BiteshipService $biteship)
+    public function midtransCallbackAPI(Request $request, BiteshipService $biteship)
     {
         try {
             Log::info('Midtrans Callback Request:', $request->all());
@@ -844,9 +862,9 @@ class LandingPageController extends Controller
             $signatureKey = hash(
                 'sha512',
                 $request->order_id .
-                    $request->status_code .
-                    $request->gross_amount .
-                    $serverKey
+                $request->status_code .
+                $request->gross_amount .
+                $serverKey
             );
 
             if ($signatureKey !== $request->signature_key) {
@@ -861,6 +879,7 @@ class LandingPageController extends Controller
 
             if ($request->transaction_status === 'settlement') {
                 $transaksi->status = 'paid';
+                $transaksi->step = 'paid';
             } elseif ($request->transaction_status === 'pending') {
                 $transaksi->status = 'pending';
             } elseif ($request->transaction_status === 'expire') {

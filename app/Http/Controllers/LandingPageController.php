@@ -767,12 +767,21 @@ class LandingPageController extends Controller
             $validated = $request->validate([
                 'id_transaksi' => 'required|integer',
                 'id_order' => 'required|integer',
-                'id_pengiriman' => 'required|array',
+                'id_pengiriman' => 'nullable|array',
                 'total_harga' => 'required|integer',
             ]);
 
             // Ambil data transaksi dan order berdasarkan id
             $transaksi = Transaksi::findOrFail($validated['id_transaksi']);
+            if (empty($validated['id_pengiriman'])) {
+                $pengirimanIds = [];
+                foreach ($transaksi->orders as $order) {
+                    if ($order->id_pengiriman) {
+                        $pengirimanIds[] = $order->id_pengiriman;
+                    }
+                }
+                $validated['id_pengiriman'] = $pengirimanIds;
+            }
             $transaksi->step = '5';
             $order = Order::findOrFail($validated['id_order']);
 

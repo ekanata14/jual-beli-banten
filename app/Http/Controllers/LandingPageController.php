@@ -239,7 +239,7 @@ class LandingPageController extends Controller
             'title' => 'Riwayat Transaksi | Bhakti E Commerce',
             'activePage' => 'history',
             'datas' => Transaksi::where('id_user', auth()->user()->id)
-                ->with('pengiriman')
+                ->with('pengiriman')->with('orders')
                 ->orderBy('created_at', 'desc')->get()
         ];
 

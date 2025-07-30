@@ -6,15 +6,13 @@
             data-aos="fade-up">
             <!-- <h3 class="text-black text-xl md:text-2xl">Detail Transaksi</h3> -->
             @if (Route::has('admin.pelanggan.transaksi.detail.show'))
-                <a href="{{ url()->previous() }}"
-                    class="text-blue-600 hover:underline text-sm md:text-base">Back</a>
+                <a href="{{ route('admin.transaksi.index') }}" class="text-blue-600 hover:underline text-sm md:text-base">Back</a>
             @else
                 <a href="{{ route('admin.transaksi.index') }}"
                     class="text-blue-600 hover:underline text-sm md:text-base">Back</a>
             @endif
         </div>
-        <div class="transaction_container md:mt-5 md:mt-10 w-full md:w-11/12 flex flex-col rounded-lg"
-            data-aos="fade-up">
+        <div class="transaction_container md:mt-5 md:mt-10 w-full md:w-11/12 flex flex-col rounded-lg" data-aos="fade-up">
             <!-- section 1 -->
             <div class="section_one bg-white rounded-md w-full px-10 py-5">
                 <div class="flex flex-col md:flex-row md:justify-between gap-4" data-aos="fade-up">
@@ -60,12 +58,12 @@
 
                 <div class="alamat_penerima mt-6 md:mt-9 pb-6 md:pb-9" data-aos="fade-up">
                     <p class="text-sm">Alamat Penerima</p>
-                    <p class="text-black mt-2 md:mt-4 text-base">{{ $data->pengiriman->nama_penerima }}</p>
-                    <p class="text-black text-base">{{ $data->pengiriman->telp_penerima }}</p>
-                    <p class="text-black text-base">{{ $data->pengiriman->alamat_penerima }}</p>
-                    <p class="text-black text-base">Kode Pos: {{ $data->pengiriman->kode_pos_penerima }}</p>
-                    <p class="text-black text-base">Latitude: {{ $data->pengiriman->latitude_penerima }}</p>
-                    <p class="text-black text-base">Longitude: {{ $data->pengiriman->longitude_penerima }}</p>
+                    <p class="text-black mt-2 md:mt-4 text-base">{{ $data->pengiriman->nama_penerima ?? '-' }}</p>
+                    <p class="text-black text-base">{{ $data->pengiriman->telp_penerima ?? '-' }}</p>
+                    <p class="text-black text-base">{{ $data->pengiriman->alamat_penerima ?? '-' }}</p>
+                    <p class="text-black text-base">Kode Pos: {{ $data->pengiriman->kode_pos_penerima ?? '-' }}</p>
+                    <p class="text-black text-base">Latitude: {{ $data->pengiriman->latitude_penerima ?? '-' }}</p>
+                    <p class="text-black text-base">Longitude: {{ $data->pengiriman->longitude_penerima ?? '-' }}</p>
                 </div>
             </div>
             <!-- section 3 -->
@@ -73,7 +71,7 @@
                 // Get all unique pengiriman from orders (in case of multiple shipping data)
                 $pengirimanList = $data->orders->pluck('pengiriman')->filter()->unique('id');
             @endphp
-            @foreach ($pengirimanList as $pengiriman)
+            @forelse ($pengirimanList as $pengiriman)
                 <div class="section_three mt-2 md:mt-2 bg-white rounded-md w-full px-10 py-10"
                     id="biteship-shipping-info-{{ $pengiriman->id }}">
                     <div class=" rounded-2xl mb-8 transition-all duration-300">
@@ -124,7 +122,7 @@
                                     <p class="text-black font-bold" id="biteship-fee-{{ $pengiriman->id }}"></p>
                                 </div>
                             </div>
-                            
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 hidden">
                                 <div class="space-y-2">
                                     <p class="text-xs text-gray-500">Nama Pengirim</p>
@@ -146,7 +144,8 @@
                             </div>
                             @if ($pengiriman->status_pengiriman !== 'received')
                                 <form action="{{ route('confirm.shipment', $pengiriman->id) }}" method="POST"
-                                    class="mt-8 flex justify-center hidden" onsubmit="return confirmShipment(event, this)">
+                                    class="mt-8 flex justify-center hidden"
+                                    onsubmit="return confirmShipment(event, this)">
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $pengiriman->id }}">
                                     <button type="submit"
@@ -160,9 +159,8 @@
                                     </button>
                                 </form>
                             @else
-                                
                                 <div class="mt-8">
-                                    
+
                                     <div class="flex flex-col gap-4">
                                         @foreach ($pengiriman->orders as $order)
                                             <div
@@ -352,7 +350,7 @@
                         const orderId =
                             '{{ $pengiriman->biteship_order_id ??
                                 '
-                                                                                            ' }}';
+                                                                                                                                                    ' }}';
                         const id = '{{ $pengiriman->id }}';
                         if (!orderId) {
                             document.getElementById('biteship-loading-' + id).classList.add('hidden');
@@ -404,68 +402,70 @@
                             });
                     });
                 </script>
-            @endforeach
-            <!-- section 3 -->
-            <div class="section_three mt-2 md:mt-2 bg-white rounded-md w-full px-10 py-10" data-aos="fade-up">
-                <p class="text-base md:text-lg">Informasi Produk</p>
-                @php
-                    $subtotal = $data->orders->sum('subtotal');
-                @endphp
-                @forelse($data->orders as $item)
-                    <div class="informasi_produk mt-4 mb-4 flex flex-col md:flex-row md:justify-between gap-4 items-center bg-gray-50 p-4 rounded"
-                        data-aos="fade-up">
-                        <img src="{{ asset($item->produk->foto ?? 'assets/images/product_img.png') }}"
-                            alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-24 h-24 object-cover rounded">
-                        <div class="informasi_produk flex flex-col gap-2 flex-1">
-                            <h4 class="text-black text-base">{{ $item->produk->nama_produk ?? '-' }}</h4>
-                            <p class="text-sm">Penjual : {{ $item->produk->user->name ?? '-' }}</p>
-                            <p class="text-sm">Kuantiti : {{ $item->jumlah ?? 1 }}</p>
-                            <p class="text-sm">Berat Barang : {{ $item->produk->berat ?? '-' }}g</p>
-                        </div>
-                        <h4 class="text-black text-base md:text-lg">Rp.
-                            {{ number_format($item->produk->harga ?? 0, 0, ',', '.') }}</h4>
-                    </div>
                 @empty
-                    <div class="text-gray-500 text-center py-8">Tidak ada produk dalam transaksi ini.</div>
+                    <div class="text-gray-500 text-center py-8">Tidak ada informasi pengiriman untuk transaksi ini.</div>
                 @endforelse
+                <!-- section 3 -->
+                <div class="section_three mt-2 md:mt-2 bg-white rounded-md w-full px-10 py-10" data-aos="fade-up">
+                    <p class="text-base md:text-lg">Informasi Produk</p>
+                    @php
+                        $subtotal = $data->orders->sum('subtotal');
+                    @endphp
+                    @forelse($data->orders as $item)
+                        <div class="informasi_produk mt-4 mb-4 flex flex-col md:flex-row md:justify-between gap-4 items-center bg-gray-50 p-4 rounded"
+                            data-aos="fade-up">
+                            <img src="{{ asset($item->produk->foto ?? 'assets/images/product_img.png') }}"
+                                alt="{{ $item->produk->nama_produk ?? 'Produk' }}" class="w-24 h-24 object-cover rounded">
+                            <div class="informasi_produk flex flex-col gap-2 flex-1">
+                                <h4 class="text-black text-base">{{ $item->produk->nama_produk ?? '-' }}</h4>
+                                <p class="text-sm">Penjual : {{ $item->produk->user->name ?? '-' }}</p>
+                                <p class="text-sm">Kuantiti : {{ $item->jumlah ?? 1 }}</p>
+                                <p class="text-sm">Berat Barang : {{ $item->produk->berat ?? '-' }}g</p>
+                            </div>
+                            <h4 class="text-black text-base md:text-lg">Rp.
+                                {{ number_format($item->produk->harga ?? 0, 0, ',', '.') }}</h4>
+                        </div>
+                    @empty
+                        <div class="text-gray-500 text-center py-8">Tidak ada produk dalam transaksi ini.</div>
+                    @endforelse
 
-                <div class="section_four mt-6 md:mt-9" data-aos="fade-up">
-                    <div class="subtotal flex justify-between text-sm md:text-base">
-                        <p>Subtotal</p>
-                        <p class="mt-2 md:mt-4">Rp. {{ number_format($subtotal, 0, ',', '.') }}</p>
-                    </div>
-                    <div class="biaya_pengiriman flex justify-between text-sm md:text-base">
-                        <p>Biaya Pengiriman</p>
-                        <p class="mt-2 md:mt-4">Rp.
-                            {{ number_format($data->pengiriman->biaya_pengiriman ?? 0, 0, ',', '.') }}
-                        </p>
-                    </div>
-                    <div class="biaya_pengiriman flex justify-between text-sm md:text-base">
-                        <p>Biaya Admin</p>
-                        <p class="mt-2 md:mt-4">Rp.
-                            {{ number_format(2500 ?? 0, 0, ',', '.') }}
-                        </p>
-                    </div>
-                    <div class="total_transaksi flex justify-between">
-                        <p class="text-black font-semibold text-base md:text-lg">Total Biaya</p>
-                        <p class="text-black mt-2 md:mt-4 font-semibold text-base md:text-lg">
-                            Rp. {{ number_format($data->total_harga, 0, ',', '.') }}
-                        </p>
+                    <div class="section_four mt-6 md:mt-9" data-aos="fade-up">
+                        <div class="subtotal flex justify-between text-sm md:text-base">
+                            <p>Subtotal</p>
+                            <p class="mt-2 md:mt-4">Rp. {{ number_format($subtotal, 0, ',', '.') }}</p>
+                        </div>
+                        <div class="biaya_pengiriman flex justify-between text-sm md:text-base">
+                            <p>Biaya Pengiriman</p>
+                            <p class="mt-2 md:mt-4">Rp.
+                                {{ number_format($data->pengiriman->biaya_pengiriman ?? 0, 0, ',', '.') }}
+                            </p>
+                        </div>
+                        <div class="biaya_pengiriman flex justify-between text-sm md:text-base">
+                            <p>Biaya Admin</p>
+                            <p class="mt-2 md:mt-4">Rp.
+                                {{ number_format(2500 ?? 0, 0, ',', '.') }}
+                            </p>
+                        </div>
+                        <div class="total_transaksi flex justify-between">
+                            <p class="text-black font-semibold text-base md:text-lg">Total Biaya</p>
+                            <p class="text-black mt-2 md:mt-4 font-semibold text-base md:text-lg">
+                                Rp. {{ number_format($data->total_harga, 0, ',', '.') }}
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- section 4 -->
-            
-            <div class="action_button self-center mt-6 md:mt-9" data-aos="fade-up">
+                <!-- section 4 -->
+
+                <div class="action_button self-center mt-6 md:mt-9" data-aos="fade-up">
+                </div>
             </div>
         </div>
-    </div>
-    <!-- Add AOS JS -->
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 700,
-            once: true
-        });
-    </script>
-@endsection
+        <!-- Add AOS JS -->
+        <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+        <script>
+            AOS.init({
+                duration: 700,
+                once: true
+            });
+        </script>
+    @endsection

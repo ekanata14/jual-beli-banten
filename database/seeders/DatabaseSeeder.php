@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         User::create([
-            "name" => "Owner",
+            "name" => "
+            Owner",
             "email" => "owner@bhakti.com",
             "password" => bcrypt("owner"),
             "role" => "owner"

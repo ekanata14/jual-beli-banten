@@ -240,8 +240,7 @@ class LandingPageController extends Controller
             'activePage' => 'history',
             'datas' => Transaksi::where('id_user', auth()->user()->id)
                 ->with('pengiriman')
-                ->orderBy('created_at', 'desc')
-                ->paginate(10)
+                ->orderBy('created_at', 'desc')->get()
         ];
 
         return view('landing-page.history', $viewData);
@@ -825,9 +824,9 @@ class LandingPageController extends Controller
         $signatureKey = hash(
             'sha512',
             $request->order_id .
-            $request->status_code .
-            $request->gross_amount .
-            $serverKey
+                $request->status_code .
+                $request->gross_amount .
+                $serverKey
         );
 
         if ($signatureKey !== $request->signature_key) {
@@ -839,7 +838,6 @@ class LandingPageController extends Controller
         if ($request->transaction_status === 'settlement') {
             $transaksi->status = 'paid';
             $transaksi->step = 'paid';
-
         } elseif ($request->transaction_status === 'pending') {
             $transaksi->status = 'pending';
         } elseif ($request->transaction_status === 'expire') {
@@ -862,9 +860,9 @@ class LandingPageController extends Controller
             $signatureKey = hash(
                 'sha512',
                 $request->order_id .
-                $request->status_code .
-                $request->gross_amount .
-                $serverKey
+                    $request->status_code .
+                    $request->gross_amount .
+                    $serverKey
             );
 
             if ($signatureKey !== $request->signature_key) {

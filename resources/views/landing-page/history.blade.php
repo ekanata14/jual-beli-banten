@@ -15,7 +15,8 @@
                     <option value="pending">Pending</option>
                     <option value="paid">Paid</option>
                 </select>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">Cari</button>
+                <button type="submit"
+                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">Cari</button>
             </form>
 
             <!-- Transaction History Card -->
@@ -94,7 +95,7 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="id_transaksi" value="${item.id}">
                         <input type="hidden" name="id_order" value="${item.orders && item.orders[0] ? item.orders[0].id : ''}">
-                        ${(item.orders || []).map(kirim => `<input type="hidden" name="id_pengiriman[]" value="${kirim.pengiriman.id}">`).join('')}
+                        ${(item.orders || []).map(kirim => kirim.pengiriman ? `<input type="hidden" name="id_pengiriman[]" value="${kirim.pengiriman.id}">` : '').join('')}
                         <input type="hidden" name="total_harga" value="${parseInt(item.total_harga)}">
                         <button type="button" class="inline-block px-4 py-2 border border-blue-400 text-blue-700 text-sm rounded-lg hover:bg-blue-50" onclick="confirmPayment(${item.id})">Lanjut Ke Pembayaran</button>
                     </form>
